@@ -45,6 +45,69 @@
           
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/60d3bfb0-20e6-412a-9c2a-2f054f20d921)
 
+    good_mux.v design:
+    
+    module good_mux (input i0 , input i1 , input sel , output reg y);
+    always @ (*)
+    begin
+    	if(sel)
+    		y <= i1;
+    	else 
+    		y <= i0;
+    end
+    endmodule
+
+    tb_good_mux.v testbench:
+    
+        `timescale 1ns / 1ps
+        module tb_good_mux;
+    	// Inputs
+    	reg i0,i1,sel;
+    	// Outputs
+    	wire y;
+    
+            // Instantiate the Unit Under Test (UUT)
+    	good_mux uut (
+    		.sel(sel),
+    		.i0(i0),
+    		.i1(i1),
+    		.y(y)
+    	);
+    
+    	initial begin
+    	$dumpfile("tb_good_mux.vcd");
+    	$dumpvars(0,tb_good_mux);
+    	// Initialize Inputs
+    	sel = 0;
+    	i0 = 0;
+    	i1 = 0;
+    	#300 $finish;
+    	end
+    
+        always #75 sel = ~sel;
+        always #10 i0 = ~i0;
+        always #55 i1 = ~i1;
+        endmodule
+
+    
+    Running iverilog & gtkwave:
+    git clone https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop #clone design and testbench and synthesis collaterals required for lab.
+    cd sky130RTLDesignAndSynthesisWorkshop/verilog_files #change directory to the destination folder
+    iverilog good_mux.v tb_good_mux.v #runs iverilog simulator for design good_mux and testbench tb_good_mux, craetes a "a.out" file in present working directory.
+    ./a.out #executes a.out file to dump the tb_good_mux.vcd file
+    gtkwave tb_good_mux.vcd #open .vcd file in gtkwave to observe waveforms
+
+Screenshot of commands run:
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/b07321eb-7f8d-47f6-8cd1-b910ffac05e3)
+
+gtkwave screenshot:
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/ed44c73e-59b9-4556-bb5c-77f7a4d82bea)
+
+
+
+
+
+
 
 
 
