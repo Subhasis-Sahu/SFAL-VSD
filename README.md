@@ -56,8 +56,7 @@
     		y <= i0;
     end
     endmodule
-
-
+    
     tb_good_mux.v testbench:
     
         `timescale 1ns / 1ps
@@ -89,8 +88,7 @@
         always #10 i0 = ~i0;
         always #55 i1 = ~i1;
         endmodule
-
-    
+        
     Running iverilog & gtkwave:
     git clone https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop #clone design and testbench and synthesis collaterals required for lab.
     cd sky130RTLDesignAndSynthesisWorkshop/verilog_files #change directory to the destination folder
