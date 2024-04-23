@@ -171,6 +171,10 @@ Understanding Timing Libs:
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/936e0177-f3f1-42ef-86f0-7ce3137fd963)
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/32550f38-daea-4b3e-9e37-6a9b82e9c67b)
 
+Area comparison of 2-input AND gate of different drive strength/width (we can see higher width cell,has more area):
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/7131b474-29fb-4875-8deb-3fe7810d2804)
+
+
 
 
 
