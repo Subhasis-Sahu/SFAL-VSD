@@ -154,6 +154,9 @@ Synthesis of good_mux.v:
 Synthesized netlist screenshot:
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a98b3254-ac42-45df-acdd-d5983b542046)
 
+## Day 2 - Timing libs, hierarchical vs flat synthesis and efficient flop coding styles:
+
+
 
 
 
