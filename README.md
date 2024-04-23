@@ -156,6 +156,27 @@ Synthesized netlist screenshot:
 
 ## Day 2 - Timing libs, hierarchical vs flat synthesis and efficient flop coding styles:
 
+Understanding Timing Libs:
+
+    Logic Library is .lib file and is also called as Liberty Timing File.
+    The parameters related to logical views like area, pin direction, max transition, rise and fall capacitances, fanout load are mentioned in this library file.
+    Timing information like cell delay, output transition time for all cells,Setup and hold times for all the flops are part of timing libs.
+    Functionality information of Standard cells, IO’s and Macros are part of this library.
+    Power information like leakage power, internal power are present in .lib.
+    A  .lib(.db)  corresponds  to  a  single  corner  Process  Voltage Temperature (PVT).
+
+.lib screenshot:
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/1d2dd651-0339-42eb-bf32-13320925cb15)
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/feb261fc-c64f-4936-a079-bba15eef28c9)
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/936e0177-f3f1-42ef-86f0-7ce3137fd963)
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/32550f38-daea-4b3e-9e37-6a9b82e9c67b)
+
+
+
+
+
+
+
 
 
 
