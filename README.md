@@ -104,10 +104,12 @@ gtkwave screenshot:
 
 Logic Synthesis:
     
-    Synthesis is a phase in ASIC design flow. In this phase the hardware description (RTL) is converted to a gate level netlist. This process is performed by a synthesis tool that takes a standard cell library, constraints and the RTL code and produces a gate-level netlist.
-    
-    Synthesis tools are running different implementations to provide best gate level netlist that meets the constraints. It takes into account power, speed, size and therefore the results can vary much from each other. To verify whether the synthesis tool has correctly generated the gate-level netlist,a verification should be done.
+    Synthesis is a phase in ASIC design flow. In this phase the hardware description (RTL) is converted to a gate level netlist. This process is performed by a synthesis tool that takes a standard cell library, 
+    constraints and the RTL code and produces a gate-level netlist. 
+    Synthesis tools run different implementations to provide best gate level netlist that meets the constraints. It takes into account power, speed, size and therefore the results can vary much from each other.      To verify whether the synthesis tool has correctly generated the gate-level netlist,a verification should be done.
+    For this lab,we are using Yosys tool as the Synthesis tool.
 
+    
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/1101ed1a-e7bc-40ff-8ac8-1b890e52a7a7)
 
 For the verification of generated netlist,same testbench can be used as primary inputs and outputs are same in both RTL as well as netlist.
