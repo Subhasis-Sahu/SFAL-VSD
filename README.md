@@ -116,6 +116,48 @@ For the verification of generated netlist,same testbench can be used as primary 
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/38df0737-ec31-467f-9df9-e15e7589f8d4)
 
+What is .lib?
+
+    In VLSI (Very Large Scale Integration) design, a liberty file, also known as a .lib file, is a standard format file used to represent the timing and power characteristics of digital logic cells. Liberty          files contain information about cell timing, power consumption, input-output capacitances, and other parameters necessary for performing timing analysis and power estimation during the physical design 
+    process.
+    
+    These files are essential for tools like synthesis, place and route, and static timing analysis (STA) to accurately model and optimize the behavior of the designed integrated circuits. Liberty files are 
+    usually provided by semiconductor foundries for their standard cell libraries, and designers can also create custom liberty files for their specific designs or libraries.
+    
+    Liberty files typically contain information such as cell timing arcs, which describe the input-output delay behavior of cells under different input conditions (e.g., rise and fall delays), as well as power- 
+    related information such as leakage power and dynamic power consumption.
+    
+    Overall, liberty files play a crucial role in the implementation and optimization of digital designs in VLSI, ensuring that the final integrated circuits meet performance and power requirements.
+
+    Different flavor of standard cells with respect to threshold voltage,width of transistors etc. are provided to synthesis and implementation tools to meet our performance expectations without timing (setup &      hold) violations.The flavor of cells to be used are controlled by the "Design Constraints or SDC Constraints" provided by the designer.
+
+    Faster cells have wider transistors->less delay->may cause possible hold violation->comes at cost of area and power.
+    Slower cells have narrow transistors->more delay->may cause possible setup violation
+
+Illustration of Synthesis with specific library components with an example:
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/7937d273-f7a1-4896-9c63-4aeca1a51588)
+
+Synthesis of good_mux.v:
+
+    Commands to used in yosys tool:
+    read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib # reads target library to used in synthesis
+    read_verilog good_mux.v # read design RTL file
+    synth -top good_mux # specify top module of design to be synthesized
+    abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib # uses target library std.cells to synthesize the design which has been read
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/bb797dda-e672-4ef7-a1ec-dab9d61a3756)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/f6ec3bff-3cad-41fd-a78e-772963e465c6)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/5bdfabd5-5451-4c07-b5bb-2e2722c499f0)
+
+Synthesized netlist screenshot:
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a98b3254-ac42-45df-acdd-d5983b542046)
+
+
+
+
+
 
 
 
