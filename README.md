@@ -203,6 +203,9 @@ sub_module1 synthesis result:
 multiple_modules netlist after flattening:
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/465ace2e-95ec-49bc-a901-f1a1a832df17)
 
+Why Flops are used?
+
+
 
     
 
