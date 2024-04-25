@@ -198,7 +198,7 @@ Here,we can see the u1 and u2 instances of sub_module1 and sub_module2 respectiv
 sub_module1 synthesis result:
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/d0ccd481-12aa-446d-9006-9a7550e6727f)
 
-    **flatten** command can be used to flatten the design to the top level hierarchy,i.e,hierarchy is removed.
+**flatten** command can be used to flatten the design to the top level hierarchy,i.e,hierarchy is removed.
     
 
 
