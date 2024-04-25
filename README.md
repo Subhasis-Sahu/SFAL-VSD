@@ -167,8 +167,14 @@ Understanding Timing Libs:
 
 .lib screenshot:
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/1d2dd651-0339-42eb-bf32-13320925cb15)
+
+Leakage power Info:
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/feb261fc-c64f-4936-a079-bba15eef28c9)
+
+Power and Ground pin Info:
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/936e0177-f3f1-42ef-86f0-7ce3137fd963)
+
+Timing(Cell rise/fall delay etc.) in lookup table format:
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/32550f38-daea-4b3e-9e37-6a9b82e9c67b)
 
 Area comparison of 2-input AND gate of different drive strength/width (we can see higher width cell,has more area):
