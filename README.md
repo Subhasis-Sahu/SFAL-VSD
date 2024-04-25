@@ -140,7 +140,7 @@ Illustration of Synthesis with specific library components with an example:
 Synthesis of good_mux.v:
 
     Commands to used in yosys tool:
-    read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib # reads target library to used in synthesis
+    read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib # reads target library to be used in synthesis
     read_verilog good_mux.v # read design RTL file
     synth -top good_mux # specify top module of design to be synthesized
     abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib # uses target library std.cells to synthesize the design which has been read
@@ -180,6 +180,29 @@ Timing(Cell rise/fall delay etc.) in lookup table format:
 Area comparison of 2-input AND gate of different drive strength/width (we can see higher width cell,has more area):
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/7131b474-29fb-4875-8deb-3fe7810d2804)
 
+Hierarchical vs Flat Synthesis:
+
+    A Hierarchical Design contains of multiple sub-modules,instantiated in the 'top' module.
+    Hierachical design approach is taken for large designs, to gain the advantage of divide and conquer approach.
+    This leads to better utilization of tool resources for proper optimzation of smaller designs,as a larger design is difficult for a tool to optimize efficiently.
+    It helps in better utilization of compute resources utilized during design process,and also leads to faster runtime and debugging operations.
+
+    A flat design approach is chosen when the design is sufficiently small enough for the tool to optimize efficiently in a reasonable amount of time.
+    For small and simple ASICs flat approach is preferable while hierarchical approach is preferable for larger,complex ASICs.
+
+Here,we can see the u1 and u2 instances of sub_module1 and sub_module2 respectively are present in RTL and in netlist representation as well(Hierarchy is preserved):
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/99c5681b-bbbd-4409-96a0-6e961095cdb2)
+
+    Sub-modules can be synthesized separately by using the command: synth -top <sub_module_name>
+
+sub_module1 synthesis result:
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/d0ccd481-12aa-446d-9006-9a7550e6727f)
+
+    **flatten** command can be used to flatten the design to the top level hierarchy,i.e,hierarchy is removed.
+    
+
+
+    
 
 
 
