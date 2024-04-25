@@ -199,6 +199,11 @@ sub_module1 synthesis result:
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/d0ccd481-12aa-446d-9006-9a7550e6727f)
 
 **flatten** command can be used to flatten the design to the top level hierarchy,i.e,hierarchy is removed.
+
+multiple_modules netlist after flattening:
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/465ace2e-95ec-49bc-a901-f1a1a832df17)
+
+
     
 
 
