@@ -195,8 +195,8 @@ Here,we can see the u1 and u2 instances of sub_module1 and sub_module2 respectiv
 
     Sub-modules can be synthesized separately by using the command: synth -top <sub_module_name>
 
-sub_module1 synthesis result:
-![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/d0ccd481-12aa-446d-9006-9a7550e6727f)
+sub_module2 synthesis result:
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/144a9525-c34b-4071-9947-ac92e3c3b1bf)
 
 **flatten** command can be used to flatten the design to the top level hierarchy,i.e,hierarchy is removed.
 
