@@ -209,7 +209,7 @@ Glitches: Glitches are unwanted, temporary spikes or pulses that can occur in di
 They arise when multiple paths in a combinational circuit converge on a single node, and the signals along those paths have different propagation delays.
 
 So,Flip-Flops can be used to restrict glitch propagation as:
-* Flip-flops are edge triggered circuits,so the change on edge of the clock signal,so even if input of flops are glitchy,output remains stable.
+* Flip-flops are edge triggered circuits,so the output changes on edge of the clock signal,so even if input of flops are glitchy,output remains stable.
 * Combinational circuits driven by the flops,will receive stable inputs,hence their glitches will eventually settle down.
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/65789631-376f-4406-9c21-6b8f52663acf)
 
