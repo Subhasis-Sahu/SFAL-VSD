@@ -213,6 +213,13 @@ So,Flip-Flops can be used to restrict glitch propagation as:
 * Combinational circuits driven by the flops,will receive stable inputs,hence their glitches will eventually settle down.
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/65789631-376f-4406-9c21-6b8f52663acf)
 
+The value of the flop must be in a known state all the time,for this signals like reset or set are used to control the initial state . set and reset can be synchronous or asynchronous.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/940787d4-3a4e-470b-b7ab-fa2e112b57b5)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/525ee801-6999-4df2-aee8-575b475b250f)
+
+
 
     
 
