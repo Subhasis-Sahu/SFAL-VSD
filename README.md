@@ -219,6 +219,46 @@ The value of the flop must be in a known state all the time,for this signals lik
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/525ee801-6999-4df2-aee8-575b475b250f)
 
+RTL code for different styles of DFFs:
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/ad445ebe-7625-4fe1-8a99-cd1f250be2d9)
+
+HDL Simulation of DFF with asynchronous reset.Here,we can observe as soon as async_reset is asserted,DFF output q is reset to '0' logic state:
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/cc665588-f9b6-4fc1-aeae-2f145fd2ba68)
+
+dff_asyncres_syncres waveform:
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a74513c9-23a3-40d9-ae0c-d51d143426f2)
+
+To Synthesize DFFs,following commands are used in yosys tool:
+
+    read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+    read_verilog dff_asyncres.v
+    synth -top dff_asyncres
+    dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+    abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+    show
+
+Synthesis without dfflibmap command(DFF inferred in the form of yosys internal generic cells):
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/c571db4d-7823-47e1-8406-3a979123136e)
+
+Synthesis with dfflibmap command.Here,we can see the synthesis tool has now correctly mapped the design to the proper dff standard cell present as part of the library.
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/9f6d09ea-cf5f-4a50-bbf1-cdbcabf1cd7d)
+
+Note:
+
+    abc -liberty <.lib file path> : This command is used for for technology mapping of yosys’s internal gate library to a target architecture.
+    synth -top <module_name> : This command runs the yosys synthesis script on the mentioned module name of our design
+    dfflibmap -liberty <.lib file path> : This command maps internal flipflop cells to the flipflop cells in the technology library specified in the given liberty file.
+
+## Day 3 - Combinational and sequential optmizations:
+
+
+
+
+
+
+
+
+
 
 
     
