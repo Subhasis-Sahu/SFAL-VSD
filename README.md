@@ -256,7 +256,7 @@ Combinational Optimizations:
 Synthesis of multiply-by-9:
 
 * y[3:0]=2*a[2:0] -> realized by appending 1'b0 to a[2:0]
-* y=9*a can be considered as y=8*a + a ->append 3'b0 to a and then add a to get the value of y
+* y=9*a can be considered as y=8*a + a -> append 3'b0 to a and then add a to get the value of y -> y = a000 + a -> y={a,a}
 * All of the above can be achieved just by wiring.
 
 As we can see in below screenshot,no cell is getting mapped to the design and design is implemented by just using wires:
