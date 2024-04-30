@@ -31,6 +31,8 @@
   Open gtkwave tool by typing gtkwave in terminal:
   ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/963ed335-5e2a-48d7-9319-349895f5fe91)
 
+</details>
+
 <details>
 
 <summary>Day 1 - Introduction to Verilog RTL Design and Synthesis</summary>
