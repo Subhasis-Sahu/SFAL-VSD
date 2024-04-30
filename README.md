@@ -317,6 +317,7 @@ In the DFF with grounded D input and async set,the same condition cannot be appl
 
 Retiming:
 Retiming is a technique used to optimize sequential circuits by repositioning the registers (flip-flops) in the circuit without changing the combinational logic.
+
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/96bc946c-4ed9-4e7e-bca1-62be656e3d7e)
 
 State Optimization:
@@ -325,6 +326,139 @@ By removing equivalent states, the number of flip-flops can be reduced, leading 
 Two states are considered equivalent if, for all possible input sequences, the machine produces the same output regardless of the starting state. 
 This optimization technique involves comparing states to automate the process efficiently, ensuring that the machine behaves identically regardless of the initial state. 
 State optimization is crucial as the number of states in a system increases, making it challenging to distinguish between necessary and redundant states.
+
+dff_cons1.v synthesis:
+Here,we can see value of q does not change as soon as reset=0,but q takes the value of 1'b0 at next clock edge,hence here no sequential logic optimization will occur and DFF will be inferred.
+
+    module dff_const1(input clk, input reset, output reg q);
+    always @(posedge clk, posedge reset)
+    begin
+    	if(reset)
+    		q <= 1'b0;
+    	else
+    		q <= 1'b1;
+    end
+    
+    endmodule
+    
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/eb13bd68-6736-4f27-ba0a-a958f45480ed)
+
+Synthesis result of dff_const1.v
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/e8d658fe-03f3-43aa-8ff1-c87f374a17eb)
+
+dff_const2.v synthesis:
+
+    module dff_const2(input clk, input reset, output reg q);
+    always @(posedge clk, posedge reset)
+    begin
+    	if(reset)
+    		q <= 1'b1;
+    	else
+    		q <= 1'b1;
+    end
+    
+    endmodule
+
+Here,we can observe the value of q=1'b1 independent of reset input,so upon synthesis,so a DFF will not be inferred upon synthesis.
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/9fc437f2-8db3-4a4c-8c9c-8bb5fd0ae916)
+
+Synthesis result of dff_const2.v
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/10dbe5d2-5e27-4b3f-9c60-1f71290585d3)
+
+dff_const3.v synthesis:
+
+    module dff_const3(input clk, input reset, output reg q);
+    reg q1;
+    
+    always @(posedge clk, posedge reset)
+    begin
+    	if(reset)
+    	begin
+    		q <= 1'b1;
+    		q1 <= 1'b0;
+    	end
+    	else
+    	begin
+    		q1 <= 1'b1;
+    		q <= q1;
+    	end
+    end
+    
+    endmodule
+
+Here,Two DFFs will be inferred with a set flip-flop with q output and reset flip-flop with q1 output and both flip-flops will be connected back to back.
+Here,the logic will be retained as the value of q depends upon the state of q1,as seen in the waveform.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/f0486019-3b7c-41dd-9b57-88d40d283267)
+
+Synthesis result of dff_const3.v
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/aedb045c-8db7-479d-b5cc-cb93b2fd588d)
+
+dff_const4.v synthesis:
+    
+    module dff_const4(input clk, input reset, output reg q);
+    reg q1;
+    
+    always @(posedge clk, posedge reset)
+    begin
+    	if(reset)
+    	begin
+    		q <= 1'b1;
+    		q1 <= 1'b1;
+    	end
+    	else
+    	begin
+    		q1 <= 1'b1;
+    		q <= q1;
+    	end
+    end
+    
+    endmodule
+
+Here,the value of q1 and q are independent of reset input,hence no DFF will be inferred upon synthesis.
+
+Synthesis result of dff_const4.v:
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/20d9eaef-d37b-4756-9c98-2893597b6745)
+
+dff_const5.v synthesis:
+
+    module dff_const5(input clk, input reset, output reg q);
+    reg q1;
+    
+    always @(posedge clk, posedge reset)
+    begin
+    	if(reset)
+    	begin
+    		q <= 1'b0;
+    		q1 <= 1'b0;
+    	end
+    	else
+    	begin
+    		q1 <= 1'b1;
+    		q <= q1;
+    	end
+    end
+    
+    endmodule
+
+Here,after reset is deasserted,q1 is set to 1'b1 at next rising edge of clock,and we see q samples value of q1=1'b1 at the further clk edge,hence q depends upon value of q1,so even if q1 value remains constant,two DFFs will be inferred,as seen in the waveform.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/006c9cf0-d41e-47b5-8f6a-a3224afd5b7e)
+
+Synthesis result of dff_const5.v:
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/cb0506c4-aca6-46c7-a838-2aa4b0b3b6fc)
+
+Sequential Optimization for Unused Outputs:
+
+
+
+
+
+
+
 
 
 
