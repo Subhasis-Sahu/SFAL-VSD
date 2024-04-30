@@ -156,7 +156,9 @@ Synthesis of good_mux.v:
 Synthesized netlist screenshot:
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a98b3254-ac42-45df-acdd-d5983b542046)
 
-## Day 2 - Timing libs, hierarchical vs flat synthesis and efficient flop coding styles:
+<details>
+
+<summary>Day 2 - Timing libs, hierarchical vs flat synthesis and efficient flop coding styles</summary>
 
 Understanding Timing Libs:
 
@@ -251,7 +253,9 @@ Note:
     synth -top <module_name> : This command runs the yosys synthesis script on the mentioned module name of our design
     dfflibmap -liberty <.lib file path> : This command maps internal flipflop cells to the flipflop cells in the technology library specified in the given liberty file.
 
-## Day 3 - Combinational and sequential optmizations
+<details>
+
+<summary>Day 3 - Combinational and sequential optmizations</summary>
 
 Combinational Optimizations:
 
@@ -510,7 +514,9 @@ Synthesis result for counter_opt2.v:
 As we can see below in following screenshot and above synthesis results,we got the expected logic implementation for the value of primary output q:
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/4f8c4042-415d-42f3-9d56-044a52274793)
 
-## Day 4 - GLS, blocking vs non-blocking and Synthesis-Simulation mismatch
+<details>
+
+<summary>Day 4 - GLS, blocking vs non-blocking and Synthesis-Simulation mismatch</summary>
 
 Gate-level simulation is a critical process in digital design, verification, and validation, especially for complex digital systems in modern technology nodes. 
 It involves modeling digital circuits at the gate level to understand their behavior accurately. 
