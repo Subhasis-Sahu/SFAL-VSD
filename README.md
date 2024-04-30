@@ -302,6 +302,9 @@ Synthesis of multiple_module_opt.v:
 Here,we can see all unused submodules are not part of final netlist implementation,after optimization passes:
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/edd9e65a-7334-4210-b133-5d91b8708d8c)
 
+Sequential Logic Optimization:
+
+
 
 
 
