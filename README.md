@@ -536,6 +536,7 @@ Synthesis-Simulation mismatch occurs due to following reasons:
 * Non-standard verilog coding
 
 1) Missing Sensitivity List:
+   
    Simulator works when change in signals (activity) occurs,and output gets updated.
    If the sensitivity list of always block does not contain all input signals,it will cause mismatches between synthesis and simulation.
 
@@ -543,7 +544,33 @@ Synthesis-Simulation mismatch occurs due to following reasons:
    As seen in the screenshot below, in the left column,always block is evaluated only when sel is changing. So output y is not reflecting changes in input i1 and i0 when sel is not changing.
    Rather it acts like a latch.
    The code on the right side represents the correct design coding for mux. In this case always is evaluated for any signal changes.
+   
    ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/06a66730-57cc-49f6-ae12-a688a4842caf)
+
+2) Blocking vs non-blocking assignments:
+
+   Blocking assignment in SystemVerilog and Verilog refers to an assignment statement where the execution of the next statement is blocked until the current assignment is completed.
+   This means that the assignments are executed in series order, one after the other, within a procedural block. In SystemVerilog, blocking assignment uses the "=" operator, while in Verilog, it uses the "<="       operator.
+   This type of assignment is commonly used for modeling combinational logic, defining functions, or implementing testbench algorithms.
+   It is essential to note that blocking assignment does not prevent the execution of statements running in parallel blocks
+
+   Non-blocking assignment in Verilog allows statements to be scheduled without blocking the execution of subsequent statements. It is denoted by the symbol <= and is particularly useful for describing hardware     systems, especially in synthesis.
+   Unlike blocking assignments, non-blocking assignments defer the assignment until all right-hand sides have been evaluated, ensuring simultaneous or parallel statement execution.
+   This feature is crucial for sequential logic in Verilog, as it reflects the behavior of multi-stage sequential logic more accurately than blocking assignments.
+   In summary, non-blocking assignments are essential for sequential circuits, ensuring that values are updated simultaneously at the end of a time slot, making them ideal for synchronous designs in Verilog.
+
+   For ex:
+   As seen in the scrennshot below,the code in left column is correct to achieve our aim of inferrinf two flip-flops but in code in right column,as q is getting directly assigned to d , hence only one flop is 
+   inferred.Hence,it it recommended to always use non-blocking statement in always block for sequential logic inference.
+   
+   ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/88dc058a-7886-431c-8e71-a9bfc5abc15f)
+
+   For ex:
+   In left column code,y will get old value of q0 during evaluation,which is mimicking the behavour of a flop.
+   To get latest value of q0,we can interchange the statements in always block,as seen in right column code.
+   Synthesis will produce the same logic implemnetation for both the codes.
+   This will lead to synthesis-simulation mismatch.
+   ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/9cf5d027-5e3f-4477-a644-000ae174e870)
 
 
 
