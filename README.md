@@ -1,5 +1,5 @@
 # SFAL_VSD
-## Day 0 - Tools Installation:
+## Day 0 - Tools Installation
 
     Commands to install Yosys in Linux:
     $ git clone https://github.com/YosysHQ/yosys.git
@@ -29,7 +29,7 @@
   Open gtkwave tool by typing gtkwave in terminal:
   ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/963ed335-5e2a-48d7-9319-349895f5fe91)
 
-  ## Day 1 - Introduction to Verilog RTL Design and Synthesis:
+  ## Day 1 - Introduction to Verilog RTL Design and Synthesis
 
       Design: Design is the actual verilog code or set of verilog codes which has the intended functionality to meet the required specifications.
       Simulator: It is the tool which is used for checking if the given design meet its intended functional specifications.
@@ -249,7 +249,7 @@ Note:
     synth -top <module_name> : This command runs the yosys synthesis script on the mentioned module name of our design
     dfflibmap -liberty <.lib file path> : This command maps internal flipflop cells to the flipflop cells in the technology library specified in the given liberty file.
 
-## Day 3 - Combinational and sequential optmizations:
+## Day 3 - Combinational and sequential optmizations
 
 Combinational Optimizations:
 
@@ -267,7 +267,9 @@ As we can see in below screenshot,no cell is getting mapped to the design and de
 
 Constant Propagation:
 
-    Constant propagation in VLSI design refers to the optimization technique used by synthesis tools to minimize hardware implementation by replacing variables with constant values throughout the hardware design. This process involves analyzing the flow of constants through the design and replacing variables with known constant values, which can enhance the efficiency of the hardware implementation. Constant propagation is a crucial aspect of optimizing hardware designs to improve performance and reduce unnecessary operations.
+* Constant propagation in VLSI design refers to the optimization technique used by synthesis tools to minimize hardware implementation by replacing variables with constant values throughout the hardware design.
+* This process involves analyzing the flow of constants through the design and replacing variables with known constant values, which can enhance the efficiency of the hardware implementation. 
+* Constant propagation is a crucial aspect of optimizing hardware designs to improve performance and reduce unnecessary operations.
 
 For example,in the below logic diagram the constant value of logic '0' at input A leads to the inference of an inverter after logic optimization has occurred:
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/69d40684-c2ed-4bca-86ab-7cdfca47c172)
@@ -452,6 +454,70 @@ Synthesis result of dff_const5.v:
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/cb0506c4-aca6-46c7-a838-2aa4b0b3b6fc)
 
 Sequential Optimization for Unused Outputs:
+
+counter_opt synthesis:
+
+Here,we can see q requires only LSB bit of 3-bit count.count[2] and count[2] remain unused.
+As it is a 3-bit upcounter,3 flip-flops requirement is there,but due to unused outputs,optimization will be applied and only a single flip-flop will be inferred after synthesis.
+Any Logic which  is not resulting in any relationship with any of the primary outputs,will be optimized away as they are unused logic in the design.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/44cbfc91-ea78-43e0-96c3-ec0749513fb9)
+
+    module counter_opt (input clk , input reset , output q);
+    reg [2:0] count;
+    assign q = count[0];
+    
+    always @(posedge clk ,posedge reset)
+    begin
+    	if(reset)
+    		count <= 3'b000;
+    	else
+    		count <= count + 1;
+    end
+    
+    endmodule
+
+Synthesis results of counter_opt:
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/11997131-c154-4c92-b4aa-2f0f2841e559)
+
+Synthesis of counter_opt2.v:
+
+    module counter_opt (input clk , input reset , output q);
+    reg [2:0] count;
+    assign q = (count[2:0] == 3'b100);
+    
+    always @(posedge clk ,posedge reset)
+    begin
+    	if(reset)
+    		count <= 3'b000;
+    	else
+    		count <= count + 1;
+    end
+    
+    endmodule
+
+Here,3 flops must be inferred as primary output q has dependence on all the 3 bits of 3-bit upcounter count.
+
+Logic expression we should get for q:
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/da715a5c-1031-4491-9d0d-c492b01709a5)
+
+Synthesis result for counter_opt2.v:
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/9d2e2a04-62d6-413a-b313-c9480e56e37f)
+
+As we can see below in following screenshot and above synthesis results,we got the expected logic implementation for the value of primary output q:
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/4f8c4042-415d-42f3-9d56-044a52274793)
+
+## Day 4 - GLS, blocking vs non-blocking and Synthesis-Simulation mismatch
+
+
+
+
+
+
+
+
+
 
 
 
