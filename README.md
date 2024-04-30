@@ -510,6 +510,40 @@ As we can see below in following screenshot and above synthesis results,we got t
 
 ## Day 4 - GLS, blocking vs non-blocking and Synthesis-Simulation mismatch
 
+Gate-level simulation is a critical process in digital design, verification, and validation, especially for complex digital systems in modern technology nodes. 
+It involves modeling digital circuits at the gate level to understand their behavior accurately. 
+Gate-level simulation occurs after synthesis, providing a detailed netlist representation of the circuit with functional and timing characteristics.
+This simulation method is essential for dynamic behavior verification, complex timing checks, power efficiency concerns, and design-for-test features integrated at the gate level,ensuring the accuracy of scan chain insertions in DFT. 
+Gate-level simulation is crucial for gaining confidence in design and verification, offering a more comprehensive analysis than static methods.
+It plays a pivotal role in validating, verifying, and optimizing digital circuits, making it a cornerstone of digital design.
+
+In Gate level Simulation(GLS):
+Testbench used for RTL verification is used for netlist simulation,as they are logically same.
+
+Why GLS?
+
+* Verify the correctness of the design after synthesis
+* Ensure the timing of the design is met which is done with delay annotation (timing aware)
+
+GLS Flow using iverilog:
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/d5e2fe03-8920-4934-98c9-ecedee9a53ca)
+
+
+Synthesis-Simulation mismatch occurs due to following reasons:
+
+* Missing sensitivity list
+* Blocking vs non-blocking assignments
+* Non-standard verilog coding
+
+1) Missing Sensitivity List:
+   Simulator works when change in signals (activity) occurs,and output gets updated.
+   If the sensitivity list of always block does not contain all input signals,it will cause mismatches between synthesis and simulation.
+
+   For ex:
+   As seen in the screenshot below, in the left column,always block is evaluated only when sel is changing. So output y is not reflecting changes in input i1 and i0 when sel is not changing.
+   Rather it acts like a latch.
+   The code on the right side represents the correct design coding for mux. In this case always is evaluated for any signal changes.
+   ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/06a66730-57cc-49f6-ae12-a688a4842caf)
 
 
 
