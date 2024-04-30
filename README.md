@@ -1,5 +1,7 @@
 # SFAL_VSD
-## Day 0 - Tools Installation
+<details>
+
+<summary>Day 0 - Tools Installation</summary>
 
     Commands to install Yosys in Linux:
     $ git clone https://github.com/YosysHQ/yosys.git
