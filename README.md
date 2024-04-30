@@ -260,9 +260,28 @@ Synthesis of multiply-by-9:
 * All of the above can be achieved just by wiring.
 
 As we can see in below screenshot,no cell is getting mapped to the design and design is implemented by just using wires:
+
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/2eeefb16-ce31-4785-bb2e-1a90a455589c)
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/ab980102-ce88-4f03-be9a-c01e47889ce8)
+
+Constant Propagation:
+
+    Constant propagation in VLSI design refers to the optimization technique used by synthesis tools to minimize hardware implementation by replacing variables with constant values throughout the hardware design. This process involves analyzing the flow of constants through the design and replacing variables with known constant values, which can enhance the efficiency of the hardware implementation. Constant propagation is a crucial aspect of optimizing hardware designs to improve performance and reduce unnecessary operations.
+
+For example,in the below logic diagram the constant value of logic '0' at input A leads to the inference of an inverter after logic optimization has occurred:
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/69d40684-c2ed-4bca-86ab-7cdfca47c172)
+
+So,in the above example,due to constant propagation,the transistor count is reduced from 6 to 2.
+
+Boolean Logic Optimization:
+
+assign y=a?(b?c:(c?a:0)):(!c)
+y=a'c'+a[bc+b'ac]=a'c'+abc+ab'c = a'c'+ac[b+b'] =a'c'+ac= a xor c
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/1b7801c7-c8b7-4322-a17e-3aeeb8fcf9d3)
+
+
 
 
 
