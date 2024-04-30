@@ -31,7 +31,9 @@
   Open gtkwave tool by typing gtkwave in terminal:
   ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/963ed335-5e2a-48d7-9319-349895f5fe91)
 
-  ## Day 1 - Introduction to Verilog RTL Design and Synthesis
+<details>
+
+<summary>Day 1 - Introduction to Verilog RTL Design and Synthesis</summary>
 
       Design: Design is the actual verilog code or set of verilog codes which has the intended functionality to meet the required specifications.
       Simulator: It is the tool which is used for checking if the given design meet its intended functional specifications.
@@ -156,6 +158,8 @@ Synthesis of good_mux.v:
 Synthesized netlist screenshot:
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a98b3254-ac42-45df-acdd-d5983b542046)
 
+</details>
+
 <details>
 
 <summary>Day 2 - Timing libs, hierarchical vs flat synthesis and efficient flop coding styles</summary>
@@ -252,6 +256,8 @@ Note:
     abc -liberty <.lib file path> : This command is used for for technology mapping of yosys’s internal gate library to a target architecture.
     synth -top <module_name> : This command runs the yosys synthesis script on the mentioned module name of our design
     dfflibmap -liberty <.lib file path> : This command maps internal flipflop cells to the flipflop cells in the technology library specified in the given liberty file.
+
+</details>
 
 <details>
 
@@ -513,6 +519,8 @@ Synthesis result for counter_opt2.v:
 
 As we can see below in following screenshot and above synthesis results,we got the expected logic implementation for the value of primary output q:
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/4f8c4042-415d-42f3-9d56-044a52274793)
+
+</details>
 
 <details>
 
