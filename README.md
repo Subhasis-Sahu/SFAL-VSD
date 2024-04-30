@@ -281,6 +281,31 @@ y=a'c'+a[bc+b'ac]=a'c'+abc+ab'c = a'c'+ac[b+b'] =a'c'+ac= a xor c
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/1b7801c7-c8b7-4322-a17e-3aeeb8fcf9d3)
 
+    opt_clean -purge 
+    This pass identifies wires and cells that are unused and removes them. Other passes often remove cells but leave the wires in the design or reconnect the wires but leave the old cells in the design. This    
+    pass can be used to clean up after the passes that do the actual work.
+    This pass only operates on completely selected modules without processes.
+    -purge - also remove internal nets if they have a public name
+
+opt_check.v synthesis:
+Here,we can see the mux logic through constant propagation is optimized to AND logic implementation:
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/3f22e296-ed92-482f-ad0f-449115fa0ffc)
+
+Same outcome can be observed in opt_check2.v synthesis:
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/afe8f07b-2dc0-42fc-9339-5c5cf2417940)
+
+For synthesis of opt_check3,const propagation and boolean logic optimaztion leads to AND logic implementation instead of mux implementation:
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/f12a3d16-2103-488e-a244-073fa4dfed40)
+
+Synthesis of multiple_module_opt.v:
+Here,we can see all unused submodules are not part of final netlist implementation,after optimization passes:
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/edd9e65a-7334-4210-b133-5d91b8708d8c)
+
+
+
+
+
 
 
 
