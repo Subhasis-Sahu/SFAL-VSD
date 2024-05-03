@@ -590,6 +590,35 @@ Synthesis-Simulation mismatch occurs due to following reasons:
    This will lead to synthesis-simulation mismatch.
    ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/9cf5d027-5e3f-4477-a644-000ae174e870)
 
+Synthesis & GLS of ternary_operator_mux:
+
+        module ternary_operator_mux (input i0 , input i1 , input sel , output y);
+    	assign y = sel?i1:i0;
+    	endmodule
+
+Commands to run GLS after synthesis using iverilog:
+
+    iverilog ../my_lib/verilog_model/primitives.v ../my_lib/verilog_model/sky130_fd_sc_hd.v ternary_operator_mux_net.v tb_ternary_operator_mux.v #alongwith RTL and testbench files,behavioral models(.v) for 
+                std.cell library is also being read in iverilog for GLS
+    ./a.out 
+    gtkwave tb_ternary_operator_mux.vcd
+
+As we can see in the below results,synthesis of ternary_operator_mux.v infers a mux,which can also be confirmed from the gate-level simulation of the same design.
+
+Synthesis results of ternary_operator_mux:
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/2b1be9ab-d6f2-4472-bb05-df2a41c0001d)
+
+GLS waveform for ternary_operator_mux:
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/185b7a60-fed4-424b-9aeb-a4ff3c11fe59)
+
+
+
+
+
+   
+
 
 
 
