@@ -641,6 +641,37 @@ As we can see in below screenshot,
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/8271352c-942d-4189-9c5a-0b94193dc9aa)
 
+Synthesis of blocking_caveat (**Synthesis-Simulation Mismatch due to improper usage of blocking statements**) :
+
+    module blocking_caveat (input a , input b , input  c, output reg d); 
+    reg x;
+    always @ (*)
+    begin
+    	d = x & c;
+    	x = a | b;
+    end
+    endmodule
+
+Synthesis results of blocking_caveat :
+
+As we can see logic has been inferred by tool as we have predicted in below screenshot:
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/b4840cbd-be90-41f8-91ab-d43ac48c5941)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/62e7c368-23bf-407c-9f4d-038fde84b959)
+
+As we can observe in the following screenshot,
+* In RTL Simulation (bottom waveform) , at 1100ns the value of d is not getting computed with latest value of x,rather it is computed with previous value of x.
+* In GLS (top waveform), at 1100ns the value of d is computed with latest value of all signals,hence we can conclude synthesized netlist is behaving according to our prediction.
+  Hence we observe Synthesis-Simulation Mismatch for this design due to improper usage of blocking statements.
+   
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/f3b7d1df-79ee-43d0-b123-7681e4700918)
+
+</details>
+
+<details>
+
+<summary>Day 5 - Design for Test (DFT)</summary>
 
   
 
