@@ -590,6 +590,9 @@ Synthesis-Simulation mismatch occurs due to following reasons:
    This will lead to synthesis-simulation mismatch.
    ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/9cf5d027-5e3f-4477-a644-000ae174e870)
 
+   Note:
+   Use 'write_verilog <filename>' to write out netlist file in .v format after synthesis is completed.
+
 Synthesis & GLS of ternary_operator_mux:
 
         module ternary_operator_mux (input i0 , input i1 , input sel , output y);
@@ -612,6 +615,38 @@ Synthesis results of ternary_operator_mux:
 GLS waveform for ternary_operator_mux:
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/185b7a60-fed4-424b-9aeb-a4ff3c11fe59)
+
+
+Synthesis of bad_mux (**Synthesis-Simulation Mismatch due to incomplete sensitivity list for always block**) :
+
+    module bad_mux (input i0 , input i1 , input sel , output reg y);
+    always @ (sel)
+    begin
+    	if(sel)
+    		y <= i1;
+    	else 
+    		y <= i0;
+    end
+    endmodule
+
+    Note:all the input signals of bad_mux are not specified in always block sensitivity list
+
+Synthesis results of bad_mux (we can see above code has inferred a mux in synthesis):
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/1ed8fcf9-0429-4273-811e-29f574912df7)
+
+As we can see in below screenshot,
+* In RTL simulation (bottom waveform),the bad_mux design is not propagating the changes in the input signal i0 and i1 to output y whenever sel signal is static .i.e has no activity or transitions,only when sel transitions,the input signal values are being propagated to output.
+* Whereas in GLS of bad_mux (top waveform),we see that a proper mux_behaviour is being exhibited. Hence,here we can observe that Synthesis-Simulation mismatch has occurred due to incomplete sensitivity list of always block.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/8271352c-942d-4189-9c5a-0b94193dc9aa)
+
+
+  
+
+  
+
+
 
 
 
