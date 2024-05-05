@@ -776,9 +776,15 @@ There are various reasons, but 2 main reasons are noted below:
 
 Types of Scan flip-flops:
 
-1) Multiplexed : ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/2405a90b-6677-40d1-b032-67511754c6be)
+1) Multiplexed Scan cell :
+   ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/2405a90b-6677-40d1-b032-67511754c6be)
 
+2) Clocked Scan cell:
+   ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/b430e73b-1a83-44af-a525-de1eec8b28f8)
 
+3) LSSD Scan cell:
+   ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/23e036c5-3052-492a-9c27-fbaedbb27af2)
+   
 Scan chain : A scan chain is a serial interconnection of scan flip-flops within a digital circuit. It forms a shift register-like structure that enables the sequential access and manipulation of the internal states of flip-flops in the circuit for testing and debugging purposes.
 
 **Why do we use ATPG?**
