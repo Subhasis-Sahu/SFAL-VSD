@@ -740,11 +740,14 @@ give rise to oscillation for certain inputs. This makes the circuit difficult to
 verify and impossible to generate tests for by automatic programs. This is
 because test generation algorithms are only known for acyclic combinational
 circuits.
+
 • **Make flip-flops initializable.** This is easily done by supplying clear or reset
 signals that are controllable from primary inputs.
+
 • **Avoid gates with a large number of fan-in signals.** Large fan-in makes the
 inputs of the gate difficult to observe and makes the gate output difficult to
 control.
+
 • **Provide test control for difficult-to-control signals.** Signals such as those produced
 by long counters require many clock cycles to control and hence increase
 the length of the test sequence. Long test sequences are harder to generate.
