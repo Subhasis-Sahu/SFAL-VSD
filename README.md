@@ -673,6 +673,32 @@ As we can observe in the following screenshot,
 
 <summary>Day 5 - Design for Test (DFT)</summary>
 
+Introduction to Design for Test (DFT) :
+
+Design for Test (DFT) is a crucial aspect of electronic system design that focuses on incorporating testability features into the hardware and software of a product. 
+The primary goal of DFT is to ensure that the final product can be thoroughly tested, both during the manufacturing process and throughout its lifetime, to identify and address any defects or issues.
+
+Key Principles of DFT :
+* Accessibility: Designing the system in a way that allows easy access to internal components and signals for testing purposes.
+* Controllability: Ensuring that the system can be driven into specific states or conditions to facilitate comprehensive testing.
+* Observability: Enabling the observation and monitoring of internal signals and states during the testing process.
+* Testability: Incorporating features that simplify the testing process, such as built-in self-test (BIST) mechanisms or scan chains.
+  
+Benefits of Implementing DFT :
+
+* Improved Product Quality: DFT helps identify and address defects early in the design process, reducing the risk of shipping faulty products.
+* Reduced Manufacturing Costs: Effective testing during manufacturing can catch issues before they become more expensive to fix, leading to cost savings.
+* Faster Time-to-Market: By incorporating DFT principles, the testing process can be streamlined, allowing for quicker product development and deployment.
+* Easier Maintenance and Troubleshooting: DFT features can aid in the diagnosis and repair of issues during the product's lifetime, improving overall reliability and serviceability.
+
+DFT Techniques and Methodologies :
+
+Some common DFT techniques and methodologies include:
+* Scan-based Testing: Inserting scan chains to allow for the controllability and observability of internal logic.
+* Built-in Self-Test (BIST): Incorporating self-testing capabilities directly into the hardware or software.
+* Boundary Scan (IEEE 1149.1): Using a standard interface to access and control the pins of integrated circuits for testing purposes.
+* Design for Testability (DFT) Automation: Leveraging EDA tools to automate the incorporation of DFT features during the design process.
+
   
 
   
