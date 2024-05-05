@@ -827,6 +827,28 @@ Note:
   circuits.
 * The complexity of VLSI circuits, with millions of transistors on a single chip, makes manual testing impractical.
 
+**What is ATE?**
+
+* Automatic Test Equipment (ATE) is computerized machinery that automates the testing of electronic devices and systems, evaluating functionality, performance, quality, and stress tests. ATE uses test instruments to carry out these evaluations with minimal human interaction, ensuring adequate performance and safety of electronic devices. 
+* The components of an ATE system typically include hardware, software, test instruments, signal sources, and test probes or handlers. 
+* Industries use ATE extensively, including defense and aerospace, automotive, and industrial automation, to validate electronics before deployment or sale. ATE plays a crucial role in ensuring end-users receive 
+  devices that function as intended and are safe to use.
+
+**When and where the DFT design is included?**
+
+* When is it included? - At the beginning of the  design flow
+
+* Where exactly ? - during the synthesis flow
+
+Synopsys Tool used for DFT insertion is DFT Compiler:
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/d991a5cb-e264-41c4-a9b7-4fa02112551f)
+
+### Introduction to Synopsys Tools to be used for further exercises:
+
+
+
+
 
 
   
