@@ -863,11 +863,12 @@ Synopsys Tool used for DFT insertion is DFT Compiler:
    ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/498c7d6b-b780-44d7-b62d-cde1e12c2e85)
 
 2) Library compiler:
-
-The Synopsys Library Compiler is a software tool used in the design and development of ICs. It automates the process of creating and characterizing semiconductor intellectual property (IP) libraries, which 
-are collections of reusable building blocks used in IC design. These libraries contain pre-designed functional blocks such as logic gates, memory cells, and analog circuits.
-
-The Library Compiler allows designers to generate these libraries efficiently, taking into account various parameters such as process technology, voltage, temperature, and operating conditions. It also includes features for optimizing library performance, minimizing power consumption, and ensuring compatibility with industry standards.
+    
+    The Synopsys Library Compiler is a software tool used in the design and development of ICs. It automates the process of creating and characterizing semiconductor intellectual property (IP) libraries, which 
+    are collections of reusable building blocks used in IC design. These libraries contain pre-designed functional blocks such as logic gates, memory cells, and analog circuits.
+    
+    The Library Compiler allows designers to generate these libraries efficiently, taking into account various parameters such as process technology, voltage, temperature, and operating conditions. It also 
+    includes features for optimizing library performance, minimizing power consumption, and ensuring compatibility with industry standards.
 
 Commands to start Library compiler are:
    
@@ -878,8 +879,8 @@ Commands to start Library compiler are:
 
 3) ICC2 Compiler:
 
-The ICC2 Compiler, developed by Synopsys, is a tool used in the process of physical design for integrated circuits. ICC2 stands for "Integrated Circuit Compiler 2". It's primarily utilized in the backend 
-stages of the IC design flow, which involve translating a logical representation of a circuit (usually in the form of a netlist) into a physical layout that can be fabricated.
+    The ICC2 Compiler, developed by Synopsys, is a tool used in the process of physical design for integrated circuits. ICC2 stands for "Integrated Circuit Compiler 2". It's primarily utilized in the backend 
+    stages of the IC design flow, which involve translating a logical representation of a circuit (usually in the form of a netlist) into a physical layout that can be fabricated.
 
    Commands to start ICC2 compiler are:
    
