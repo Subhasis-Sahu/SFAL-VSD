@@ -721,7 +721,35 @@ Some typical defects in VLSI chips are :
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/59c799c4-4e99-4fba-8003-e685e32abb4a)
 
 
-**Observabilty**
+**Observabilty** - By observability, we mean our ability to measure the state of a logic signal. When we say that a node is observable, we mean that the value at the node can be shifted out through scan patterns                    and can be observed through scan out ports.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/35db1a01-7024-468d-a902-4f7e2995ec6a)
+
+**Fault Coverage** - Percentage of the total number of logical faults that can be tested using a given test set T.
+
+**Defect Level** - It refers to the fraction of shipped parts that are defective or the proportion of the faulty chip in which fault is not detected and has been classified as good.
+
+DFT Techniques :
+
+Ad-hoc Techniques : 
+
+The adhoc DFT relies on “good” design practices learned from experience. Some of these are:
+
+• **Avoid asynchronous logic feedbacks.** A feedback in the combinational logic can
+give rise to oscillation for certain inputs. This makes the circuit difficult to
+verify and impossible to generate tests for by automatic programs. This is
+because test generation algorithms are only known for acyclic combinational
+circuits.
+• **Make flip-flops initializable.** This is easily done by supplying clear or reset
+signals that are controllable from primary inputs.
+• **Avoid gates with a large number of fan-in signals.** Large fan-in makes the
+inputs of the gate difficult to observe and makes the gate output difficult to
+control.
+• **Provide test control for difficult-to-control signals.** Signals such as those produced
+by long counters require many clock cycles to control and hence increase
+the length of the test sequence. Long test sequences are harder to generate.
+
+
 
   
 
