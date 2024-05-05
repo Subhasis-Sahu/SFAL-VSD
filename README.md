@@ -752,6 +752,23 @@ control.
 by long counters require many clock cycles to control and hence increase
 the length of the test sequence. Long test sequences are harder to generate.
 
+Structured DFT :
+
+Structured DFT is performed by using Scan flip-flops.
+The main idea in scan design is to obtain control and observability for flip-flops.
+This is done by adding a test mode to the circuit such that when the circuit is in this mode, all flip-flops functionally form one or more shift registers. 
+The inputs and outputs of these shift registers (also known as scan registers) are made into primary inputs and primary outputs. 
+Thus, using the test mode, all flip-flops can be set to any desired states by shifting those logic states into the shift register. 
+Similarly, the states of flip-flops are observed by shifting the contents of the scan register out. All flip-flops can be set or observed in a time (in terms of clock periods) that equals the
+number of flip-flops in the longest scan register.
+
+What is the purpose of scan flops?
+
+There are various reasons, but 2 main reasons are noted below:
+
+To test stuck-at faults in the manufactured devices.
+To test the path in the manufactured devices for delay that is to test whether each path is working at a functional frequency or not
+
 
 
   
