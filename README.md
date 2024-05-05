@@ -772,7 +772,20 @@ number of flip-flops in the longest scan register.
 There are various reasons, but 2 main reasons are noted below:
 
 * To test stuck-at faults in the manufactured devices.
-* To test the path in the manufactured devices for delay that is to test whether each path is working at a functional frequency or not
+* To test the path in the manufactured devices for delay that is to test whether each path is working at a functional frequency or not.
+
+Types of Scan flip-flops:
+
+1) Multiplexed : ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/2405a90b-6677-40d1-b032-67511754c6be)
+
+
+Scan chain : A scan chain is a serial interconnection of scan flip-flops within a digital circuit. It forms a shift register-like structure that enables the sequential access and manipulation of the internal states of flip-flops in the circuit for testing and debugging purposes.
+
+**Why do we use ATPG?**
+* Automatic Test Pattern Generation (ATPG) is utilized in Very Large Scale Integration (VLSI) to ensure the correctness and quality of Integrated Circuits (ICs).
+* ATPG is essential because it automates the process of generating test patterns that can detect faults in the circuit, making it cost-effective, time-saving, and crucial for the design and testing phase of VLSI 
+  circuits.
+* The complexity of VLSI circuits, with millions of transistors on a single chip, makes manual testing impractical.
 
 
 
