@@ -699,6 +699,21 @@ Some common DFT techniques and methodologies include:
 * Boundary Scan (IEEE 1149.1): Using a standard interface to access and control the pins of integrated circuits for testing purposes.
 * Design for Testability (DFT) Automation: Leveraging EDA tools to automate the incorporation of DFT features during the design process.
 
+
+
+Basic Terminologies to be known about DFT:
+
+**Defect** - A defect in an electronic system is the unintended difference between the implemented hardware and its intended design.
+
+Some typical defects in VLSI chips are :
+1. Process Defects – missing contact windows, parasitic transistors, oxide breakdown,etc.
+2. Material Defects – bulk defects (cracks, crystal imperfections), surface impurities,etc.
+3. Age Defects – dielectric breakdown, electromigration, etc.
+4. Package Defects – contact degradation, seal leaks, etc.
+
+**Error** - A wrong output signal produced by a defective system is called an error. An error is an “effect” whose cause is some “defect”.
+**Fault** - A representation of a “defect” at the abstracted function level is called a fault.
+
   
 
   
