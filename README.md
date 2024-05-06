@@ -940,6 +940,7 @@ This is given out as a file called netlist.
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/8a08a070-6f55-40a5-be98-59920227025d)
 
 **How Cells are Selected?**
+
 We provide guidance to the Synthesizer,using **Constraints** to select the flavor of cells which will be optimum for the implementation of logic circuit.
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a9670d1d-527a-47b7-af11-fba00ee85c90)
@@ -957,6 +958,7 @@ Logic Synthesis Example:
 * So,here the **Significance of Constraints** come into picture.
 * Any one of the above three implementations may be picked by the synthesizer,as per need,guided by the **constraints** provided by the designer.
 
+# Introduction to Design Compiler
 
 
 
