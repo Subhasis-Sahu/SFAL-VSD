@@ -895,6 +895,12 @@ Commands to start Library compiler are:
 
 <summary>Day 6 - Introduction to Logic Synthesis</summary>
 
+Tools to be used for this course:
+1) iverilog - For Verilog Compilation and Simulation
+2) gtkwave - For viewing Simulation Output
+3) Synopsys Design Compiler - For Logic Synthesis
+4) Skywater 130nm Library
+
 
 
 
