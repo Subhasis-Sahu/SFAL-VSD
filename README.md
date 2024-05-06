@@ -917,6 +917,51 @@ This is given out as a file called netlist.
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/017f0d06-6464-4e1c-95d4-4a08b127c4af)
 
+**What is .lib?**
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/3c02c1ad-85f6-46a8-b58c-29b0be08044a)
+
+**Why Different Flavors of gate are required?**
+
+* Different flavors of gate are required because the delay of combo logic between flops determines maximum speed of operation (clock frequency) of our design.
+* Smaller the combinational delay,larger can be the clock frequency,which can be achieved by using faster cells.
+* But, we also need to meet our hold tome requirement for flops,so that data should not come within the hold window of a flop.Here the need arises for slower cells.
+* Hence,both faster and slower cells are used to meet our target clock frequency while avoiding hold time violations in our design.
+* These cells collectively form our std. cell library and their timing and logical information is used by tools,in the form of .lib format.
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/ecfeda1e-507f-4ac8-9b01-67554efbf9a7)
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a9181229-0291-4a60-a5aa-6db8ff171c37)
+
+
+
+**Faster Cells vs Slower Cells** :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/8a08a070-6f55-40a5-be98-59920227025d)
+
+**How Cells are Selected?**
+We provide guidance to the Synthesizer,using **Constraints** to select the flavor of cells which will be optimum for the implementation of logic circuit.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a9670d1d-527a-47b7-af11-fba00ee85c90)
+
+Logic Synthesis Example:
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/f41a7a71-bce1-4f60-aaa6-029f12e13564)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/c9262826-3b95-4583-81e1-a5443c6c8cee)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/5fc69a2f-b72b-4463-9351-9c43e2e8e21e)
+
+* From above we can see implementation 3 provides least area and delay among all,but is it the best?
+* If implementation 3 is present in hold sensitive path,additional buffers have to be added to meet hold timing,leading to increase in area and power of design.
+* So,here the **Significance of Constraints** come into picture.
+* Any one of the above three implementations may be picked by the synthesizer,as per need,guided by the **constraints** provided by the designer.
+
+
+
+
+
+
 
 
 
