@@ -895,11 +895,30 @@ Commands to start Library compiler are:
 
 <summary>Day 6 - Introduction to Logic Synthesis</summary>
 
-Tools to be used for this course:
+Tools to be used for this course :
+
 1) iverilog - For Verilog Compilation and Simulation
 2) gtkwave - For viewing Simulation Output
 3) Synopsys Design Compiler - For Logic Synthesis
 4) Skywater 130nm Library
+
+Objectives of this Course :
+
+1) Understand various steps in Logic Synthesis.
+2) Understand and write SDC (Synopsys Design Constraints) for a given design module.
+3) Perform Synthesis and write out netlist using Design Compiler.
+4) Generate and Analyze the Synthesis reports/STA reports.
+
+**What is Logic Synthesis**
+
+Logic Synthesis is the process of converting RTL description of design into Gate-level netlist.
+The design is converted into gates and the connections are made between the Gates.
+This is given out as a file called netlist.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/017f0d06-6464-4e1c-95d4-4a08b127c4af)
+
+
+
 
 
 
