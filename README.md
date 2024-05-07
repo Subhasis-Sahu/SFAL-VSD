@@ -1,4 +1,4 @@
-![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/242b2b5a-a624-49b9-bb3b-34f59c232980)# SFAL_VSD
+# SFAL_VSD
 <details>
 
 <summary>Day 0 - Tools Installation</summary>
