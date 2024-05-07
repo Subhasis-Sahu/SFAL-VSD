@@ -960,6 +960,20 @@ Logic Synthesis Example:
 
 # Introduction to Design Compiler
 
+**What is Design Compiler (DC)?** :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/3b02546c-f9ec-44c8-bfe7-b741e89b60c1)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/d97ccbe5-f5e1-4e11-adbb-17675bab8c89)
+
+**What are Synopsys Design Constraints (SDC)?**
+* Synopsys Design Constraints (SDC) is a format used to specify the design intent, including timing, power, and area constraints for a design. 
+* This format is based on the tool command language (Tcl) and is used by various EDA tools to synthesize and analyze a design. 
+* The SDC format is employed to define the performance goals for a design, ensuring that the design meets its intended specifications and constraints. 
+* It is a crucial step in the design process, as it helps in optimizing the design for timing, power, and area, which are critical factors in the development of integrated circuits.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/91bea377-3a0c-4ea6-982d-ea5d02f2d95f)
+
 
 
 
