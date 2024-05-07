@@ -1015,6 +1015,7 @@ RTL code for lab1_flop_with_en (DFF with asynchronous reset) :
     endmodule
 
 `read_verilog verilog_files/lab1_flop_with_en.v` - Commnad used to read RTL files in DC tool.
+
 `write -f verilog -out verilog_files/lab1_net.v` - write the netlist in verilog format.
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a997772b-da03-4f7a-a0c7-f7b0f4f2844e)
@@ -1026,14 +1027,16 @@ We can see in above screenshot
 * In this line `Compiling source file /home/subhasis/Synthesis_labs/sky130RTLDesignAndSynthesisWorkshop/DC_WORKSHOP/verilog_files/lab1_flop_with_en.v` , DC tool has inferred a flip flop with async reset,after 
   compilation
 
-After writing out the netlist,we can observe in below screenshot,that the tool has currently synthesized our design using generic technology independent cells,which are part of GTECH library of DC to produce the netlist.
+After writing out the netlist, we can observe in below screenshot,that the tool has currently synthesized our design using generic technology independent cells,which are part of GTECH library of DC to produce the netlist.
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/d1e059fd-ef14-4f95-9591-fa46cd70c7f9)
 
 To get a proper technology mapped netlist,we need to specify our technology library for the target_library and link_library variables.
 
 `set target_library lib/sky130_fd_sc_hd__tt_025C_1v80.db` # set our target technology library path in .db format,as DC understands .db format (binary form of .lib) only
-`set link_library {* lib/sky130_fd_sc_hd__tt_025C_1v80.db}` # set link library path. * denotes all the libraries which already are loaded in DC and the new library path will be appended to the list of libraries without overwriting
+
+`set link_library {* lib/sky130_fd_sc_hd__tt_025C_1v80.db}` # set link library path. * denotes all the libraries which already are loaded in DC and the new library path will be appended to the list of libraries 
+                                                                                       without overwriting
 
 `link` command is used after specifying target and link libraries,to link our design with the libraries specified.
 
