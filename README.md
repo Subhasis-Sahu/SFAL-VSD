@@ -988,6 +988,71 @@ Implementation Flow of ASIC : Steps for converting RTL to Physical Database (GDS
 
 Synthesis Labs are being performed in this directory : `/home/subhasis/Synthesis_labs/sky130RTLDesignAndSynthesisWorkshop/DC_WORKSHOP`
 
+Commands to invoke DC are : 
+
+    csh # to invoke c shell
+    dc_shell # to invoke DC tool
+
+target_library - It specifies the library of std. cells for a particular technology to be used by DC tool during technology mapping and optimization phase of synthesis.
+
+link_library - It contains the set of design entities,i.e,any std. cell,PLL,SRAM,Analog IPs which are directly instantiated in RTL,and is used by DC tool to resolve these references.These entities are not used 
+               during technology mapping phase.
+
+* When we echo the target_library and link_library variables in dc_shell we see they are pointing to `your_library.db` and `* your_library.db` respectively,which are non-existent imaginary libraries.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/fe0b0d8f-52ff-4f60-b3df-ef270b98aea5)
+
+RTL code for lab1_flop_with_en (DFF with asynchronous reset) :
+
+    module lab1_flop_with_en ( input res , input clk , input d , input en , output reg q);
+    always @ (posedge clk , posedge res)
+    begin
+    	if(res)
+    		q <= 1'b0;
+    	else if(en)
+    		q <= d;	
+    end
+    endmodule
+
+`read_verilog verilog_files/lab1_flop_with_en.v` - Commnad used to read RTL files in DC tool.
+`write -f verilog -out verilog_files/lab1_net.v` - write the netlist in verilog format.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a997772b-da03-4f7a-a0c7-f7b0f4f2844e)
+
+We can see in above screenshot
+* DC has internal virtual libraries in .db format to understand the design being read.The libraries are `gtech.db` and `standard.sldb`
+* We can observe after reading the RTL file,DC is invoking `Presto HDL Compiler` for RTL compilation purposes.
+* As the `your_library.db` is a dummy library,it is not able to link with current design
+* In this line `Compiling source file /home/subhasis/Synthesis_labs/sky130RTLDesignAndSynthesisWorkshop/DC_WORKSHOP/verilog_files/lab1_flop_with_en.v` , DC tool has inferred a flip flop with async reset,after 
+  compilation
+
+After writing out the netlist,we can observe in below screenshot,that the tool has currently synthesized our design using generic technology independent cells,which are part of GTECH library of DC to produce the netlist.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/d1e059fd-ef14-4f95-9591-fa46cd70c7f9)
+
+To get a proper technology mapped netlist,we need to specify our technology library for the target_library and link_library variables.
+
+`set target_library lib/sky130_fd_sc_hd__tt_025C_1v80.db` # set our target technology library path in .db format,as DC understands .db format (binary form of .lib) only
+`set link_library {* lib/sky130_fd_sc_hd__tt_025C_1v80.db}` # set link library path. * denotes all the libraries which already are loaded in DC and the new library path will be appended to the list of libraries without overwriting
+
+`link` command is used after specifying target and link libraries,to link our design with the libraries specified.
+
+`compile` command is used to perform logic-level and gate-level synthesis and optimization on the current design.
+
+After `compile` command when we write out the netlist we can see that the correct technology specific cells have been used by the tool for implementing our design,as seen in below screenshot :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/176a4853-8fc0-4996-8f49-f0cded69979e)
+
+
+
+
+
+
+
+
+
+
+
 
 
 
