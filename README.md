@@ -958,7 +958,7 @@ Logic Synthesis Example:
 * So,here the **Significance of Constraints** come into picture.
 * Any one of the above three implementations may be picked by the synthesizer,as per need,guided by the **constraints** provided by the designer.
 
-# Introduction to Design Compiler
+#### Introduction to Design Compiler
 
 **What is Design Compiler (DC)?** :
 
@@ -973,6 +973,22 @@ Logic Synthesis Example:
 * It is a crucial step in the design process, as it helps in optimizing the design for timing, power, and area, which are critical factors in the development of integrated circuits.
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/91bea377-3a0c-4ea6-982d-ea5d02f2d95f)
+
+Implementation Flow of ASIC : Steps for converting RTL to Physical Database (GDS) :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/c11cfb52-83a3-40a2-9d4c-998647bad233)
+
+**DC Synthesis Flow** :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/390a85d4-01e6-489e-afed-b746b6644913)
+
+**Design.lib** are .lib representations of any 3rd party IP used in our design,which has to be provided as input to DC tool,for implementation of the IP in our design.
+
+#### Lab 1 - Inovoking DC Basic Setup : 
+
+
+
+
 
 
 
