@@ -1,4 +1,4 @@
-# SFAL_VSD
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/242b2b5a-a624-49b9-bb3b-34f59c232980)# SFAL_VSD
 <details>
 
 <summary>Day 0 - Tools Installation</summary>
@@ -1077,6 +1077,38 @@ We can also see schematic view of our design in design vision :
 As we can see this is also matching what we expected for our design a DFF with asynchronous reset with mux with enable input at DFF input d :
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/0f2a6828-7000-4ce1-b894-67bd09353d63)
+
+#### Lab 3 - dc synopsys setup :
+
+* When we have design with multiple .db libraries , it is very cumbersome & error-prone to set target_library and lInk_library manually, as we cannot miss even one .db library
+* So to solve the above issue, all repetitive tasks ( setting target and link libraries) which is essential for tool setup can be put in a single file ,called `.synopsys_dc.setup`.
+* `.synopsys_dc.setup` can be present in two locations
+    * First,in DC tool install directory which is the default one to be picked by DC tool
+    * Second, can be created in user home directory,and which when present will be read by DC tool for setup instead of the default one present in its' install directory.
+ 
+As we can see in below screenshot,without any changes to `.synopsys_dc.setup` file , default target and link library set by DC tool is dummy library `your_library.db`
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/b9baeb21-fa2b-4498-b65d-9e073c36099a)
+
+After creating and adding commands to set target library and link library in `.synopsys_dc.setup` file in user home directory, we can observe that the target and link library are being automatically set according to the commands specified in `.synopsys_dc.setup` file.
+
+`.synopsys_dc.setup` file screenshot :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/03f53f96-d71c-4ede-9664-6f14a67c4f83)
+
+dc_shell screenshot after creating `.synopsys_dc.setup` file in home directory :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/c8e9ec1e-c2fe-4f08-b8df-60ef2708206d)
+
+**Note :**
+
+If the file name `.synopsys_dc.setup` is either moved from home directory or its' name is altered in any manner, it will not be read by dc_shell when the tool is being invoked.
+
+
+
+
+
+
 
 
 
