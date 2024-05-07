@@ -1014,7 +1014,7 @@ RTL code for lab1_flop_with_en (DFF with asynchronous reset) :
     end
     endmodule
 
-`read_verilog verilog_files/lab1_flop_with_en.v` - Commnad used to read RTL files in DC tool.
+`read_verilog verilog_files/lab1_flop_with_en.v` - Command used to read RTL files in DC tool.
 
 `write -f verilog -out verilog_files/lab1_net.v` - write the netlist in verilog format.
 
