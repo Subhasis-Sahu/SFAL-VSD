@@ -1102,7 +1102,41 @@ dc_shell screenshot after creating `.synopsys_dc.setup` file in home directory :
 
 **Note :**
 
-If the file name `.synopsys_dc.setup` is either moved from home directory or its' name is altered in any manner, it will not be read by dc_shell when the tool is being invoked.
+If the file  `.synopsys_dc.setup` is either moved from home directory or its' name is altered in any manner, it will not be read by dc_shell when the tool is being invoked.
+
+## Quick TCL Refresher :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/83be5816-42da-40c5-a5a0-a363b5bac300)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/08d9d329-23f8-4700-8731-3846434e57c0)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/16b433ec-1cd1-4fe5-b336-ba11301ab8fb)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/f10dc251-6123-437b-82cf-0dd6d4c55ac8)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/9030864d-b5f9-44c2-97a7-044968942837)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/df9b4d3c-1661-4000-ace2-802ec50e36de)
+
+## Lab 4 : TCL Scripting :
+
+Using few TCL commands in dc_shell : 
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/b4ed204d-424f-4b55-b6f1-f3c11da7701c)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/bddd0f6c-908e-40f4-a79e-c27cced40af4)
+
+`get_lib_cells */*and*` - In dc_shell, it lists out all the cells containing the pattern specified **(*/*and*)** in our loaded library.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/78e19865-3941-4a56-b241-7eee80fbbf6a)
+
+foreach_in_collection
+
+
+
+
+
+
 
 
 
