@@ -984,7 +984,7 @@ Implementation Flow of ASIC : Steps for converting RTL to Physical Database (GDS
 
 **Design.lib** are .lib representations of any 3rd party IP used in our design,which has to be provided as input to DC tool,for implementation of the IP in our design.
 
-#### Lab 1 - Inovoking DC Basic Setup :
+#### Lab 1 - Invoking DC Basic Setup :
 
 Synthesis Labs are being performed in this directory : `/home/subhasis/Synthesis_labs/sky130RTLDesignAndSynthesisWorkshop/DC_WORKSHOP`
 
@@ -1002,7 +1002,7 @@ link_library - It contains the set of design entities,i.e,any std. cell,PLL,SRAM
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/fe0b0d8f-52ff-4f60-b3df-ef270b98aea5)
 
-RTL code for lab1_flop_with_en (DFF with asynchronous reset) :
+RTL code for lab1_flop_with_en :
 
     module lab1_flop_with_en ( input res , input clk , input d , input en , output reg q);
     always @ (posedge clk , posedge res)
@@ -1045,6 +1045,44 @@ To get a proper technology mapped netlist,we need to specify our technology libr
 After `compile` command when we write out the netlist we can see that the correct technology specific cells have been used by the tool for implementing our design,as seen in below screenshot :
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/176a4853-8fc0-4996-8f49-f0cded69979e)
+
+#### Lab 2 - Intro to ddc gui with design_vision :
+
+`.ddc` - .ddc consists of the same information as a .db file. ddc is a synopsys encrypted form of our design which can be read by the tools such as Design compiler, IC compiler and prime time. It consists of             the netlist(list of components and nets) information of our design , .db libraries (target and link) used, along with the constraints which we have specified for implementing the design.
+
+**What is Design Vision?**
+
+* The Design Vision tool is the graphical user interface (GUI) for the Synopsys logic synthesis environment. 
+* Design Vision provides analysis tools for viewing and analyzing your design at the generic technology (GTECH) level and the gate level. 
+* It also provides all of the synthesis capabilities of the Design Compiler tool. Design Vision provides menu commands and dialog boxes for the most commonly used synthesis features. 
+* In addition, we can enter any dc_shell command on the command line in the GUI or the shell.
+
+Commands to generate .ddc file and read it in design vision tool:
+
+      After Synthesis has been performed using DC shell,
+      write -f ddc -out lab1_net_with_sky130.ddc # writes out .ddc file for current design
+      design_vision # invokes design vision tool , invoke after exiting DC shell or in new terminal window/tab
+      read_ddc lab1_net_with_sky130.ddc # read the design information for the specified .ddc file
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/3f727f58-9c97-451c-b304-106d0fedf809)
+
+We can read verilog files also in design_vision by using `read_verilog` command ,but after reading the netlist in .v format in design vision, we can notice that only gtech.db generic library file is being read instead of our technology specific skywater130nm .db library file.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/16573c82-f863-43db-a0fa-7e719d4052b6)
+
+We can also see schematic view of our design in design vision :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/525f5fbb-d2ee-427e-b119-519c3910be4d)
+
+As we can see this is also matching what we expected for our design a DFF with asynchronous reset with mux with enable input at DFF input d :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/0f2a6828-7000-4ce1-b894-67bd09353d63)
+
+
+
+
+
+  
 
 
 
