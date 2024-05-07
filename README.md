@@ -984,7 +984,9 @@ Implementation Flow of ASIC : Steps for converting RTL to Physical Database (GDS
 
 **Design.lib** are .lib representations of any 3rd party IP used in our design,which has to be provided as input to DC tool,for implementation of the IP in our design.
 
-#### Lab 1 - Inovoking DC Basic Setup : 
+#### Lab 1 - Inovoking DC Basic Setup :
+
+Synthesis Labs are being performed in this directory : `/home/subhasis/Synthesis_labs/sky130RTLDesignAndSynthesisWorkshop/DC_WORKSHOP`
 
 
 
