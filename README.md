@@ -1126,7 +1126,7 @@ Using few TCL commands in dc_shell :
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/bddd0f6c-908e-40f4-a79e-c27cced40af4)
 
-`get_lib_cells */*and*` - In dc_shell, it lists out all the cells containing the pattern specified **( */*and* )** in our loaded library.
+`get_lib_cells */*and*` - In dc_shell, it lists out all the cells containing the pattern specified `*/*and*` in our loaded library.
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/78e19865-3941-4a56-b241-7eee80fbbf6a)
 
