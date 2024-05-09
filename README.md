@@ -1140,13 +1140,53 @@ foreach_in_collection
 
 #### **What is STA?**
 
-* Static Timing Analysis (STA) is a method of validating the timing performance of a digital circuit design by checking all possible paths for timing violations under worst-case conditions. The key points about STA are:
+* Static Timing Analysis (STA) is a method of validating the timing performance of a digital circuit design by checking all possible paths for timing violations under worst-case conditions. The key points about 
+  STA are:
+  
     * It breaks down the design into timing paths, calculates the signal propagation delay along each path, and checks for violations of timing constraints inside the design and at the input/output interface.
     * STA considers the worst possible delay through each logic element, but does not simulate the logical operation of the circuit. This makes it faster than dynamic simulation, which requires simulating 
       multiple test vectors.
     * The goal of STA is to verify that despite variations in factors like input data, temperature, voltage, and manufacturing, all signals will arrive at the correct time - not too early or too late.
     * STA checks for two types of timing violations: setup time violations (where a signal arrives too late) and hold time violations (where a signal changes too soon after the clock edge).
     * STA is an essential part of the integrated circuit design process, allowing timing issues to be identified and fixed before manufacturing, improving first-pass silicon success.
+
+#### Setup Timing Check : 
+
+* A **setup timing check** verifies the timing relationship between the clock and the data pin of a flip-flop so that the setup requirement is met. 
+* In other words, the setup check ensures that the data is available at the input of the flip-flop before it is clocked in the flip-flop. 
+* The data should be stable for a certain amount of time, namely the setup time of the flip-flop, before the active edge of the clock arrives at the flip-flop.
+* This requirement ensures that the data is captured reliably into the flip-flop. The below figure shows the setup requirement of a typical flip-flop.
+* A setup check verifies the setup requirement of the flip-flop.
+
+ ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/548c6735-e1b5-4df4-8769-12e982a95434)
+
+* In general, there is a launch flip-flop - the flip-flop that launches the data, and a capture flip-flop - the flip-flop that captures the data whose setup
+  time must be satisfied.
+* The setup check validates the long (or max) path from the launch flip-flop to the capture flip-flop.
+* The clocks to these two flip-flops can be the same or can be different.
+* The setup check is from the first active edge of the clock in the launch flip-flop to the closest following active edge of the capture flip-flop.
+* The setup check ensures that the data launched from the previous clock cycle is ready to be captured after one cycle.
+
+* We now examine a simple example, shown in Figure given below, where both the launch and capture flip-flops have the same clock.
+* The first rising edge of clock CLKM appears at time Tlaunch at launch flip-flop. The data launched by this clock edge appears at time Tlaunch + Tck2q + Tdp at the D pin of the flip-flop UFF1.
+* The second rising edge of the clock (setup is normally checked after one cycle) appears at time Tcycle + Tcapture at the clock pin of the capture flip-flop UFF1. The difference between these two times must be
+  larger than the setup time of the flip-flop, so that the data can be reliably captured in the flip-flop.
+  
+* The setup check can be mathematically expressed as:
+  `Tlaunch + Tck2q + Tdp < Tcapture + Tcycle - Tsetup`
+  
+  where Tlaunch is the delay of the clock tree of the launch flip-flop UFF0, Tdp is the delay of the combinational logic data path and Tcycle is the clock period. Tcapture is the delay of the clock tree for the 
+  capture flip-flop UFF1.
+
+* In other words, the total time it takes for data to arrive at the D pin of the capture flip-flop must be less than the time it takes for the clock to travel to the capture flip-flop plus a clock cycle delay 
+  minus the setup time.
+  
+* Since the setup check poses a max  constraint (It imposes an upper bound on the data path delay), the setup check always uses the longest or the max timing path. For the same reason, this check is normally 
+  verified at the slow corner where the delays are the largest.
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/ff8fe272-9e57-4589-86a9-4d2562930767)
+
+
 
 
 
