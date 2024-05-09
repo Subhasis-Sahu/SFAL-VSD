@@ -1132,6 +1132,22 @@ Using few TCL commands in dc_shell :
 
 foreach_in_collection
 
+</details>
+
+<details>
+
+<summary>Day 7 - Basics of Static Timing Analysis</summary>
+
+# **What is STA?**
+
+* Static Timing Analysis (STA) is a method of validating the timing performance of a digital circuit design by checking all possible paths for timing violations under worst-case conditions. The key points about STA are:
+* It breaks down the design into timing paths, calculates the signal propagation delay along each path, and checks for violations of timing constraints inside the design and at the input/output interface.
+* STA considers the worst possible delay through each logic element, but does not simulate the logical operation of the circuit. This makes it faster than dynamic simulation, which requires simulating multiple 
+  test vectors.
+* The goal of STA is to verify that despite variations in factors like input data, temperature, voltage, and manufacturing, all signals will arrive at the correct time - not too early or too late.
+* STA checks for two types of timing violations: setup time violations (where a signal arrives too late) and hold time violations (where a signal changes too soon after the clock edge).
+* STA is an essential part of the integrated circuit design process, allowing timing issues to be identified and fixed before manufacturing, improving first-pass silicon success.
+
 
 
 
