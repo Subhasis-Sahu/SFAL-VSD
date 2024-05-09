@@ -1158,7 +1158,7 @@ foreach_in_collection
 * This requirement ensures that the data is captured reliably into the flip-flop. The below figure shows the setup requirement of a typical flip-flop.
 * A setup check verifies the setup requirement of the flip-flop.
 
- ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/548c6735-e1b5-4df4-8769-12e982a95434)
+    ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/548c6735-e1b5-4df4-8769-12e982a95434)
 
 * In general, there is a launch flip-flop - the flip-flop that launches the data, and a capture flip-flop - the flip-flop that captures the data whose setup
   time must be satisfied.
@@ -1184,7 +1184,7 @@ foreach_in_collection
 * Since the setup check poses a max  constraint (It imposes an upper bound on the data path delay), the setup check always uses the longest or the max timing path. For the same reason, this check is normally 
   verified at the slow corner where the delays are the largest.
 
-  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/ff8fe272-9e57-4589-86a9-4d2562930767)
+    ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/ff8fe272-9e57-4589-86a9-4d2562930767)
 
 
 
