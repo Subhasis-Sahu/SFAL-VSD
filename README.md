@@ -909,7 +909,7 @@ Objectives of this Course :
 3) Perform Synthesis and write out netlist using Design Compiler.
 4) Generate and Analyze the Synthesis reports/STA reports.
 
-**What is Logic Synthesis**
+**What is Logic Synthesis?**
 
 Logic Synthesis is the process of converting RTL description of design into Gate-level netlist.
 The design is converted into gates and the connections are made between the Gates.
@@ -1138,7 +1138,7 @@ foreach_in_collection
 
 <summary>Day 7 - Basics of Static Timing Analysis</summary>
 
-# **What is STA?**
+#### **What is STA?**
 
 * Static Timing Analysis (STA) is a method of validating the timing performance of a digital circuit design by checking all possible paths for timing violations under worst-case conditions. The key points about STA are:
 * It breaks down the design into timing paths, calculates the signal propagation delay along each path, and checks for violations of timing constraints inside the design and at the input/output interface.
@@ -1147,6 +1147,8 @@ foreach_in_collection
 * The goal of STA is to verify that despite variations in factors like input data, temperature, voltage, and manufacturing, all signals will arrive at the correct time - not too early or too late.
 * STA checks for two types of timing violations: setup time violations (where a signal arrives too late) and hold time violations (where a signal changes too soon after the clock edge).
 * STA is an essential part of the integrated circuit design process, allowing timing issues to be identified and fixed before manufacturing, improving first-pass silicon success.
+
+
 
 
 
