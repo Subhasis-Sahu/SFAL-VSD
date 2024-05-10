@@ -1271,6 +1271,60 @@ There are two main types of timing arcs:
 
 #### **What are Timing Paths?**
 
+The concept of timing paths in VLSI design is crucial for ensuring proper timing performance. Timing paths are defined as the paths between start points and end points in a design, where the timing requirements need to be met within a clock cycle. Different types of timing paths include Input to Register, Input to Output, Register to Register, and Register to Output paths. Each type has specific characteristics and requirements:
+
+* Input to Register Path: This path starts at an input port and ends at the data input of a sequential element. It is semi-synchronous, where the register is controlled by the clock, and input data can arrive 
+  at any time.
+* Register to Register Path: In this purely sequential path, both the starting and ending flops are controlled by the clock.
+* Register to Output Path: Data can arrive at any point in time in this path, starting at the clock pin of a sequential element and ending at an output port.
+* Input to Output Path: This pure combinational path starts at an input port and ends at an output port.
+
+* Moreover, timing paths can be further categorized into Clock Paths, Clock Gating Paths, and Asynchronous Paths based on their characteristics. Clock paths involve the traversal of clock signals, clock 
+  buffers, and clock inverters. Clock gating paths introduce additional advantages by passing through gated elements.
+* Asynchronous paths, on the other hand, involve paths from input ports to asynchronous set or clear pins of sequential elements.
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/ef401b83-a1df-4f25-b27d-57cbe11e75d4)
+  
+  The valid paths in above figure are:
+        • input port A to UFFA/D,
+        • input port A to output port Z,
+        • UFFA/CLK to UFFB/D, and
+        • UFFB/CLK to output port Z.
+
+#### **Why Constraints are used?**
+
+We use design constraints (Timing Specifications,constraints related to area,power etc.) to guide the synthesizer, to choose the correct flavor of std. cells from our std. cell library, which will help in
+implementing our design in the most optimized manner,while adhering to our goals of **PPA (Power,Performance & Area)**.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/c3813386-8d14-4b27-9dbb-46dbc613b80b)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/278d21ef-baab-4bc7-a2c5-7c57e4c5c665)
+
+Need for constraining Input and Output paths apart from REG2REG paths :
+
+We need to constrain IO paths to optimize our input and output combinational logic for delay, to `meet timing for REG2REG paths which are observed when we look beyond our design boundary`.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/edeffc7b-ba1a-44fd-ae36-e9323f12c6bf)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/abf53852-77ae-412e-9c9a-e0ad259f107f)
+
+Summary of Constraints so far : 
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/04593d46-66f9-4ed8-90eb-d9e642ff54ad)
+
+**Note :**
+
+**How IO delay modelling is done?**
+
+    * By delay specifications provided for standard interfaces such as SPI,I2C etc.
+    * By IO Budgeting based on Interactions with Different modules/blocks present in the design.
+
+
+
+
+
+
+
 
 
 
