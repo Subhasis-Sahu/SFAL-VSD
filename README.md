@@ -1327,6 +1327,47 @@ Summary of Constraints so far :
     * By delay specifications provided for standard interfaces such as SPI,I2C etc.
     * By IO Budgeting based on Interactions with Different modules/blocks present in the design.
 
+#### IO Constraints :
+
+**Is IO delay modelling sufficient for meeting timing of our design?**
+
+* As the `transition of input signals` coming into our design are `not ideal`, we have to inform the DC tool/Synthesis tool through constraints the `characteristics (transition)` of our input signals, otherwise 
+  we may face timing violations on IO paths. **(Because cell delay is a function of input transition)**
+* By this input transistion info, proper delays can be modelled and measured by the tool at Input ports,which will help the tool in optimizing our design to meet our timing goals.
+* This is an example of time budgeting/IO budgeting.
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/00efc736-813f-4a60-bd47-62304bfcbb89)
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/d5ea106b-8073-4e4d-857f-31388660b8c5)
+
+**Is IO delay modelling and Input Transition modelling enough for meeting timing of our design?**
+
+* As the load driven by the output logic is non-zero, and as we know cell delay is also a function of output load capacitance, hence output load modelling at output ports becomes crucial to achieve our timing
+  targets for our design.
+* Hence,we have to provide this output load info to DC/Synthesis tool , so proper cell delay for output logic connected to output port can be estimated and design can be optimized accordingly, to meet our 
+  timing targets. 
+
+ ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/e99e3085-0986-497f-8f51-7ad07efb9298)
+ 
+
+ ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/cc5d74b4-5433-4b35-a940-6ab36d44ba24)
+
+ **Similar to IO delay modelling, Input Transition and Output Load modelling is also done by :**
+
+    * By  specifications provided for standard interfaces such as SPI,I2C etc.
+    * By IO Budgeting based on Interactions with Different modules/blocks present in the design.
+
+As a general rule of thumb, 70% of clock period is set aside for external delay and 30% of clock period is set aside for internal delays. **(Note : This is not applicable for all scenarios and for all designs)**
+
+
+ 
+
+
+
+
+
+  
+
 
 
 
