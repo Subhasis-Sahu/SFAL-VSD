@@ -1168,9 +1168,9 @@ foreach_in_collection
 * The setup check ensures that the data launched from the previous clock cycle is ready to be captured after one cycle.
 
 * We now examine a simple example, shown in Figure given below, where both the launch and capture flip-flops have the same clock.
-* The first rising edge of clock CLKM appears at time Tlaunch at launch flip-flop. The data launched by this clock edge appears at time Tlaunch + Tck2q + Tdp at the D pin of the flip-flop UFF1.
-* The second rising edge of the clock (setup is normally checked after one cycle) appears at time Tcycle + Tcapture at the clock pin of the capture flip-flop UFF1. The difference between these two times must be
-  larger than the setup time of the flip-flop, so that the data can be reliably captured in the flip-flop.
+    * The first rising edge of clock CLKM appears at time Tlaunch at launch flip-flop. The data launched by this clock edge appears at time Tlaunch + Tck2q + Tdp at the D pin of the flip-flop UFF1.
+    * The second rising edge of the clock (setup is normally checked after one cycle) appears at time Tcycle + Tcapture at the clock pin of the capture flip-flop UFF1. The difference between these two times 
+      must be larger than the setup time of the flip-flop, so that the data can be reliably captured in the flip-flop.
   
 * The setup check can be mathematically expressed as:
   `Tlaunch + Tck2q + Tdp < Tcapture + Tcycle - Tsetup`
@@ -1196,19 +1196,22 @@ foreach_in_collection
 
      ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/8d04e77b-c842-42bc-903e-016004d75ae5)
 
-* Just like the setup check, a hold timing check is between the launch flip-flop -the flip-flop that launches the data, and the capture flip-flop - the flip-flop that captures the data and whose hold time must be satisfied.
+* Just like the setup check, a hold timing check is between the launch flip-flop -the flip-flop that launches the data, and the capture flip-flop - the flip-flop that captures the data and whose hold time must 
+  be satisfied.
 * The clocks to these two flip-flops can be the same or can be different. The hold check is from one active edge of the clock in the launch flip-flop to the same clock edge at the capture flip-flop. Thus, a 
   hold check is independent of the clock period. The hold check is carried out on each active edge of the clock of the capture flip-flop.
 
 
-* In the example given below, Consider the second rising edge of clock CLKM. The data launched by the rising edge of the clock takes Tlaunch + Tck2q + Tdp time to get to the D pin of
-  the capture flip-flop UFF1.
-* The same edge of the clock takes Tcapture time to get to the clock pin of the capture flip-flop.
-* The intention is for the datafrom the launch flip-flop to be captured by the capture flip-flop in the next clock cycle. If the data is captured in the same clock cycle, the intended data in the capture flip- 
-  flop (from the previous clock cycle) is overwritten.
-* The hold time check is to ensure that the intended data in the capture flipflop
-  is not overwritten. The hold time check verifies that the difference between these two times (data arrival time and clock arrival time at capture flip-flop) must be larger than the hold time of the capture 
-  flip-flop, so that the previous data on the flip-flop is not overwritten and the data is reliably captured in the flip-flop.
+* In the example given below,
+    * Consider the second rising edge of clock CLKM. The data launched by the rising edge of the clock takes Tlaunch + Tck2q + Tdp time to get to the D pin of
+      the capture flip-flop UFF1.
+    * The same edge of the clock takes Tcapture time to get to the clock pin of the capture flip-flop.
+    * The intention is for the datafrom the launch flip-flop to be captured by the capture flip-flop in the next clock cycle. If the data is captured in the same clock cycle, the intended data in the capture 
+      flip-flop (from the previous clock cycle) is overwritten.
+    * The hold time check is to ensure that the intended data in the capture flipflop
+      is not overwritten. The hold time check verifies that the difference between these two times (data arrival time and clock arrival time at capture flip-flop) must be larger than the hold time of the 
+      capture 
+      flip-flop, so that the previous data on the flip-flop is not overwritten and the data is reliably captured in the flip-flop.
 
 * The hold check can be mathematically expressed as: `Tlaunch + Tck2q + Tdp > Tcapture + Thold`
   
