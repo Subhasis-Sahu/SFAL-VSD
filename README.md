@@ -1308,6 +1308,9 @@ We need to constrain IO paths to optimize our input and output combinational log
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/abf53852-77ae-412e-9c9a-e0ad259f107f)
 
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/6b3601c9-5e9c-40ce-9cfd-87d6d930d20b)
+
+
 Summary of Constraints so far : 
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/04593d46-66f9-4ed8-90eb-d9e642ff54ad)
