@@ -1291,10 +1291,10 @@ The concept of timing paths in VLSI design is crucial for ensuring proper timing
   
   The valid paths in above figure are:
   
-   • input port A to UFFA/D,
-   • input port A to output port Z,
-   • UFFA/CLK to UFFB/D, and
-   • UFFB/CLK to output port Z.
+   * input port A to UFFA/D
+   * input port A to output port Z
+   * UFFA/CLK to UFFB/D
+   * UFFB/CLK to output port Z
 
 #### **Why Constraints are used?**
 
@@ -1358,6 +1358,9 @@ Summary of Constraints so far :
     * By IO Budgeting based on Interactions with Different modules/blocks present in the design.
 
 As a general rule of thumb, 70% of clock period is set aside for external delay and 30% of clock period is set aside for internal delays. **(Note : This is not applicable for all scenarios and for all designs)**
+
+**Note :**
+IO paths have to be constrained for both Max Delay (Setup) and Min Delay (Hold)
 
 
  
