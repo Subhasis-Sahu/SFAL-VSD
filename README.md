@@ -1223,6 +1223,60 @@ foreach_in_collection
 * The hold checks impose a lower bound or min constraint for paths to the data pin on the capture flip-flop; the fastest path to the D pin of the capture flip-flop needs to be determined. This implies that the 
   hold checks are always verified using the shortest paths. Thus, the hold checks are typically performed at the fast timing corner.
 
+#### **On which factors delay of a cell depends on?**
+
+The delay of a cell depends on :
+ 1) Input Transition
+ 2) Output Load
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/d6e99f09-fc93-4f26-9da0-2f58aa56c618)
+
+#### **What are Timing Arcs?**
+
+A timing arc represents the timing relationship between pins of logic cells.It is a segment or component of a timing path that may contribute to the delay in signal propagation along the path.
+
+The key points about timing arcs are:
+* Each cell can have multiple timing arcs, as a signal may propagate through different paths within the cell.
+* Timing arcs are used by static timing analysis (STA) tools to calculate the delay through a path.
+  
+There are two main types of timing arcs:
+* Delay arcs: Used to calculate propagation delay, including cell delay arcs and net delay arcs.
+* Constraint arcs: Used to define timing relationships between pins, such as setup, hold, recovery and removal checks
+
+* Timing arcs have a source pin (where the arc originates) and a sink pin (where it ends).
+  
+* The timing sense or unateness of an arc describes the relationship between transitions at the source and sink pins :
+    * Positive unate: Rise at source causes rise at sink.
+    * Negative unate: Rise at source causes fall at sink.
+    * Non-unate: No simple relationship between source and sink transitions.
+ 
+  Ex. of Timing arcs for combinational cells :
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/7f8b9663-ff50-430e-ad4c-a795c36c7d92)
+
+  Ex. of Timing arcs for sequential cells :
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/98695f59-45c8-452b-917f-af4e879ece6e)
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/c14e6583-eca5-434c-b1ca-40636b3856a8)
+
+  **Note :**
+
+  For Sequential cells, Setup and hold constraint arcs are always around/calculated around sampling point of the clock waveform.
+
+  1) For DFFs, for Setup and hold constraints arcs, sampling point are calculated from the respective clock edge according to the flip-flop (posedge or negedge) used.
+  2) For DLATs (D-Latches),
+     * For positive latch, setup and hold constraint arcs are from negedge of clock (The point where latch transitions from transparent state to opaque state)
+     * For negative latch, setup and hold constraint arcs are from posedge of clock (The point where latch transitions from transparent state to opaque state)
+
+#### **What are Timing Paths?**
+
+
+
+
+
+
+
 
 
 
