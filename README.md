@@ -1236,6 +1236,7 @@ The delay of a cell depends on :
 A timing arc represents the timing relationship between pins of logic cells.It is a segment or component of a timing path that may contribute to the delay in signal propagation along the path.
 
 The key points about timing arcs are:
+
 * Each cell can have multiple timing arcs, as a signal may propagate through different paths within the cell.
 * Timing arcs are used by static timing analysis (STA) tools to calculate the delay through a path.
   
@@ -1286,10 +1287,11 @@ The concept of timing paths in VLSI design is crucial for ensuring proper timing
   ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/ef401b83-a1df-4f25-b27d-57cbe11e75d4)
   
   The valid paths in above figure are:
-        • input port A to UFFA/D,
-        • input port A to output port Z,
-        • UFFA/CLK to UFFB/D, and
-        • UFFB/CLK to output port Z.
+  
+   • input port A to UFFA/D,
+   • input port A to output port Z,
+   • UFFA/CLK to UFFB/D, and
+   • UFFB/CLK to output port Z.
 
 #### **Why Constraints are used?**
 
