@@ -1360,7 +1360,11 @@ Summary of Constraints so far :
 As a general rule of thumb, 70% of clock period is set aside for external delay and 30% of clock period is set aside for internal delays. **(Note : This is not applicable for all scenarios and for all designs)**
 
 **Note :**
-IO paths have to be constrained for both Max Delay (Setup) and Min Delay (Hold)
+
+IO paths have to be constrained for both Max Delay (Setup) and Min Delay (Hold).
+
+#### Lab 1 - Timing .libs :
+
 
 
  
