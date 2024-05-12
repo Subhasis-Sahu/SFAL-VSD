@@ -1126,11 +1126,39 @@ Using few TCL commands in dc_shell :
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/bddd0f6c-908e-40f4-a79e-c27cced40af4)
 
-`get_lib_cells */*and*` - In dc_shell, it lists out all the cells containing the pattern specified `*/*and*` in our loaded library.
+`get_lib_cells */*and*` - In dc_shell, it  Creates  a collection of library cells from the libraries loaded into memory. This  command  creates a collection of library cells from the libraries
+                          currently loaded into memory that match the specified criteria (either with patterns option or -of_objects option) 
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/78e19865-3941-4a56-b241-7eee80fbbf6a)
 
-foreach_in_collection
+`foreach_in_collection` - The  foreach_in_collection command is used to iterate over each element in a collection.  We cannot use the Tcl-supplied  foreach  command  to iterate  over  collections because the 
+                          foreach command requires a list, and a collection is not a list.  Also, using the foreach command  on  a collection causes the collection to be deleted.
+
+When we execute the foreach_in_collection command in the manner as shown below,we can see the collection is not exactly like a list,and the collection is containing objects which are pointing to some entities,analogous to pointers in C programming Language : 
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/1888d8df-4c10-47ef-85cf-d226fc987f49)
+
+So,to print the value of the objects in collection,execute as shown below : 
+
+    foreach_in_collection my_var [get_lib_cells */*and*] {                                                                                                                     
+    set my_var_name [get_object_name $my_var]; echo $my_var_name;    # iterate over the collection and get the object name assigned to aparticular object and print it on the screen.                                                                                                            
+    }
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/4045303e-d4d2-4462-95c5-827418496f34)
+
+
+We can also put the TCL commands and dc_shell commands we want to execute in a .tcl script and source it in dc_shell for execution (very helpful to automate repetitive tasks or create automation flow to aid in 
+design) : 
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/77b0f524-0efc-4d5f-9257-00dfe458d928)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/c4ce617e-2d89-453b-8bd8-cfcfd824a2b7)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/599a47a0-f438-4d72-b043-cae36d4e1c82)
+
+**Note :**
+
+When data is  printed on screen with {} , it means it is a DC collection,not a TCL list.
 
 </details>
 
