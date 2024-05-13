@@ -1476,6 +1476,35 @@ Unateness :
 
     In .lib file, for cells with **non_unate** timing sense (such as xor,xnor etc.), the pin information will have information for both postive unate and negative unate timing sense.
 
+For Sequential cells like DFFs etc, 
+
+* `CLK_N` is the clock pin of negedge flop.
+* Clock-to-Q delay of flip-flop is mentioned as `timing_type : "falling_edge"` , informing that this is a negative edge flip-flop.
+* Timing sense/unateness of Output Q is `non-unate` as `output Q` rises or falls according to rising or falling of `input D`.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/6be3c4de-d570-4c16-b002-67fa33bb26c5)
+
+* Similarly,for a positive edge flip-flop, `CLK` is the clock pin of posedge flop.
+* Clock-to-Q delay of flip-flop is mentioned as `timing_type : "rising_edge"` , informing that this is a negative edge flip-flop.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/f4ba4880-c016-4b01-b472-a8f8bb00433f)
+
+For setup check,the clock edge to be used is also mentioned as, `timing_type : "setup_falling";` or `timing_type : "setup_rising";` for negedge and posedge flop respectively.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/64bca089-6dd4-4619-83fb-a70fa0fdd6a8)
+
+For Latches,
+* For Negative Latch, setup check is done at sampling point which is **posedge of clock signal**,and this is mentioned in .lib as `timing_type : "setup_rising";`
+* For Positive Latch, setup check is done at sampling point which is **negedge of clock signal**,and this is mentioned in .lib as `timing_type : "setup_falling";`
+
+Left side is for Negative Latch and Right side of image is for Positive Latch : 
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/7230d16c-eb37-44d3-9f1d-faca3ade39ea)
+
+
+
+
+
 
 
 
