@@ -1501,6 +1501,126 @@ Left side is for Negative Latch and Right side of image is for Positive Latch :
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/7230d16c-eb37-44d3-9f1d-faca3ade39ea)
 
+#### Lab 2 - Querying Properties of .lib from dc_shell :
+
+* `list_lib` - This command displays all libraries that are currently available in memory.
+* `get_lib_cells */*and*` - This  command  creates a collection of library cells from the libraries currently loaded into memory that match the specified criteria. (pattern/regexp etc.)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/e711f27e-2633-495a-97ee-6aa87c89cb56)
+
+* So,to print the value of the objects in collection,execute as shown below : 
+
+        foreach_in_collection my_var [get_lib_cells */*and*] {                                                                                                                     
+        set my_var_name [get_object_name $my_var]; echo $my_var_name;    # iterate over the collection and get the object name assigned to aparticular object and print it on the screen.                                                                                                            
+        }
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/caf4cb1d-97e8-4999-b656-ae69e8dc6087)
+
+* `get_lib_pins <cell_name>/*` - This  command  creates  a list  of library cell pins from the libraries currently loaded into memory that match the specified criteria.(cell_name or pattern etc.)
+* `get_lib_attribute <lib_cell/lib_pin> <attribute_name>`- This  command  searches  object_list  for  the  specified attribute and returns a list of attribute values.  If the attribute is not  found  on any of 
+                                                            the specified objects, the command returns an empty list.
+  
+* `get_lib_attribute <pin_name> direction` - Displays direction (input/output etc.)  of pin_name specified in command.
+
+Following is a simple script to find pin direction of different pins of a library cell : 
+
+    foreach_in_collection my_pins [get_lib_pins sky130_fd_sc_hd__tt_025C_1v80/sky130_fd_sc_hd__and2_0/*] {
+    set my_pin_name [get_object_name $my_pins];
+    set pin_dir [get_lib_attribute $my_pin_name direction];
+    echo $my_pin_name $pin_dir;
+    }
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/1eaecc22-ff4a-4920-bde5-ece1cfe76172)
+
+* `get_lib_attribute sky130_fd_sc_hd__tt_025C_1v80/sky130_fd_sc_hd__and2_0/X function` - Displays functionality present at output pin X of and2 lib cell.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/df717d88-8460-400c-80d0-284f65a58337)
+
+Screenshot of script to find pins of a nand4 cell and display function attribute of output pin Y : 
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/61f814eb-422f-4b35-ad07-446706779262)
+
+* Script to take a list of 5 library cells, and print their output functionality :
+
+        set lib_cell_list [list sky130_fd_sc_hd__tt_025C_1v80/sky130_fd_sc_hd__nand3_1 \
+        sky130_fd_sc_hd__tt_025C_1v80/sky130_fd_sc_hd__nand3_2 \
+        sky130_fd_sc_hd__tt_025C_1v80/sky130_fd_sc_hd__nand3_4 \
+        sky130_fd_sc_hd__tt_025C_1v80/sky130_fd_sc_hd__nand3b_1 \
+        sky130_fd_sc_hd__tt_025C_1v80/sky130_fd_sc_hd__nand3b_2 \
+        sky130_fd_sc_hd__tt_025C_1v80/sky130_fd_sc_hd__nand3b_4]
+        
+        set final_list ""
+        
+        # for each cell in the list find output pin name & its functionality
+        #
+        foreach my_cells $lib_cell_list {
+        	foreach_in_collection my_lib_pin [get_lib_pins ${my_cells}/*] {
+        		set my_lib_pin_name [get_object_name $my_lib_pin]
+        		set pin_dir [get_lib_attribute $my_lib_pin_name direction]
+        		if {$pin_dir == 2} {
+        			set fn [get_lib_attribute $my_lib_pin_name function]
+        			set val "$my_lib_pin_name\t$fn\t$pin_dir\n"
+        			lappend final_list $val
+        		}
+        	}
+        }
+        
+        puts "\n\nlib_cell_pin_name\tFunctionality\tPin_direction"
+        
+        foreach disp $final_list {
+               echo $disp
+        }
+
+**Note : use source command to execute a .tcl script file in dc_shell**
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/4f58414b-3c01-426a-b154-6879e37cf88c)
+
+* `get_lib_attribute sky130_fd_sc_hd__tt_025C_1v80/sky130_fd_sc_hd__nand4_1 area` - Displays area of the specified cell according to the unit specified in .lib file.
+* `get_lib_attribute sky130_fd_sc_hd__tt_025C_1v80/sky130_fd_sc_hd__nand4_1/A capacitance` - Displays area of the specified cell according to the unit specified in .lib file.
+* `get_lib_attribute sky130_fd_sc_hd__tt_025C_1v80/sky130_fd_sc_hd__nand4_1/A clock` - checks whether specified pin is clock pin or not. displays true or false based on the fulfillment of mentioned condition.
+* `get_lib_cells */* -filter "is_sequential == true" ` - filters all sequential cells from library and displays them on screen.
+* `list_attributes -app` - list all the attributes which can be queried.
+
+**Note : 
+Attributes will be shown when it is queried on the object for which the object is defined.
+For ex- area attribute can be queried for the library cell only not its' pins and capacitance attribute can be queried for library cell pins not for the library cell.**
+
+* `list_attributes -app > a` # In dc_shell,this command will print all the attributes to a file `a` in present working directory.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a820d41a-8554-4f7d-b859-071811073fb8)
+
+</details>
+
+<details>
+
+<summary>Day 8- Advanced Constraints</summary>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
