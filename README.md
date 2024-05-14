@@ -1600,6 +1600,29 @@ For ex- area attribute can be queried for the library cell only not its' pins an
 
 #### Specifying Constraints Through SDC
 
+To define a clock, we need to provide the following information:
+
+1) Clock source: it can be a port of the design, or be a pin of a cell inside
+   the design (typically that is part of a clock generation logic).
+2) Period: the time period of the clock.
+3) Duty cycle: the high duration (positive phase) and the low duration (negative phase).
+4) Edge times: the times for the rising edge and the falling edge.
+
+* By defining the clocks, all the internal timing paths (all flip-flop to flip-flop paths) are constrained; this implies that all internal paths can be analyzed with just the clock specifications. 
+* The clock specification specifies that a flip-flop to flip-flop path must take one cycle.
+
+**But is the above information enough?**
+
+* In a real practical design, clock signal does not reach all the flops at the same time.
+* Clock Network is built during Clock Tree Synthesis phase of Physical Implementation of a design.
+* Before CTS,clock network is an ideal network and synthesis performs Logic Optimization based on the characteristics of this ideal network.
+* To take into account the effects of **Clock Jitter** and **Clock Skew** , Clock uncertainty has to be defined through SDC before Synthesis is performed in design,so that no. of iterations to meet our timing 
+  is reduced.
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/cee70262-f611-4893-ab47-b1791c88150f)
+
+
+
 
 
 
