@@ -1595,6 +1595,10 @@ For ex- area attribute can be queried for the library cell only not its' pins an
 
 <summary>Day 8- Advanced Constraints</summary>
 
+#### Specifying Constraints Through SDC
+
+
+
 
 
 
