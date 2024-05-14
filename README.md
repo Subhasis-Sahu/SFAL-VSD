@@ -1384,7 +1384,10 @@ Summary of Constraints so far :
     * By  specifications provided for standard interfaces such as SPI,I2C etc.
     * By IO Budgeting based on Interactions with Different modules/blocks present in the design.
 
-As a general rule of thumb, 70% of clock period is set aside for external delay and 30% of clock period is set aside for internal delays. **(Note : This is not applicable for all scenarios and for all designs)**
+As a general rule of thumb, 70% of clock period is set aside for external delay and 30% of clock period is set aside for internal delays. **(Note : This is not applicable for all scenarios and for all 
+designs)**.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/1786a0e3-46c1-4d35-a710-66df0d99116b)
 
 **Note :**
 
