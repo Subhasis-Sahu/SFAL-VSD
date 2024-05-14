@@ -1659,6 +1659,83 @@ To define a clock, we need to provide the following information:
 
   ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/55459348-3767-4296-b786-62cc5735e03a)
 
+  **Querying ports or Pins in the design :**
+
+  **Note :** ports,pins,clock,etc. all names are case-sensitive in SDC format.
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/56983831-83e9-4a27-908a-919ff7050c2a)
+
+  **Querying clocks in the design :**
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/fa69263d-be75-4d96-a52e-ff4bf1609753)
+
+  **Querying Cells present in our design :**
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/0a9342f3-050f-49fd-84a7-dd5b3565d479)
+
+  **Defining Clocks :**
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/71d22952-c657-4518-aa1d-e1fefd62c7ff)
+
+  **Definiing Clock Latency and Clock Skew :**
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/4437aa11-4ec3-4327-b8a1-742500089731)
+
+  **Clock Waveform representation defined by create_clock constraint :**
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/e0c128c3-cd88-4777-adde-38864bd014ce)
+
+  **Constraining IO Paths :**
+
+  For Input Paths :
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a58eb401-56df-4bb5-8c18-97d1fc70d7de)
+
+  For Output Paths :
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/1d9e5dc2-fb1a-4c5c-96bd-3b27e19280fa)
+
+#### Generated Clocks :
+
+* Generated clocks are a crucial aspect of digital design, particularly in the context of field-programmable gate arrays (FPGAs) and other digital systems. They refer to clocks that are not directly connected 
+  to the primary clock source but are instead derived from it through various means, such as logic circuits, counters, or flip-flop dividers.
+* There are two primary types of generated clocks: those automatically derived by the design tools and user-defined generated clocks.
+* The importance of generated clocks lies in their ability to provide flexibility in clocking different parts of a digital system. While it is theoretically possible to design a system with only a master clock, 
+  using generated clocks offers several advantages.
+  
+* Generated clocks allow for the creation of clock domains with different frequencies, phases, or edges, which can be essential for various applications. 
+* For instance, a system might require a slower clock for a specific module or a clock with a particular phase relationship to the master clock. Generated clocks make it possible to create these custom clock 
+  domains without the need for additional external clock sources.
+* The process of creating generated clock constraints involves defining the relationship between the generated clock and the master clock. This can be done using directives such as `create_generated_clock`.
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/388f03ab-7650-401c-9dde-abfc9e9812b3)
+
+**Note : Generated Clocks are always created with respected to master clocks (Clocks at clock sources (Internal PLL,oscillator etc.) or primary Clock port of design (external clock sources)).**
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/d9035ef2-5e9e-4ea6-aede-8d747f222c87)
+
+**Constraining Designs with generated clocks :**
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/5bfed5df-5e60-4c29-b360-bb46631daac5)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/19c6fd2e-214f-4ea1-8356-8576fa9e5a6b)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
 
