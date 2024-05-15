@@ -1014,7 +1014,7 @@ RTL code for lab1_flop_with_en :
     end
     endmodule
 
-`read_verilog verilog_files/lab1_flop_with_en.v` - Command used to read RTL files in DC tool.
+`read_verilog verilog_files/lab1_flop_with_en.v` - Command used to reads design information from Verilog files into memory. it does the work of both `analyze` and `elaborate` command in single step.
 
 `write -f verilog -out verilog_files/lab1_net.v` - write the netlist in verilog format.
 
@@ -1596,7 +1596,7 @@ For ex- area attribute can be queried for the library cell only not its' pins an
 
 <details>
 
-<summary>Day 8- Advanced Constraints</summary>
+<summary>Day 8 - Advanced Constraints</summary>
 
 #### Specifying Constraints Through SDC
 
@@ -1694,6 +1694,118 @@ To define a clock, we need to provide the following information:
   For Output Paths :
 
   ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/1d9e5dc2-fb1a-4c5c-96bd-3b27e19280fa)
+
+#### Lab 1 - Loading design get_cells, get_ports, get_nets :
+
+Synthesis of lab8_circuit.v :
+
+RTL code of lab8_circuit.v :
+
+    module lab8_circuit (input rst, input clk , input IN_A , input IN_B , output OUT_Y , output out_clk);
+    reg REGA , REGB , REGC ; 
+    
+    always @ (posedge clk , posedge rst)
+    begin
+    	if(rst)
+    	begin
+    		REGA <= 1'b0;
+    		REGB <= 1'b0;
+    		REGC <= 1'b0;
+    	end
+    	else
+    	begin
+    		REGA <= IN_A | IN_B;
+    		REGB <= IN_A ^ IN_B;
+    		REGC <= !(REGA & REGB); 
+    	end
+    end
+    
+    assign OUT_Y = ~REGC;
+    
+    assign out_clk = clk;
+    
+    endmodule
+
+Synthesis expectation according to RTL : 
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/af545e67-538d-4697-92a4-47860ed6b006)
+
+In `/home/subhasis/Synthesis_labs/sky130RTLDesignAndSynthesisWorkshop/DC_WORKSHOP` use following commands to synthesize the design :
+
+    csh
+    dc_shell
+    read verilog verilog_files/lab8_circuit.v
+    link # Performs  a  name-based resolution of design references for the current design.  For a design to be complete, it needs to be connected  to  all of  the  library  components and designs it references. 
+           The references must be located and linked to the  current  design  in  order  for  the design  to be functional.  The purpose of this command is to locate all of the designs and library components 
+           referenced in the current  design and connect (link) them to the current design.
+           
+    compile_ultra # The compile_ultra command performs a high-effort compile on the current design  for  better quality of results (QoR).  As with the compile command, optimization is controlled by constraints 
+                    that we specify on the design.   This command is targeted toward high-performance designs with very tight timing constraints.  It provides us with a simple  approach to  achieve  critical  
+                    delay  optimization.   The compile_ultra command packages all the DC Ultra features and enables  them  by  default.   It requires a DC Ultra license plus a DesignWare Foundation license.  
+                    This command provides the best strategy for optimum overall QoR and  performance.
+
+As we can see from screenshot below, 3 1-bit wide Flip-flops with Asyncronous reset have been inferred :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/4c267b43-dc7a-4a4a-96fe-d9cb5ecd0ac8)
+
+Screenshot of execution of `get_ports` command : 
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/0c6d1880-6934-43c1-9491-fa37a2709beb)
+
+Screenshot of execution og `get_cells` command :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/800f1277-5812-4f5c-a878-3cced9a57bb2)
+
+`get_attribute [get_cells REGA_reg] ref_name` - To show the reference name (actual name of cell in .lib) on the screen
+
+We can see REGA_reg cell instance has a reference name of `sky130_fd_sc_hd__dfrtp_1`. `sky130_fd_sc_hd__dfrtp_1` is a DFF with asyncronous reset,positive edge triggered with Q (true) as output.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/f141a687-90b3-41d5-b75a-ba096828ac09)
+
+Script to query reference name for all cells present in design :
+
+    foreach_in_collection my_cells [get_cells *] {
+    set my_cell_name [get_object_name $my_cells];
+    set rname [get_attribute [get_cells $my_cell_name] ref_name];
+    echo $my_cell_name $rname;
+    }
+
+`write -f ddc -out lab8_circuit.ddc` - write .ddc file to open in `design vision` tool.
+
+Schematic of design as seen in design vision tool :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/46509041-4bff-46da-b46a-5b079f704fd6)
+
+`get_nets *` - to get all the nets (Connection between two pins or between a pin and a port)
+
+`all_connected N1` - to get all pins and ports connected to net N1.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/3ae0b6bf-cf9e-47ba-966b-3547f1ea03de)
+
+**Note : In digital design, Each and every net must have only one driver only.**
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/f2fe9de2-f969-4c65-8b61-ee2a62cde570)
+
+Script to find which cells are driving and which are driven for a particular net in design : 
+
+    foreach_in_collection  my_pins [all_connected n10] {
+    set pin_name [get_object_name $my_pins];
+    set dir [get_attribute [get_pins $pin_name] direction];
+    echo $pin_name $dir;
+    }
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/7c468a09-d749-48f5-9970-abe3fc0f21a3)
+
+
+
+
+
+
+
+
+
+
+
 
 #### Generated Clocks :
 
