@@ -1734,7 +1734,7 @@ In `/home/subhasis/Synthesis_labs/sky130RTLDesignAndSynthesisWorkshop/DC_WORKSHO
 
     csh
     dc_shell
-    read verilog verilog_files/lab8_circuit.v
+    read_verilog verilog_files/lab8_circuit.v
     link # Performs  a  name-based resolution of design references for the current design.  For a design to be complete, it needs to be connected  to  all of  the  library  components and designs it references. 
            The references must be located and linked to the  current  design  in  order  for  the design  to be functional.  The purpose of this command is to locate all of the designs and library components 
            referenced in the current  design and connect (link) them to the current design.
@@ -1776,9 +1776,9 @@ Schematic of design as seen in design vision tool :
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/46509041-4bff-46da-b46a-5b079f704fd6)
 
-`get_nets *` - to get all the nets (Connection between two pins or between a pin and a port)
+`get_nets *` - to display all the nets (Connection between two pins or between a pin and a port)
 
-`all_connected N1` - to get all pins and ports connected to net N1.
+`all_connected N1` - to display all pins and ports connected to net N1.
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/3ae0b6bf-cf9e-47ba-966b-3547f1ea03de)
 
@@ -1795,6 +1795,23 @@ Script to find which cells are driving and which are driven for a particular net
     }
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/7c468a09-d749-48f5-9970-abe3fc0f21a3)
+
+#### Lab 2 - get_pins, get_clocks, querying_clocks :
+
+`get_pins *` - Display all the pins (physical or hierarchical) in synthesized design.
+
+Script to display all pins present in currently loaded design : 
+
+    foreach_in_collection  my_pins [get_pins *] {
+        set pin_name [get_object_name $my_pins];
+        echo $pin_name;
+        }
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/caeda74e-cbe9-4cef-8b69-bab2768b325f)
+
+
+
+
 
 
 
