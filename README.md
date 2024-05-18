@@ -1852,6 +1852,51 @@ Script to display all pins present in currently loaded design :
 
 
 
+####
+
+
+
+#### Input Delay and Output Delay Constraints :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/d7526f19-f285-426f-8b98-c9c970a0e7a6)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/fa3e76c3-eed0-433d-be22-25d951b59225)
+
+#### Constraining Purely combinationational path from input to output using set_max_latency constraint :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/578e79fe-490e-4161-ac22-3f8957ada323)
+
+#### Constraining Purely combinationational path from input to output using virtual clocks :
+
+* A **virtual clock** is a clock that exists but is not associated with any pin or port of the design. It is used as a **reference in STA analysis to specify input and output delays relative to a clock.**
+
+ ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/9a8b4447-295b-4162-b231-a2a69d0d1557)
+
+
+#### Constraining IO paths originating with respect to both rising and falling edge of clock :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/6a9ccfff-8f47-4fa8-9f4a-ebe6d87b2053)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/022aa207-9e45-4298-b3f7-e3c4c1ccaec8)
+
+#### Constraining Input Transition with set_driving_cell constraint instead of set_input_transition :
+
+* The set_driving_cell specification offers a more convenient and accurate approach in describing the drive capability of a port. The set_driving_cell can be used to specify a cell driving an input port.
+* set_driving_cell constraint can be used to more accurately model input transition value,and is recommended for internal module IOs instead of set_input_transition constraint.
+* set_input_transition is recommended for Primary IOs of design connected to external world,where the transition is known/modelled based on standard interface specifications.
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/0c3e65a9-4e40-4241-8c98-5da9e6f43002)
+
+ 
+
+
+
+
+
+
+
+
+
 
 
 
