@@ -1592,6 +1592,8 @@ For ex- area attribute can be queried for the library cell only not its' pins an
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a820d41a-8554-4f7d-b859-071811073fb8)
 
+
+
 </details>
 
 <details>
@@ -1808,6 +1810,10 @@ Script to display all pins present in currently loaded design :
         }
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/caeda74e-cbe9-4cef-8b69-bab2768b325f)
+
+
+
+
 
 
 
