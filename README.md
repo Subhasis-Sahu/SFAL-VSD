@@ -1853,7 +1853,55 @@ We can put above script in query_clock.tcl and source it in dc_shell, to achieve
 * `get_attribute [get_clocks MYCLK] is_generated` - displays if the clock is a generated clock or not.(true or false).
 * `report_clocks *` - displays clock related information for all SDC defined clocks.
 
-![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/d40d107a-8ac2-45c6-a44f-a7faea2c3380)
+As we can see below, due to our definition of clock `MYCLK` using `create_clock` constraint, when we use the `get_attribute [get_pins REGA_reg/CLK] clocks` command, it reports that `MYCLK` clock is reaching the
+CLK pin of the flop `REGA_reg`.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/98259828-d4bc-45a7-9b8e-654fd8095e49)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/ba4029aa-1c78-4d3c-aa40-aec1fd9d1631)
+
+Modified Script to display all clock pins in the design and their associated SDC defined clock waveform :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/2de08434-a56c-4a34-aab9-14ba9c59ea3a)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/73322679-6d32-4fc2-b3fc-51666550bcde)
+
+**Note :**
+
+* **Although we can define the `create_clock` constraint for any port of the design, we should only define it for clock ports.**
+* **Defining clock on any pin/port other than the clock port is meaningless and will lead to erroneous clock creation on non-clock ports and will hamper the implementation flow of the tool,and make the
+    designers' task more difficult.**
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/3bae330c-132b-4669-ba26-611d3133804f)
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/b4d4d966-f6d4-451c-8326-17fb17979357)
+
+* `remove_clock <list of clocks to be removed>` - remove the SDC defined clocks mentioned in clock list.
+
+
+* `-waveform {1st_rise_edge 1st_fall_edge}` in `create_clock` constraint can be used to define our clock waveforms risng and falling edge,and hence cacn be used to define the duty cycle of the clock.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/e708c445-d242-49a3-a91f-9e01dd5fd40e)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/0f328409-721f-41e3-b410-f59e12c8af08)
+
+Define clock with 25% duty cycle :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/61a683ee-3a02-469d-9671-0627f9b039e1)
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
 
 
 
