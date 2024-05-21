@@ -1800,7 +1800,7 @@ Script to find which cells are driving and which are driven for a particular net
 
 #### Lab 2 - get_pins, get_clocks, querying_clocks :
 
-`get_pins *` - Display all the pins (physical or hierarchical) in synthesized design.
+* `get_pins *` - Display all the pins (physical or hierarchical) in synthesized design.
 
 Script to display all pins present in currently loaded design : 
 
@@ -1836,8 +1836,8 @@ We can put above script in query_clock.tcl and source it in dc_shell, to achieve
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/f334f927-7c16-4337-9b5b-53bf3a5e207d)
 
 
-`get_attribute [get_pins <pin_name>] clocks` - Will tell which clocks/clock signal as defined by our SDC (create_clock) constraints are reaching the pin mentioned in the command.
-`get_clocks *` - Lists all clocks as defined by SDC (create_clock) for our design.
+* `get_attribute [get_pins <pin_name>] clocks` - Will tell which clocks/clock signal as defined by our SDC (create_clock) constraints are reaching the pin mentioned in the command.
+* `get_clocks *` - Lists all clocks as defined by SDC (create_clock) for our design.
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/c635a85f-2391-456f-bde7-6b2a9e01f7df)
 
@@ -1846,6 +1846,16 @@ We can put above script in query_clock.tcl and source it in dc_shell, to achieve
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/847aa19b-8113-4dd1-b14e-5242cdd7afdd)
 
 #### Lab 3 - create_clock waveform :
+
+* `current_design` - will tell the name of top module of currently loaded design in DC.
+* `create_clock -name MYCLK -period 10 [get_ports clk]` - Define a clock MYCLK of period 10ns (100MHz) at the `clk` port of our design.
+* `get_attribute [get_clocks MYCLK] period` - displays time period of clock MYCLK. (`units are as mentioned in .lib file`)
+* `get_attribute [get_clocks MYCLK] is_generated` - displays if the clock is a generated clock or not.(true or false).
+* `report_clocks *` - displays clock related information for all SDC defined clocks.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/d40d107a-8ac2-45c6-a44f-a7faea2c3380)
+
+
 
 
 
