@@ -1919,8 +1919,11 @@ Below is the explanation for adding clock uncertainty in required time calculati
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/d79b706d-3454-4f2d-af85-eaba62b0e3b0)
 
-**Note : Setup generally is a single cycle check (launch and capture edges are different and separated by single clock period)
-         Hold is a zero cycle check (launch and capture edge are same)**
+**Note :** 
+
+* Setup generally is a single cycle check (launch and capture edges are different and separated by single clock period)
+
+* Hold is a zero cycle check (launch and capture edge are same)
 
 #### Lab 5 - Modelling IO delays :
 
