@@ -1889,6 +1889,42 @@ Define clock with 25% duty cycle :
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/61a683ee-3a02-469d-9671-0627f9b039e1)
 
+#### Lab 4 - Clock Network Modelling - Uncertainty, report_timing :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/d330e7b3-6418-484c-b510-bc6917771af1)
+
+* `set_clock_latency -source 1 [get_clocks MYCLK]` - modelling clock source latency.
+* `set_clock_latency 1 [get_clocks MYCLK]` - modelling clock netwrok latency.
+* `set_clock_uncertainty 0.5 [get_clocks MYCLK]` - modelling clock uncertainty with respect to setup or max delay.
+* `set_clock_uncertainty -hold 0.1 [get_clocks MYCLK]` - modelling clock uncertainty with respect to hold or min delay.
+* `report_timing` - Provides a report of timing information for current design. By default,it reports the single worst setup path in each clock group.
+
+**Note : If clocks are not defined, `report_timing` will show `paths are unconstrained.`**
+
+Output of `report_timing` command :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a8ab8ab9-0e59-474f-8715-65e1f2b4adc1)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/5717e647-62a1-47f0-b866-340a833c692e)
+
+Below is the explanation for subtracting clock uncertainty in required time calculation for setup analysis (because subtracting clock uncertainty in required time, it is worst case for setup) :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/3028ca04-a55d-49aa-8ec2-980cc99d05fe)
+
+Below is the explanation for adding clock uncertainty in required time calculation for hold analysis :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/fa9ccd0e-0296-4405-b1e0-d9fa06d56f2d)
+
+`report_timing -delay_type min` - reports worst case hold path in each clock group.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/d79b706d-3454-4f2d-af85-eaba62b0e3b0)
+
+**Note : Setup generally is a single cycle check (launch and capture edges are different and separated by single clock period)
+         Hold is a zero cycle check (launch and capture edge are same)**
+
+#### Lab 5 - Modelling IO delays :
+
+
 
 
 
