@@ -1754,7 +1754,7 @@ Screenshot of execution of `get_ports` command :
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/0c6d1880-6934-43c1-9491-fa37a2709beb)
 
-Screenshot of execution og `get_cells` command :
+Screenshot of execution of `get_cells` command :
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/800f1277-5812-4f5c-a878-3cced9a57bb2)
 
@@ -1811,6 +1811,47 @@ Script to display all pins present in currently loaded design :
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/caeda74e-cbe9-4cef-8b69-bab2768b325f)
 
+* `get_attribute [get_pins <pin_name>] direction` - Find direction of Pin (input,output,inout)
+* `get_attribute [get_pins <pin_name>] clock` - checks whether the pin is a clock pin or not. (returns the value of true or false).
+
+Script to display all pins which are clock pins in currently loaded design : 
+
+    foreach_in_collection  my_pins [get_pins *] {
+        set pin_name [get_object_name $my_pins];
+        set pin_dir [get_attribute [get_pins $pin_name] direction]
+        if { [regexp $pin_dir in] } {
+        
+        if {[get_attribute [get_pins $pin_name] clock] == true} {
+        echo "$pin_name is a clock pin";
+        }
+        }
+        }
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/8d8fb7bc-6813-4c37-83f1-56721e0254f0)
+
+We can put above script in query_clock.tcl and source it in dc_shell, to achieve the same outcome :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/47f70140-ad26-49c1-a8e7-cc482644509a)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/f334f927-7c16-4337-9b5b-53bf3a5e207d)
+
+
+`get_attribute [get_pins <pin_name>] clocks` - Will tell which clocks/clock signal as defined by our SDC (create_clock) constraints are reaching the pin mentioned in the command.
+`get_clocks *` - Lists all clocks as defined by SDC (create_clock) for our design.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/c635a85f-2391-456f-bde7-6b2a9e01f7df)
+
+* We can see in below screenshot, as we have not defined any create_clock constraints, we are not getting any clock signal at CLK pin of the flop & no clocks are defined for the design.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/847aa19b-8113-4dd1-b14e-5242cdd7afdd)
+
+#### Lab 3 - create_clock waveform :
+
+
+
+
+
+
 
 
 
@@ -1858,7 +1899,6 @@ Script to display all pins present in currently loaded design :
 
 
 
-####
 
 
 
