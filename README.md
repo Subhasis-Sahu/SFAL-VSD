@@ -1927,39 +1927,253 @@ Below is the explanation for adding clock uncertainty in required time calculati
 
 #### Lab 5 - Modelling IO delays :
 
+`report_timing -from IN_A` - we can see as we have not applied IO delay constraints, it is reporting as path unconstrained from Input IN_A.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a4c7b442-b482-4641-9de9-074023cdd9c7)
+
+`report_port -verbose` - Displays  information about ports of the current instance or the current design. `-verbose` option Specifies that the port report is to include all port information.
+    
+    report_port -verbose
+     
+    ****************************************
+    Report : port
+            -verbose
+    Design : lab8_circuit
+    Version: T-2022.03-SP5-6
+    Date   : Wed May 22 00:20:48 2024
+    ****************************************
+    
+    
+                           Pin      Wire     Max     Max     Connection
+    Port           Dir     Load     Load     Trans   Cap     Class      Attrs
+    --------------------------------------------------------------------------------
+    IN_A           in      0.0000   0.0000   --      --      --         
+    IN_B           in      0.0000   0.0000   --      --      --         
+    clk            in      0.0000   0.0000   --      --      --         
+    rst            in      0.0000   0.0000   --      --      --         
+    OUT_Y          out     0.0000   0.0000   --      --      --         
+    out_clk        out     0.0000   0.0000   --      --      --         
+    
+    
+                  External  Max             Min                Min       Min
+                  Number    Wireload        Wireload           Pin       Wire
+    Port          Points    Model           Model              Load      Load
+    --------------------------------------------------------------------------------
+    IN_A               1      --              --              --        -- 
+    IN_B               1      --              --              --        -- 
+    clk                1      --              --              --        -- 
+    rst                1      --              --              --        -- 
+    OUT_Y              1      --              --              --        -- 
+    out_clk            1      --              --              --        -- 
+    
+                        Input Delay
+                      Min             Max       Related   Max
+    Input Port    Rise    Fall    Rise    Fall   Clock  Fanout
+    --------------------------------------------------------------------------------
+    IN_A          --      --      --      --      --      -- 
+    IN_B          --      --      --      --      --      -- 
+    clk           --      --      --      --      --      -- 
+    rst           --      --      --      --      --      -- 
+    
+    
+    
+    
+    --------------------------------------------------------------------------------
+    
+    
+    
+    
+    
+    
+                   Max Tran        Min Tran
+    Input Port    Rise    Fall    Rise    Fall
+    --------------------------------------------------------------------------------
+    IN_A          --      --      --      -- 
+    IN_B          --      --      --      -- 
+    clk           --      --      --      -- 
+    rst           --      --      --      -- 
+    
+    
+                        Output Delay
+                      Min             Max      Related  Fanout
+    Output Port   Rise    Fall    Rise    Fall  Clock     Load
+    --------------------------------------------------------------------------------
+    OUT_Y         --      --      --      --      --      0.00
+    out_clk       --      --      --      --      --      0.00
 
 
+* `set_input_delay -max 5 -clock [get_clocks MYCLK] [get_ports IN_A]` - model input delay for port IN_A
+* `set_input_delay -max 5 -clock [get_clocks MYCLK] [get_ports IN_B]` - model input delay for port IN_B
+
+* As we can see below,the input delay for the ports IN_A & IN_B are now applied.
+        
+        report_port -verbose
+        Information: Updating design information... (UID-85)
+         
+        ****************************************
+        Report : port
+                -verbose
+        Design : lab8_circuit
+        Version: T-2022.03-SP5-6
+        Date   : Wed May 22 00:27:01 2024
+        ****************************************
+        
+        
+                               Pin      Wire     Max     Max     Connection
+        Port           Dir     Load     Load     Trans   Cap     Class      Attrs
+        --------------------------------------------------------------------------------
+        IN_A           in      0.0000   0.0000   --      --      --         
+        IN_B           in      0.0000   0.0000   --      --      --         
+        clk            in      0.0000   0.0000   --      --      --         
+        rst            in      0.0000   0.0000   --      --      --         
+        OUT_Y          out     0.0000   0.0000   --      --      --         
+        out_clk        out     0.0000   0.0000   --      --      --         
+        
+        
+                      External  Max             Min                Min       Min
+                      Number    Wireload        Wireload           Pin       Wire
+        Port          Points    Model           Model              Load      Load
+        --------------------------------------------------------------------------------
+        IN_A               1      --              --              --        -- 
+        IN_B               1      --              --              --        -- 
+        clk                1      --              --              --        -- 
+        rst                1      --              --              --        -- 
+        OUT_Y              1      --              --              --        -- 
+        out_clk            1      --              --              --        -- 
+        
+                            Input Delay
+                          Min             Max       Related   Max
+        Input Port    Rise    Fall    Rise    Fall   Clock  Fanout
+        --------------------------------------------------------------------------------
+        IN_A          --      --      5.00    5.00  MYCLK     --    
+        IN_B          --      --      5.00    5.00  MYCLK     --    
+        clk           --      --      --      --      --      -- 
+        rst           --      --      --      --      --      -- 
+        
+        
+        
+        
+        --------------------------------------------------------------------------------
+        
+        
+        
+        
+        
+        
+                       Max Tran        Min Tran
+        Input Port    Rise    Fall    Rise    Fall
+        --------------------------------------------------------------------------------
+        IN_A          --      --      --      -- 
+        IN_B          --      --      --      -- 
+        clk           --      --      --      -- 
+        rst           --      --      --      -- 
+        
+        
+                            Output Delay
+                          Min             Max      Related  Fanout
+        Output Port   Rise    Fall    Rise    Fall  Clock     Load
+        --------------------------------------------------------------------------------
+        OUT_Y         --      --      --      --      --      0.00
+        out_clk       --      --      --      --      --      0.00
+
+`report_timing -from IN_A` is not showing path is unconstrained now. It is showing the setup path analysis for IN_A startpoint paths.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/845309ca-7659-4ac8-b57a-f57d58f4744c)
+
+`report_timing -from IN_A -trans -net -cap -nosplit > a` - report timing information alongwith transition and capacitance info and store in file `a`.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/c0b6b680-064e-4939-bbe3-1d6eebdd2ccd)
+
+`report_timing -from IN_A -trans -net -cap -nosplit -delay_type min` shows path is unconstrained because we have still not modelled input delay for IN_A for min values.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/9d457724-916e-472c-8fa5-98c293344b28)
+
+* `set_input_delay -min 1 -clock [get_clocks MYCLK] [get_ports IN_A]` - model input delay for port IN_A for min delay.
+* `set_input_delay -min 1 -clock [get_clocks MYCLK] [get_ports IN_B]` - model input delay for port IN_B for min delay.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/beff04b0-480a-459c-93a8-cc92eb684308)
 
 
+* `set_input_transition -max 0.3 [get_ports IN_A]` - model max input transition for port IN_A.
+* `set_input_transition -min 0.1 [get_ports IN_A]` - model min input transition for port IN_A.
+* `set_input_transition -max 0.3 [get_ports IN_B]` - model max input transition for port IN_B.
+* `set_input_transition -min 0.1 [get_ports IN_B]` - model min input transition for port IN_B.
+* `set_output_delay -max 5 -clock [get_clocks MYCLK] [get_ports OUT_Y]` - model max output delay for output port OUT_Y.
+* `set_output_delay -min 1 -clock [get_clocks MYCLK] [get_ports OUT_Y]` - model min output delay for output port OUT_Y.
+* `set_load -max 0.4 [get_ports OUT_Y]` - model max output load for output port OUT_Y.
+* `set_load -min 0.1 [get_ports OUT_Y]` - model min output load for output port OUT_Y.
 
 
-
+* We can see all the values of input delay,input transition,output delay,output load we have specified have been applied for the design.
   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            report_port -verbose
+            Information: Updating design information... (UID-85)
+             
+            ****************************************
+            Report : port
+                    -verbose
+            Design : lab8_circuit
+            Version: T-2022.03-SP5-6
+            Date   : Wed May 22 00:46:51 2024
+            ****************************************
+            
+            
+                                   Pin      Wire     Max     Max     Connection
+            Port           Dir     Load     Load     Trans   Cap     Class      Attrs
+            --------------------------------------------------------------------------------
+            IN_A           in      0.0000   0.0000   --      --      --         
+            IN_B           in      0.0000   0.0000   --      --      --         
+            clk            in      0.0000   0.0000   --      --      --         
+            rst            in      0.0000   0.0000   --      --      --         
+            OUT_Y          out     0.4000   0.0000   --      --      --         
+            out_clk        out     0.0000   0.0000   --      --      --         
+            
+            
+                          External  Max             Min                Min       Min
+                          Number    Wireload        Wireload           Pin       Wire
+            Port          Points    Model           Model              Load      Load
+            --------------------------------------------------------------------------------
+            IN_A               1      --              --              --        -- 
+            IN_B               1      --              --              --        -- 
+            clk                1      --              --              --        -- 
+            rst                1      --              --              --        -- 
+            OUT_Y              1      --              --              0.1000    -- 
+            out_clk            1      --              --              --        -- 
+            
+                                Input Delay
+                              Min             Max       Related   Max
+            Input Port    Rise    Fall    Rise    Fall   Clock  Fanout
+            --------------------------------------------------------------------------------
+            IN_A          1.00    1.00    5.00    5.00  MYCLK     --    
+            IN_B          1.00    1.00    5.00    5.00  MYCLK     --    
+            clk           --      --      --      --      --      -- 
+            rst           --      --      --      --      --      -- 
+            
+            
+            
+            
+            --------------------------------------------------------------------------------
+        
+        
+        
+        
+        
+        
+                       Max Tran        Min Tran
+        Input Port    Rise    Fall    Rise    Fall
+        --------------------------------------------------------------------------------
+        IN_A          0.30    0.30    0.10    0.10
+        IN_B          0.30    0.30    0.10    0.10
+        clk           --      --      --      -- 
+        rst           --      --      --      -- 
+        
+        
+                            Output Delay
+                          Min             Max      Related  Fanout
+        Output Port   Rise    Fall    Rise    Fall  Clock     Load
+        --------------------------------------------------------------------------------
+        OUT_Y         1.00    1.00    5.00    5.00  MYCLK     0.00  
+        out_clk       --      --      --      --      --      0.00
 
 
 
@@ -1995,8 +2209,230 @@ Below is the explanation for adding clock uncertainty in required time calculati
 
 
 
+#### Lab 6 - Modelling Generated Clocks :
+
+Modelling relationship between input clock `MYCLK` and `out_clk` :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/e7d0487b-b50a-4e28-832f-4c902fb21ea0)
+
+`report_timing -to OUT_Y` without generated clock specification :
+
+    report_timing -to OUT_Y
+     
+    ****************************************
+    Report : timing
+            -path full
+            -delay max
+            -max_paths 1
+    Design : lab8_circuit
+    Version: T-2022.03-SP5-6
+    Date   : Wed May 22 01:00:29 2024
+    ****************************************
+    
+    Operating Conditions: tt_025C_1v80   Library: sky130_fd_sc_hd__tt_025C_1v80
+    Wire Load Model Mode: top
+    
+      Startpoint: REGC_reg (rising edge-triggered flip-flop clocked by MYCLK)
+      Endpoint: OUT_Y (output port clocked by MYCLK)
+      Path Group: MYCLK
+      Path Type: max
+    
+      Point                                        Incr       Path
+      ---------------------------------------------------------------
+      clock MYCLK (rise edge)                      0.00       0.00
+      clock network delay (ideal)                  2.00       2.00
+      REGC_reg/CLK (sky130_fd_sc_hd__dfrtp_1)      0.00       2.00 r
+      REGC_reg/Q (sky130_fd_sc_hd__dfrtp_1)        0.30       2.30 r
+      U10/Y (sky130_fd_sc_hd__clkinv_1)            2.32       4.62 f
+      OUT_Y (out)                                  0.00       4.62 f
+      data arrival time                                       4.62
+    
+      clock MYCLK (rise edge)                     10.00      10.00
+      clock network delay (ideal)                  2.00      12.00
+      clock uncertainty                           -0.50      11.50
+      output external delay                       -5.00       6.50
+      data required time                                      6.50
+      ---------------------------------------------------------------
+      data required time                                      6.50
+      data arrival time                                      -4.62
+      ---------------------------------------------------------------
+      slack (MET)                                             1.88
+
+* Clock Divide-by-2 :
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/caab8c0e-e04e-46da-b118-20b8b3f2b6d2)
 
 
+* `create_generated_clock -name MYGEN_CLK -master MYCLK -source [get_ports clk] -div 1 [get_ports out_clk]` - deifning a generated clock MYGEN_CLK with master clock as MYCLK to model the differences between 
+                                                                                                              `clk` & `out_clk`, as `out_clk` will have some delay(routing delay/Time of Flight) when coming from 
+                                                                                                              `clk` input.
+
+* Output of report_clocks command :
+  
+        report_clocks *
+        Information: Updating graph... (UID-83)
+         
+        ****************************************
+        Report : clocks
+        Design : lab8_circuit
+        Version: T-2022.03-SP5-6
+        Date   : Wed May 22 01:09:00 2024
+        ****************************************
+        
+        Attributes:
+            d - dont_touch_network
+            f - fix_hold
+            p - propagated_clock
+            G - generated_clock
+            g - lib_generated_clock
+        
+        Clock          Period   Waveform            Attrs     Sources
+        --------------------------------------------------------------------------------
+        MYCLK           10.00   {0 5}                         {clk}
+        MYGEN_CLK       10.00   {0 5}               G         {out_clk}
+        --------------------------------------------------------------------------------
+        
+        Generated     Master         Generated      Master         Waveform
+        Clock         Source         Source         Clock          Modification
+        --------------------------------------------------------------------------------
+        MYGEN_CLK     clk            {out_clk}      MYCLK          divide_by(1)
+        --------------------------------------------------------------------------------
+
+
+`set_clock_latency -max 1 [get_clocks MYGEN_CLK]` - to specify clock latency for MYGEN_CLK.
+`set_output_delay -max 5 [get_ports OUT_Y] -clock [get_clocks MYGEN_CLK]` - Annotating max output delay for OUT_y with repsect to generated clock MYGEN_CLK.
+`set_output_delay -min 1 [get_ports OUT_Y] -clock [get_clocks MYGEN_CLK]` - Annotating min output delay for OUT_y with repsect to generated clock MYGEN_CLK.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/7c23aa24-fef7-403a-a5a2-b0c0afa8a9bf)
+
+Let us 1st `reset_design` and read new design lab8_circuit_modified.v.
+
+* `lab8_circuit_modified.v` :
+    
+        module lab8_circuit (input rst, input clk , input IN_A , input IN_B , output OUT_Y , output out_clk , output reg out_div_clk);
+        reg REGA , REGB , REGC ; 
+        
+        always @ (posedge clk , posedge rst)
+        begin
+        	if(rst)
+        	begin
+        		REGA <= 1'b0;
+        		REGB <= 1'b0;
+        		REGC <= 1'b0;
+        		out_div_clk <= 1'b0;
+        	end
+        	else
+        	begin
+        		REGA <= IN_A | IN_B;
+        		REGB <= IN_A ^ IN_B;
+        		REGC <= !(REGA & REGB);
+        		out_div_clk <= ~out_div_clk; 
+        	end
+        end
+        
+        assign OUT_Y = ~REGC;
+        
+        assign out_clk = clk;
+        
+        endmodule
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/99a452d7-716f-4faf-b527-451262fa3530)
+
+* As we have `reset_design` and the loaded new design file `lab8_circuit_modified.v`, all our previously applied constraints are now erased from memory.
+* So we can now create a `lab8_cons.tcl` file to store our constraints,so that it can be easily sourced & constraints can be re-applied when we reset the design.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/8d7a6244-2636-47d1-85f5-06776fccca0b)
+
+* After linking the design with `link` command. we can apply our constraint by `source lab8_cons.tcl` command.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/93d27bea-457a-44d5-bfa4-f0aa84672de7)
+
+* `get_generated_clocks` - this command displays the generated clocks defined for our design.
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/050f7748-1ffb-463a-b18a-36e872e29bda)
+
+* We can see all information related to ports using `report_ports -verbose` command :
+
+          report_port -verbose
+        Information: Updating design information... (UID-85)
+         
+        ****************************************
+        Report : port
+                -verbose
+        Design : lab8_circuit
+        Version: T-2022.03-SP5-6
+        Date   : Wed May 22 01:32:27 2024
+        ****************************************
+        
+        
+        
+        Attributes:
+            c - port_is_clock_port
+        
+                               Pin      Wire     Max     Max     Connection
+        Port           Dir     Load     Load     Trans   Cap     Class      Attrs
+        --------------------------------------------------------------------------------
+        IN_A           in      0.0000   0.0000   --      --      --         
+        IN_B           in      0.0000   0.0000   --      --      --         
+        clk            in      0.0000   0.0000   --      --      --         
+        rst            in      0.0000   0.0000   --      --      --         
+        OUT_Y          out     0.4000   0.0000   --      --      --         
+        out_clk        out     0.0000   0.0000   --      --      --         c
+        out_div_clk    out     0.0000   0.0000   --      --      --         c
+        
+        
+                      External  Max             Min                Min       Min
+                      Number    Wireload        Wireload           Pin       Wire
+        Port          Points    Model           Model              Load      Load
+        --------------------------------------------------------------------------------
+        IN_A               1      --              --              --        -- 
+        IN_B               1      --              --              --        -- 
+        clk                1      --              --              --        -- 
+        rst                1      --              --              --        -- 
+        OUT_Y              1      --              --              0.1000    -- 
+        out_clk            1      --              --              --        -- 
+        out_div_clk        1      --              --              --        -- 
+        
+                            Input Delay
+                          Min             Max       Related   Max
+        Input Port    Rise    Fall    Rise    Fall   Clock  Fanout
+        --------------------------------------------------------------------------------
+        IN_A          1.00    1.00    5.00    5.00  MYCLK     --    
+        IN_B          1.00    1.00    5.00    5.00  MYCLK     --    
+        clk           --      --      --      --      --      -- 
+        rst           --      --      --      --      --      -- 
+        
+        
+        
+        
+        --------------------------------------------------------------------------------
+        
+        
+        
+        
+        
+        
+                       Max Tran        Min Tran
+        Input Port    Rise    Fall    Rise    Fall
+        --------------------------------------------------------------------------------
+        IN_A          0.40    0.40    0.10    0.10
+        IN_B          0.40    0.40    0.10    0.10
+        clk           --      --      --      -- 
+        rst           --      --      --      -- 
+        
+        
+                            Output Delay
+                          Min             Max      Related  Fanout
+        Output Port   Rise    Fall    Rise    Fall  Clock     Load
+        --------------------------------------------------------------------------------
+        OUT_Y         1.00    1.00    5.00    5.00  MYGEN_CLK
+                                                              0.00  
+        out_clk       --      --      --      --      --      0.00
+        out_div_clk   --      --      --      --      --      0.00
+
+  
+
+  
 
 
 #### Input Delay and Output Delay Constraints :
