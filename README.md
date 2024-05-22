@@ -2578,6 +2578,34 @@ Script to report all fanout cells connected to a startpoint :
 
   ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/93e9c3e6-68a5-4512-a3f1-c6c793847281)
 
+#### Lab 8 - Modelling delays using virtual clock :
+
+* A virtual clock is a clock that exists but is not associated with any pin or port of the design. It is used as a reference in STA analysis to specify input and output delays relative to a clock. 
+* An example where virtual clock is applicable is shown in Figure below . 
+* The design under analysis gets its clock from CLK_CORE, but the clock driving input port ROW_IN is CLK_SAD.How does one specify the IO constraint on input port ROW_IN in such cases?
+* The same issue occurs on the output port STATE_O.
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a87dd42c-57fa-4160-9662-f17ed7a18175)
+
+* To handle such cases, a virtual clock can be defined with no specification of the source port or pin. In the example given above, the virtual clock is defined for CLK_SAD and CLK_CFG.
+* `create_clock -name VIRTUAL_CLK_SAD -period 10 -waveform {2 8}` - Defining the virtual clock.
+* `create_clock -name VIRTUAL_CLK_CFG -period 8 -waveform {0 4}`
+* `create_clock -period 10 [get_ports CLK_CORE]` - real clock of design under analysis.
+
+* Having defined these virtual clocks, the IO constraints can be specified relative to this virtual clock.
+  
+    `set_input_delay -clock VIRTUAL_CLK_SAD -max 2.7 [get_ports ROW_IN]`
+    `set_output_delay -clock VIRTUAL_CLK_CFG -max 4.5 [get_ports STATE_O]`
+
+
+* Figure below shows the timing relationships on the input path. This constrains the input path in the design under analysis to be 5.3ns or less.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/62140976-eb64-41f9-a64d-cdca3d055e4a)
+
+
+* Figure below shows the timing relationships on the output path. This constrains the output path in the design under analysis to be 3.5ns or less.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/80403908-a70a-4ba6-aa53-2cf907d93578)
 
 
 
