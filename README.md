@@ -2466,7 +2466,7 @@ Let us 1st `reset_design` and read new design lab8_circuit_modified.v.
 
   ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/0c3e65a9-4e40-4241-8c98-5da9e6f43002)
 
-#### Lab 7 - Modelling purely combinational path with set_max_latency constraint :
+#### Lab 7 - Modelling purely combinational path with set_max_delay constraint :
 
 lab14_circuit.v RTL (Design to undergo Synthesis) :
 
@@ -2563,6 +2563,21 @@ Script to report all fanout cells connected to a startpoint :
 * We are trying to constrain the purely combinational path between `IN_C & IN_D` and `OUT_Z` :
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/301f542a-8436-474f-9a85-6f61c57a90df)
+
+
+* **`set_max_delay 0.1 -from [all_inputs] -to [get_ports OUT_Z]` - applying max latency(delay) of 0.1ns from all input ports to output port OUT_Z.**
+* **Note : The above constraint will only be applied between combinational path between `IN_C & IN_D` and `OUT_Z` as no other paths between any other input & `OUT_Z` exists.**
+
+* Upon applying the constraint and using `report_timing -to OUT_Z` command to analyze paths to `OUT_Z` we can see that the path is failing setup time requirement.
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/9d0ef6f7-d147-47e6-898b-8e83b1cb42d4)
+
+* As earlier we had not specified the `set_max_delay` constraint, DC tool has not optimized the purely combinational path between `IN_C & IN_D` and `OUT_Z`.
+* Hence, now we can rerun `compile_ultra` command, so all constraints are taken into consideration for optimizing the design.
+* Upon reviewing timng paths to `OUT_Z` using `report_timing -to OUT_Z` we observe that we are now meeting our setup time requirement,while the `set_max_delay` constraint is taken into consideration.
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/93e9c3e6-68a5-4512-a3f1-c6c793847281)
+
 
 
 
