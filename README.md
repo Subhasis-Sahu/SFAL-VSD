@@ -2607,6 +2607,143 @@ Script to report all fanout cells connected to a startpoint :
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/80403908-a70a-4ba6-aa53-2cf907d93578)
 
+* **Now returning to the task of defining a virtual clock MYVCLK for the design given below,and model the IO delays w.r.t the MYVCLK virtual clock.**
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/9373db49-e2da-4e98-8023-31c89d144342)
+
+* We should run following commands to synthesis=ze the design without modelling IO delays for purely combinational path between `IN_C & IN_D` & `OUT_Z` :
+    * `reset_design`
+    * `read_verilog verilog_files/lab14_circuit.v`
+    * `source lab8_cons.tcl`
+    * `link`
+    * `compile_ultra`
+
+We can observe the **paths to `OUT_Z` remain unconstrained** :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/0d43df1a-2410-4e34-8308-ba1e5f920faf)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/48749b56-e394-4d5d-a8de-c5d7e130ec0c)
+
+
+* `create_clock -name MYVCLK -period 10` - creating virtual clock `MYVCLK` with period of 10ns.
+
+**We can see the virtual clock `MYVCLK` is defined with no source** :
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/d6217f2b-7058-4756-af7c-6dcb0c1651c5)
+
+Here,we have defined input delay and output delay for ports `IN_C,IN_D & OUT_Z` respectively, such that only 0.1ns/100ps of delay/time only is avalaible for the Combo Logic.
+
+* `set_input_delay -max 5 [get_ports IN_C] -clock [get_clocks MYVCLK]` - annotating 5ns input delay for port IN_C w.r.t virtual clock MYVCLK.
+* `set_input_delay -max 5 [get_ports IN_D] -clock [get_clocks MYVCLK]` - annotating 5ns input delay for port IN_D w.r.t virtual clock MYVCLK.
+* `set_input_delay -max 4.9 [get_ports OUT_Z] -clock [get_clocks MYVCLK]` - annotating 5ns input delay for port IN_C w.r.t virtual clock MYVCLK.
+
+Here,we can see our required paths are constrained and getting max path violation :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/6af82226-b785-4d59-939d-df4d49633976)
+
+* Upon rerunning `compile_ultra` command to resynthesize the design,incorporating newly given constraints to its implementation and optimization flow, we observe our required paths are getting optimized in the
+  same way if we would have defined these input and output delays by using `set_max_delay` command instead of using `virtual clock` concept.
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/3b2bc65c-3f0f-48ad-b848-4d8d3a13b128)
+
+
+* `report_port -verbose` command shows that the input and output delays we had defined with respect to virtual clock `MYVCLK` have been properly applied.
+  
+        ****************************************
+        Report : port
+                -verbose
+        Design : lab8_circuit
+        Version: T-2022.03-SP5-6
+        Date   : Wed May 22 16:56:59 2024
+        ****************************************
+        
+        
+        
+        Attributes:
+            c - port_is_clock_port
+        
+                               Pin      Wire     Max     Max     Connection
+        Port           Dir     Load     Load     Trans   Cap     Class      Attrs
+        --------------------------------------------------------------------------------
+        IN_A           in      0.0000   0.0000   --      --      --         
+        IN_B           in      0.0000   0.0000   --      --      --         
+        IN_C           in      0.0000   0.0000   --      --      --         
+        IN_D           in      0.0000   0.0000   --      --      --         
+        clk            in      0.0000   0.0000   --      --      --         
+        rst            in      0.0000   0.0000   --      --      --         
+        OUT_Y          out     0.4000   0.0000   --      --      --         
+        OUT_Z          out     0.0000   0.0000   --      --      --         
+        out_clk        out     0.0000   0.0000   --      --      --         c
+        out_div_clk    out     0.0000   0.0000   --      --      --         c
+        
+        
+                      External  Max             Min                Min       Min
+                      Number    Wireload        Wireload           Pin       Wire
+        Port          Points    Model           Model              Load      Load
+        --------------------------------------------------------------------------------
+        IN_A               1      --              --              --        -- 
+        IN_B               1      --              --              --        -- 
+        IN_C               1      --              --              --        -- 
+        IN_D               1      --              --              --        -- 
+        clk                1      --              --              --        -- 
+        rst                1      --              --              --        -- 
+        OUT_Y              1      --              --              0.1000    -- 
+        OUT_Z              1      --              --              --        -- 
+        out_clk            1      --              --              --        -- 
+        out_div_clk        1      --              --              --        -- 
+        
+                            Input Delay
+                          Min             Max       Related   Max
+        Input Port    Rise    Fall    Rise    Fall   Clock  Fanout
+        --------------------------------------------------------------------------------
+        IN_A          1.00    1.00    5.00    5.00  MYCLK     --    
+        IN_B          1.00    1.00    5.00    5.00  MYCLK     --    
+        IN_C          --      --      5.00    5.00  MYVCLK    --    
+        IN_D          --      --      5.00    5.00  MYVCLK    --    
+        clk           --      --      --      --      --      -- 
+        rst           --      --      --      --      --      -- 
+        
+        
+                       Max Drive      Min Drive      Resistance    Min    Min       Cell
+        Input Port    Rise    Fall   Rise    Fall   Max     Min    Cap    Fanout    Deg
+        --------------------------------------------------------------------------------
+        IN_A          --      --     --      --     --      --     --     --        -- 
+        IN_B          --      --     --      --     --      --     --     --        -- 
+        IN_C          --      --     --      --     --      --     --     --        -- 
+        IN_D          --      --     --      --     --      --     --     --        -- 
+        clk           --      --     --      --     --      --     --     --        -- 
+        rst           --      --     --      --     --      --     --     --        -- 
+        
+        
+                       Max Tran        Min Tran
+        Input Port    Rise    Fall    Rise    Fall
+        --------------------------------------------------------------------------------
+        IN_A          0.40    0.40    0.10    0.10
+        IN_B          0.40    0.40    0.10    0.10
+        IN_C          --      --      --      -- 
+        IN_D          --      --      --      -- 
+        clk           --      --      --      -- 
+        rst           --      --      --      -- 
+        
+        
+                            Output Delay
+                          Min             Max      Related  Fanout
+        Output Port   Rise    Fall    Rise    Fall  Clock     Load
+        --------------------------------------------------------------------------------
+        OUT_Y         1.00    1.00    5.00    5.00  MYGEN_CLK
+                                                              0.00  
+        OUT_Z         --      --      4.90    4.90  MYVCLK    0.00  
+        out_clk       --      --      --      --      --      0.00
+        out_div_clk   --      --      --      --      --      0.00
+
+
+
+</details>
+
+<details>
+
+<summary>Day 11 - Introduction to BabySoC Modelling</summary>
+
 
 
 
