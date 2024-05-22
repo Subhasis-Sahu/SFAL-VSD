@@ -2178,10 +2178,6 @@ Below is the explanation for adding clock uncertainty in required time calculati
 
 
 
-
-
-
-
 #### Generated Clocks :
 
 * Generated clocks are a crucial aspect of digital design, particularly in the context of field-programmable gate arrays (FPGAs) and other digital systems. They refer to clocks that are not directly connected 
@@ -2430,7 +2426,11 @@ Let us 1st `reset_design` and read new design lab8_circuit_modified.v.
         out_clk       --      --      --      --      --      0.00
         out_div_clk   --      --      --      --      --      0.00
 
-  
+
+**Status of Design, so far :**
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/e284fabb-9efd-4ca2-9bfc-d5af07f6e021)
+
 
   
 
@@ -2466,7 +2466,105 @@ Let us 1st `reset_design` and read new design lab8_circuit_modified.v.
 
   ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/0c3e65a9-4e40-4241-8c98-5da9e6f43002)
 
- 
+#### Lab 7 - Modelling purely combinational path with set_max_latency constraint :
+
+lab14_circuit.v RTL (Design to undergo Synthesis) :
+
+    module lab8_circuit (input rst, input clk , input IN_A , input IN_B , output OUT_Y , output out_clk , output reg out_div_clk , input IN_C , input IN_D , output OUT_Z );
+    reg REGA , REGB , REGC ; 
+    
+    always @ (posedge clk , posedge rst)
+    begin
+    	if(rst)
+    	begin
+    		REGA <= 1'b0;
+    		REGB <= 1'b0;
+    		REGC <= 1'b0;
+    		out_div_clk <= 1'b0;
+    	end
+    	else
+    	begin
+    		REGA <= IN_A | IN_B;
+    		REGB <= IN_A ^ IN_B;
+    		REGC <= !(REGA & REGB);
+    		out_div_clk <= ~out_div_clk; 
+    	end
+    end
+    
+    assign OUT_Y = ~REGC;
+    
+    assign out_clk = clk;
+    assign OUT_Z = IN_C ^ IN_D ;
+    
+    
+    endmodule
+
+ ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a59ed71e-a6b3-429c-b6a8-2d60fa9cd009)
+
+ `source lab8cons.tcl` - to apply the already available constraint, because current_design `(lab14_circuit.v)` is only slightly different from previously used design `(lab8_circuit_modified.v)`.
+
+* Here, we can see, as we have not constrained the path starting from `input IN_C` & ending at `output OUT_Z`, tool is reporting that path as unconstrained.
+* These type of input to output paths (purely combinational) can be constrained with `set_max_latency` constraint.
+
+ ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/9c5f5ebc-87e5-4e51-86fc-86f11f7187ce)
+
+ ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/bfdf9730-3347-4bb7-9471-bde6d829b93e)
+
+
+* `all_inputs` - reports all input ports as a collection.
+* `all_outputs` - reports all output ports as a collection.
+* `all_registers` - reports all registers present in design as a collection.
+* `all_clocks` - reports all clocks defined (master & generated) in the design as a collection.
+* `all_registers -clock <clock_name>` - reports all registers driven by specified clock as a collection.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/5c37bda0-4447-4aba-99e5-4c8fd066c3ab)
+
+**Note :**
+
+* **`MYGEN_CLK` & `MYGEN_DIV_CLK` are clocks coming out of the design and are not driving any registers in the design.**
+
+
+
+
+`all_fanout` - The all_fanout command reports the timing fanout  of  specified  source pins,  ports,  or nets in the design.  A pin is considered to be in the timing fanout of a sink if there is a timing path 
+               through combinational logic  from  that  source  to  the pin.  The fanout report stops at the inputs to registers (sequential cells).  The source pins or  ports  are specified by using the
+               -clock_tree or -from source_list option.
+
+`all_fanout -from IN_A -flat` - reports all fanout pins from input IN_A
+`all_fanout -from IN_A -flat -endpoints_only` - reports all fanout pins ending at a timing endpoint only.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a8f1908d-5b89-4771-88bf-6a5b280f81ee)
+
+Script to report all fanout cells connected to a startpoint :
+
+    foreach_in_collection my_fanouts [all_fanout -from IN_A] {
+      set my_fanout_pnt_name [get_object_name $my_fanouts]
+      if { regexp $my_fanout_pnt_name IN_A } {
+          continue
+      } else {
+           set my_cell_name [get_attribute [get_cells -of_objects [get_pins $my_fanout_pnt_name]] ref_name];
+           echo "$my_cell_name\t$my_fanout_pnt_name
+        }
+    }   
+    
+
+* `get_cells -of_objects [get_pins <pin_name>]` - returns the cell name for the specified pin mentioned.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/169c5f79-510a-4a26-a46b-5de7d51e4e86)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/046b3890-28c9-45c6-b5d4-8d8df19f180f)
+
+
+* `all_fanin -to REGA_reg/D -flat` - reports all fanin pins at REGA_reg/D pin.
+* `all_fanin -to REGA_reg/D -flat -startpoints_only` - reports all fanin pins starting at a timing startpoint only.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/3803202b-bbc4-4715-8d96-9f6baab8566c)
+
+* We are trying to constrain the purely combinational path between `IN_C & IN_D` and `OUT_Z` :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/301f542a-8436-474f-9a85-6f61c57a90df)
+
+
 
 
 
