@@ -2744,6 +2744,8 @@ Here,we can see our required paths are constrained and getting max path violatio
 
 <summary>Day 11 - Introduction to BabySoC Modelling</summary>
 
+#### What is a SoC and Why SoC should be used ? :
+
 A System on a Chip (SoC) is an integrated circuit that consolidates all the necessary components of a computer or other electronic system onto a single chip. These components typically include:
 
 1) Central Processing Unit (CPU): The primary processor responsible for executing instructions and managing tasks.
@@ -2779,10 +2781,34 @@ A System on a Chip (SoC) is an integrated circuit that consolidates all the nece
 
 Overall, SoCs play a crucial role in modern electronics by enabling more compact, efficient, and powerful devices.
 
-![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/f44ac95c-a881-4e7d-9266-3bbbda82deb0)
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/7b1fde18-2540-44fb-ac09-bccf9182b6d5)
 
 
+#### Types of SoC :
 
+• SoCs built around a microcontroller
+• SoCs built around a microprocessor, often found in cell phones
+• Specialized application-specific integrated circuit SoCs designed for specific applications that do 
+  not fit into the above two categories
+
+#### SoC Structure :
+
+• An SoC consists of hardware functional units, including microprocessors that run software code, 
+  as well as a communications subsystem to connect, control, direct and interface between these 
+  functional modules.
+• Functional components: Processor Cores, Memory, Interfaces, Digital Signal Processor, others
+• Intermodule communication: Bus-Based Communication, Network on a chip.
+
+
+#### SoC Design Flow :
+
+SoC development process can be broken into multiple stages as illustrated in the following figure:
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/83388ec1-e301-41c5-b7fe-56822f260a52)
+
+#### Introduction to BabySoC :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/04238eab-4d48-4d57-9061-f8b660a83d6e)
 
 
 
