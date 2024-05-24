@@ -2777,7 +2777,10 @@ A System on a Chip (SoC) is an integrated circuit that consolidates all the nece
 2) Heat Management: Concentrating multiple components in a small area can lead to heat dissipation issues, which need to be managed effectively.
 3) Flexibility: SoCs are less flexible than discrete systems because they are highly integrated and customized for specific applications.
 
-Overall, SoCs play a crucial role in modern electronics by enabling more compact, efficient, and powerful devices
+Overall, SoCs play a crucial role in modern electronics by enabling more compact, efficient, and powerful devices.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/f44ac95c-a881-4e7d-9266-3bbbda82deb0)
+
 
 
 
