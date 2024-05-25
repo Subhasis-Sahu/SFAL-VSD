@@ -2806,9 +2806,77 @@ SoC development process can be broken into multiple stages as illustrated in the
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/83388ec1-e301-41c5-b7fe-56822f260a52)
 
-#### Introduction to BabySoC :
+#### Introduction to VSDBabySoC :
+
+VSDBabySoC is a small yet powerful RISCV-based SoC. The main purpose of designing such a small SoC is to test three open-source IP cores together for the first time and calibrate the analog part of it. VSDBabySoC contains one RVMYTH microprocessor, an 8x-PLL to generate a stable clock, and a 10-bit DAC to communicate with other analog devices.
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/04238eab-4d48-4d57-9061-f8b660a83d6e)
+
+#### BabySoC Components :
+
+* RVMYTH: RVMYTH core is a simple RISC V-based CPU.
+* PLL: A phase-locked loop or PLL is a control system that generates an output signal whose phase is related to the phase of an input signal. PLLs are widely used for synchronization purposes, including clock 
+       generation and distribution.
+* DAC: A digital-to-analog converter or DAC is a system that converts a digital signal into an analog signal. DACs are widely used in modern communication systems enabling the generation of digitally-defined 
+       transmission signals.
+
+
+#### What is a PLL ?
+
+* A phase-locked loop (also phase lock loop or PLL) is a system that generates an output signal whose phase is related to its input. The two signals will have the same frequency and either no phase difference 
+  or a constant phase difference between them.
+
+ * A PLL typically consists of a phase detector, a loop filter, and a voltage-controlled oscillator (VCO).
+ * The phase detector compares the reference signal with the oscillator frequency and outputs an error 
+   signal.
+ * The loop filter (usually a low-pass filter) then generates an error voltage from the error signal.
+ *  The VCO then increases or decreases the oscillator frequency to lock to the input frequency. This produces an output frequency that is equal to the input frequency, and a constant phase shift (which could 
+    be zero) between the two signals.
+ *  A PLL may also have a frequency divider in its feedback loop in order to create an output that is a multiple of the reference frequency instead of one that is exactly equal to it.
+
+   ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/fd7730e9-a867-4ce3-bfc6-9453e3d8ad14)
+
+##### Why off-chip clocks can’t be used all the time?
+
+* The clock will be a supply for a lot of blocks on the chip, it will have delays due to long wires(if used only one clock source) - also reasons like clock jitter.
+* Some blocks might need 200Mhzs and some might need 100Mhz - point is different frequencies just on one small chip.
+* A concept of ppm(clock accuracy) comes in, when ever quartz is acquired, it comes with a **x ppm error**.
+
+* The frequency of a quartz crystal can deviate from its nominal value due to several factors, which are typically expressed in parts per million (ppm).
+    * A crystal with a higher ppm error may deviate more from the desired frequency, affecting the precision of timing in electronic systems.
+    * Frequency stability characterizes the maximum frequency variation over the operating temperature range. Crystals with higher ppm errors may exhibit larger frequency variations with temperature changes,
+      impacting the reliability of timing references, especially in applications exposed to extreme temperature conditions.
+    * The total frequency error of a crystal is the sum of errors contributed by frequency tolerance, frequency stability, and aging. A higher ppm error in any of these components can lead to a larger total
+      frequency error, affecting the overall accuracy of the crystal in maintaining precise timing references.
+
+Digital-to-Analog Converter
+A Digital to Analog Converter (DAC) converts a digital input signal into an analog output signal. The digital signal is represented with a binary code, which is a combination of bits 0 and 1. 
+A Digital to Analog Converter (DAC) consists of a number of binary inputs and a single output.
+In general, the number of binary inputs of a DAC will be a power of two.
+● There are two types of DACs :
+    ○ Weighted Resistor DAC
+    ○ R-2R Ladder DAC
+
+#### What is Modelling?
+
+Modelling and simulation (M&S) is the use of a physical/logical representation of a given system to generate data and help determine decisions/make predictions about the system.
+M&S is widely used in the VLSI domain.
+Purpose of modelling
+
+System models are specifically developed to support analysis, specification, design, verification and validation of a system, as well as to communicate certain information.
+
+#### **What are we modelling? (VSDBabySoC)**
+
+* Some initial input signals will be fed into `vsdbabysoc` module.
+* PLL will start generating the proper `CLK` for the circuit.
+* Clock signal `CLK` will make the `rvmyth` to execute instructions and some values are generated, these values are used by `DAC` core to provide the final output signal named `OUT`
+* There are 3 main elements (IP cores) and a wrapper as SoC and also a testbench module.
+
+* `RVMYTH` is a digital block, so yes we can use a HDL for designing and check its functionality using a testbench.
+* But! `DAC` and `PLL` are analog what to do? 😥
+
+* Because verilog can’t synthesis analog design,hence We are going to simulate it using verilog - we will be using data-types such `real`.
+* Our goal is to be able to simulate **“functionality” - to verify its logical correctness**.
 
 
 
