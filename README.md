@@ -2849,13 +2849,17 @@ VSDBabySoC is a small yet powerful RISCV-based SoC. The main purpose of designin
     * The total frequency error of a crystal is the sum of errors contributed by frequency tolerance, frequency stability, and aging. A higher ppm error in any of these components can lead to a larger total
       frequency error, affecting the overall accuracy of the crystal in maintaining precise timing references.
 
-Digital-to-Analog Converter
-A Digital to Analog Converter (DAC) converts a digital input signal into an analog output signal. The digital signal is represented with a binary code, which is a combination of bits 0 and 1. 
-A Digital to Analog Converter (DAC) consists of a number of binary inputs and a single output.
-In general, the number of binary inputs of a DAC will be a power of two.
-● There are two types of DACs :
-    ○ Weighted Resistor DAC
-    ○ R-2R Ladder DAC
+#### Digital-to-Analog Converter :
+
+* A Digital to Analog Converter (DAC) converts a digital input signal into an analog output signal. The digital signal is represented with a binary code, which is a combination of bits 0 and 1. 
+* A Digital to Analog Converter (DAC) consists of a number of binary inputs and a single output.
+
+* In general, the number of binary inputs of a DAC will be a power of two.
+* There are two types of DACs :
+    * Weighted Resistor DAC
+    * R-2R Ladder DAC
+ 
+  In our `VSDBabySoC` design , we are using a 10-bit DAC.
 
 </details>
 
@@ -2885,6 +2889,9 @@ System models are specifically developed to support analysis, specification, des
 
 * Because verilog can’t synthesize analog design,hence We are going to simulate it using verilog - we will be using data-types such `real`.
 * Our goal is to be able to simulate **“functionality” - to verify its logical correctness**.
+
+Here  ![Here](https://github.com/vsdip/rvmyth_avsdpll_interface) is the repo we used as a reference to model the PLL
+Here is the repo we used as a reference to model the DAC
 
 
 
