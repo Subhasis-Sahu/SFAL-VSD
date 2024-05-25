@@ -2878,10 +2878,12 @@ System models are specifically developed to support analysis, specification, des
 * Clock signal `CLK` will make the `rvmyth` to execute instructions and some values are generated, these values are used by `DAC` core to provide the final output signal named `OUT`
 * There are 3 main elements (IP cores) and a wrapper as SoC and also a testbench module.
 
+#### Challenges in modelling mixed signal blocks :
+
 * `RVMYTH` is a digital block, so yes we can use a HDL for designing and check its functionality using a testbench.
 * But! `DAC` and `PLL` are analog what to do? 😥
 
-* Because verilog can’t synthesis analog design,hence We are going to simulate it using verilog - we will be using data-types such `real`.
+* Because verilog can’t synthesize analog design,hence We are going to simulate it using verilog - we will be using data-types such `real`.
 * Our goal is to be able to simulate **“functionality” - to verify its logical correctness**.
 
 
