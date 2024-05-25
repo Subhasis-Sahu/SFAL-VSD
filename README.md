@@ -2857,6 +2857,12 @@ In general, the number of binary inputs of a DAC will be a power of two.
     ○ Weighted Resistor DAC
     ○ R-2R Ladder DAC
 
+</details>
+
+<details>
+
+<summary>Day 12 - BabySoC Modelling</summary>
+
 #### What is Modelling?
 
 Modelling and simulation (M&S) is the use of a physical/logical representation of a given system to generate data and help determine decisions/make predictions about the system.
