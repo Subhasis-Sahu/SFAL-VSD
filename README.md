@@ -2869,9 +2869,10 @@ VSDBabySoC is a small yet powerful RISCV-based SoC. The main purpose of designin
 
 #### What is Modelling?
 
-Modelling and simulation (M&S) is the use of a physical/logical representation of a given system to generate data and help determine decisions/make predictions about the system.
-M&S is widely used in the VLSI domain.
-Purpose of modelling
+* Modelling and simulation (M&S) is the use of a physical/logical representation of a given system to generate data and help determine decisions/make predictions about the system.
+* M&S is widely used in the VLSI domain.
+
+#### Purpose of modelling :
 
 System models are specifically developed to support analysis, specification, design, verification and validation of a system, as well as to communicate certain information.
 
@@ -2890,8 +2891,43 @@ System models are specifically developed to support analysis, specification, des
 * Because verilog can’t synthesize analog design,hence We are going to simulate it using verilog - we will be using data-types such `real`.
 * Our goal is to be able to simulate **“functionality” - to verify its logical correctness**.
 
-Here  ![Here](https://github.com/vsdip/rvmyth_avsdpll_interface) is the repo we used as a reference to model the PLL
-Here is the repo we used as a reference to model the DAC
+1) [Here](https://github.com/shivanishah269/risc-v-core) the repo we used as a reference to model the `RVMYTH`.
+2) [Here](https://github.com/vsdip/rvmyth_avsdpll_interface) is the repo we used as a reference to model the `PLL`.
+3) [Here](https://github.com/vsdip/rvmyth_avsddac_interface) is the repo we used as a reference to model the `DAC`.
+
+Note :
+
+* RVMYTH is designed and created by the TL-Verilog language. So we need a way for compile and transform it to the Verilog language and use the result in our SoC. Here the `sandpiper-saas` could help us do the 
+  job.
+
+#### Step-by-Step process of modelling :
+
+1) Install These Required Packages:
+
+        $ sudo apt install make python python3 python3-pip git iverilog gtkwave docker.io
+        $ sudo chmod 666 /var/run/docker.sock
+        $ cd ~
+        $ pip3 install pyyaml click sandpiper-saas
+
+2) `git clone https://github.com/manili/VSDBabySoC.git` - clone this repo containing VSDBabySoC design files and testbench.
+3) cd `/home/subhasis/VSDBabySoC`
+4) `sandpiper-saas -i ./src/module/*.tlv -o rvmyth.v --bestsv --noline -p verilog --outdir ./src/module/` - to translate `.tlv` definition of `rvmyth` into `.v` definition.
+
+     ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/c4a680be-ad7c-4f10-b85a-92b488bf3ba6)
+
+5) `iverilog -o output/pre_synth_sim.out -DPRE_SYNTH_SIM src/module/testbench.v -I src/include -I src/module` - to compile and simulate vsdbabysoc design.
+6) cd `output`
+7) `./pre_synth_sim.out` - To generate pre_synth_sim.vcd file,which is our simulation waveform file.
+8) gtkwave `pre_synth_sim.out` - to open simulation waveform in gtkwave tool.
+
+   ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/91dadff7-515e-49cf-a47c-dbc80f83ba30)
+
+**Simulation Waveform :**
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/6e8bb27a-1624-4d2b-a252-c825b6973894)
+
+
+
 
 
 
