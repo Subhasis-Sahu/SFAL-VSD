@@ -2960,7 +2960,8 @@ In this picture we can see the following signals:
 * Gate level simulation is used to boost the confidence regarding implementation of a design and can help verify dynamic circuit behaviour, which cannot be verified accurately by static methods. It is a
   significant step in the verification process.
 
-To synthesize the VSDBabySoC design, 1st we need `.db` format for `avsddac.lib`, `avsdpll.lib` & `sky130_fd_sc_hd__tt_025C_1v80.lib` using Synopsys Library Compiler (`lc_shell`) :
+To synthesize the VSDBabySoC design, 
+1st we need `.db` format for `avsddac.lib`, `avsdpll.lib` & `sky130_fd_sc_hd__tt_025C_1v80.lib` using Synopsys Library Compiler (`lc_shell`) :
 
 
 
