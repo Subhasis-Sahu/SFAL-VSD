@@ -2960,7 +2960,7 @@ In this picture we can see the following signals:
 * Gate level simulation is used to boost the confidence regarding implementation of a design and can help verify dynamic circuit behaviour, which cannot be verified accurately by static methods. It is a
   significant step in the verification process.
 
-To synthesize the VSDBabySoC design,
+**To synthesize the VSDBabySoC design,**
 
 * 1st we need `.db` format for `avsddac.lib`, `avsdpll.lib` & `sky130_fd_sc_hd__tt_025C_1v80.lib` using Synopsys Library Compiler (`lc_shell`) :
 
@@ -2970,22 +2970,35 @@ To synthesize the VSDBabySoC design,
 
   ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/c716f41f-5fe6-49c6-96b8-1ad730ec26b6)
 
-  Upon debugging these errors, as shown below for `avsdpll.lib`, we were also able to obtain `avsdpll.db` and `avsddac.db` using same method as mentioned above :
+* Upon debugging these errors, as shown below for `avsdpll.lib`, we were also able to obtain `avsdpll.db` and `avsddac.db` using same method as mentioned above :
 
     ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/c471eddd-6a32-4349-93aa-281652e5b82d)
 
-To Synthesize the design,following commands were used :
+* To Synthesize the design,following commands were used :
 
-    set target_library /home/subhasis/VSDBabySoC/src/lib/sky130_fd_sc_hd__tt_025C_1v80.db
-    set link_library {* /home/subhasis/VSDBabySoC/src/lib/sky130_fd_sc_hd__tt_025C_1v80.db /home/subhasis/VSDBabySoC/src/lib/avsdpll.db /home/subhasis/VSDBabySoC/src/lib/avsddac.db}
-    set search_path {/home/subhasis/VSDBabySoC/src/include /home/subhasis/VSDBabySoC/src/module} # set path where tool will search for design modules/files.
-    read_file {sandpiper_gen.vh  sandpiper.vh  sp_default.vh  sp_verilog.vh clk_gate.v rvmyth.v rvmyth_gen.v vsdbabysoc.v} -autoread -top vsdbabysoc # read all mentioned files in list and set top design 
-    `vsdbabysoc`
-    link #link design with library and resolve all references(instantiations)
-    compile_ultra
-    write_file -format verilog -hierarchy -output /home/subhasis/VSDBabySoC/output/vsdbabysoc_net.v # write out netlist file in verilog format at specified output location.
+        set target_library /home/subhasis/VSDBabySoC/src/lib/sky130_fd_sc_hd__tt_025C_1v80.db
+        set link_library {* /home/subhasis/VSDBabySoC/src/lib/sky130_fd_sc_hd__tt_025C_1v80.db /home/subhasis/VSDBabySoC/src/lib/avsdpll.db /home/subhasis/VSDBabySoC/src/lib/avsddac.db}
+        set search_path {/home/subhasis/VSDBabySoC/src/include /home/subhasis/VSDBabySoC/src/module} # set path where tool will search for design modules/files.
+        read_file {sandpiper_gen.vh  sandpiper.vh  sp_default.vh  sp_verilog.vh clk_gate.v rvmyth.v rvmyth_gen.v vsdbabysoc.v} -autoread -top vsdbabysoc # read all mentioned files in list and set top design 
+        `vsdbabysoc`
+        link #link design with library and resolve all references(instantiations)
+        compile_ultra
+        write_file -format verilog -hierarchy -output /home/subhasis/VSDBabySoC/output/vsdbabysoc_net.v # write out netlist file in verilog format at specified output location.
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/5307cf34-f461-4776-85fc-81a620a9df48)
+
+* In `/home/subhasis/VSDBabySoC`, execute these commands to perform post-synthesis simulation :
+
+        iverilog -DFUNCTIONAL -DUNIT_DELAY=#1 -o ./output/post_synth_sim.out ./src/gls_model/primitives.v ./src/gls_model/sky130_fd_sc_hd.v ./output/vsdbabysoc_net.v ./src/module/avsdpll.v 
+        ./src/module/avsddac.v ./src/module/testbench.v
+  
+        cd output
+        ./post_synth_sim.out
+        gtkwave dump.vcd
+
+As we can observe in the image below, our post-synth (top) and pre-synth(bottom) are same :
+
+
 
 
 
