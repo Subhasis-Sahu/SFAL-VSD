@@ -2998,6 +2998,12 @@ In this picture we can see the following signals:
 
 As we can observe in the image below, our post-synth (top) and pre-synth(bottom) are same :
 
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/16e4ff19-5035-4d65-a723-fa31af54cc29)
+
+**Now,our next task is to develop constraints for our design and optimize it further.**
+
+</details>
+
 
 
 
