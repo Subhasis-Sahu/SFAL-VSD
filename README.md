@@ -2962,7 +2962,34 @@ In this picture we can see the following signals:
 
 To synthesize the VSDBabySoC design,
 
-1st we need `.db` format for `avsddac.lib`, `avsdpll.lib` & `sky130_fd_sc_hd__tt_025C_1v80.lib` using Synopsys Library Compiler (`lc_shell`) :
+* 1st we need `.db` format for `avsddac.lib`, `avsdpll.lib` & `sky130_fd_sc_hd__tt_025C_1v80.lib` using Synopsys Library Compiler (`lc_shell`) :
+
+      cd /home/subhasis/VSDBabySoC/src/lib
+      read_lib sky130_fd_sc_hd__tt_025C_1v80.lib
+      write_lib -format db sky130_fd_sc_hd__tt_025C_1v80 -output sky130_fd_sc_hd__tt_025C_1v80.db
+
+  ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/c716f41f-5fe6-49c6-96b8-1ad730ec26b6)
+
+  Upon debugging these errors, as shown below for `avsdpll.lib`, we were also able to obtain `avsdpll.db` and `avsddac.db` using same method as mentioned above :
+
+    ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/c471eddd-6a32-4349-93aa-281652e5b82d)
+
+To Synthesize the design,following commands were used :
+
+    set target_library /home/subhasis/VSDBabySoC/src/lib/sky130_fd_sc_hd__tt_025C_1v80.db
+    set link_library {* /home/subhasis/VSDBabySoC/src/lib/sky130_fd_sc_hd__tt_025C_1v80.db /home/subhasis/VSDBabySoC/src/lib/avsdpll.db /home/subhasis/VSDBabySoC/src/lib/avsddac.db}
+    set search_path {/home/subhasis/VSDBabySoC/src/include /home/subhasis/VSDBabySoC/src/module} # set path where tool will search for design modules/files.
+    read_file {sandpiper_gen.vh  sandpiper.vh  sp_default.vh  sp_verilog.vh clk_gate.v rvmyth.v rvmyth_gen.v vsdbabysoc.v} -autoread -top vsdbabysoc # read all mentioned files in list and set top design 
+    `vsdbabysoc`
+    link #link design with library and resolve all references(instantiations)
+    compile_ultra
+    write_file -format verilog -hierarchy -output /home/subhasis/VSDBabySoC/output/vsdbabysoc_net.v # write out netlist file in verilog format at specified output location.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/5307cf34-f461-4776-85fc-81a620a9df48)
+
+
+
+
 
 
 
