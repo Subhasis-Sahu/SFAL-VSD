@@ -3169,6 +3169,13 @@ This is done through static timing analysis (STA) to ensure timing constraints a
 
 Accounting for PVT variations is crucial for robust and reliable chip design.
 
+#### Lab - To synthesize BabySoC design using different PVT Corner library files (.lib/.db) and tabulate Worst Negative/Setup Slack (WNS) & Worst Hold Slack (WHS) values :
+
+[https://github.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/tree/master/timing]
+
+
+
+**Table for Worst Negative/Setup Slack (WNS) & Worst Hold Slack (WHS) for different available PVT corners, for our BabySoC Design :**
 
 | PVT_Corner | WNS | WHS |
 |     :---:    |     :---:      |     :---:     |
