@@ -3144,30 +3144,28 @@ Timing report after Synthesis was done with above constraints :
     1
 
 
-PVT (Process, Voltage, Temperature) are the three key factors that impact the performance and behavior of integrated circuits in VLSI design. Here is a summary of how each of these factors affects circuit design:
+#### What are PVT Corners?
+
+* **PVT (Process, Voltage, Temperature)** are the three key factors that impact the performance and behavior of integrated circuits in VLSI design. Here is a summary of how each of these factors affects circuit 
+  design:
 
 1. Process (P):
    - Process variation refers to deviations in the semiconductor fabrication process, such as variations in impurity concentration, oxide thickness, and transistor dimensions.
-   - These process variations can cause changes in transistor parameters like threshold voltage, mobility, and current drive, which in turn impact the circuit delay and performance.[1][3]
-   - Circuits designed with a "fast" process will have lower delays, while "slow" process corners will have higher delays.[2][3]
+   - These process variations can cause changes in transistor parameters like threshold voltage, mobility, and current drive, which in turn impact the circuit delay and performance.
+   - Circuits designed with a "fast" process will have lower delays, while "slow" process corners will have higher delays.
 
 2. Voltage (V): 
-   - The supply voltage of the chip can deviate from the optimal value during operation due to factors like noise, IR drop, and voltage regulator variations.[2][3][4]
-   - Higher supply voltage leads to increased current and faster charging/discharging of capacitances, resulting in lower delays. Lower voltage has the opposite effect.[2]
+   - The supply voltage of the chip can deviate from the optimal value during operation due to factors like noise, IR drop, and voltage regulator variations.
+   - Higher supply voltage leads to increased current and faster charging/discharging of capacitances, resulting in lower delays. Lower voltage has the opposite effect.
 
 3. Temperature (T):
-   - The operating temperature of the chip can vary widely depending on the environment and power dissipation within the chip.[4]
-   - Higher temperatures generally decrease carrier mobility, leading to increased delays. However, in sub-65nm technologies, a "temperature inversion" effect can occur where delays actually increase at lower temperatures.[2][4]
+   - The operating temperature of the chip can vary widely depending on the environment and power dissipation within the chip.
+   - Higher temperatures generally decrease carrier mobility, leading to increased delays. However, in sub-65nm technologies, a "temperature inversion" effect can occur where delays actually increase at lower 
+     temperatures.
 
-Engineers must design integrated circuits to function correctly across all possible PVT corners - the combinations of process, voltage, and temperature extremes. This is done through static timing analysis (STA) to ensure timing constraints are met under all conditions.[4] Accounting for PVT variations is crucial for robust and reliable chip design.[1]
+Engineers must design integrated circuits to function correctly across all possible PVT corners - the combinations of process, voltage, and temperature extremes.
 
-Citations:
-[1] https://chipedge.com/what-are-pvt-corners-in-vlsi/
-[2] http://vlsi-soc.blogspot.com/2012/06/pvt-and-how-they-impact-timing.html
-[3] https://www.vlsi4freshers.com/2020/03/process-voltage-temperature-pvt-variation.html
-[4] https://asic-soc.blogspot.com/2008/03/process-variations-and-static-timing.html
-[5] https://chipedge.com/what-is-pvt-in-vlsi/
-
+This is done through static timing analysis (STA) to ensure timing constraints are met under all conditions.Accounting for PVT variations is crucial for robust and reliable chip design.
 
 
 
