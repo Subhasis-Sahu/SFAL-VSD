@@ -3171,7 +3171,28 @@ Accounting for PVT variations is crucial for robust and reliable chip design.
 
 #### Lab - To synthesize BabySoC design using different PVT Corner library files (.lib/.db) and tabulate Worst Negative/Setup Slack (WNS) & Worst Hold Slack (WHS) values :
 
-[https://github.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/tree/master/timing]
+* Download the `Skywater 130nm PDK` timing libraries for different PVTs from this given link ![](https://github.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/tree/master/timing) to the path 
+  `/home/subhasis/VSDBabySoC/src/timing_libs`
+
+* Now to convert all the `.lib ` file formats to `.db` format execute the following steps :
+
+* cd `/home/subhasis/VSDBabySoC/src/timing_libs`
+* lc_shell # Invoke lc_shell tool
+* Use the following script to convert all `.lib` to `.db` file format within `timing_libs` directory. Place this script inside `lib_to_db_convert.tcl` and `source` this TCL Script in lc_shell to execute it :
+
+        set libs [glob *.lib]
+        set m1 ""
+        set library_name ""
+        foreach lib_name $libs {
+         
+        regexp {(.*)\.lib} $lib_name m1 library_name
+        
+        read_lib $lib_name
+        write_lib $library_name -format db -output ${library_name}.db
+        }
+
+
+
 
 
 
