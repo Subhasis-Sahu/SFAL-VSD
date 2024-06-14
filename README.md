@@ -3191,10 +3191,49 @@ Accounting for PVT variations is crucial for robust and reliable chip design.
         write_lib $library_name -format db -output ${library_name}.db
         }
 
+* To Synthesize the BabySoC Design for different PVT Corners execute the following steps :
 
+  1) cd `/home/subhasis/VSDBabySoC`
+  2) create a `sta_mul_pvt.tcl` file and put the following script to synthesize the BabySoC design with different PVT Corners and also report the corresponding `Worst Negative/Setup Slack (WNS) & Worst Hold 
+     Slack (WHS)` into a `.rpt` file.
 
+            set m1 ""
+            set pvt ""
+            set FH [open report_timing.rpt w]
+            puts $FH "PVT_Corner\tWNS\tWHS"
+            
+            set lib_files [glob -directory /home/subhasis/VSDBabySoC/src/timing_libs/ -type f *.db]
+            
+            foreach lib_file_paths $lib_files {
+            
+            regexp {.*\/sky130_fd_sc_hd__(.*)\.db$} $lib_file_paths m1 pvt
+            
+            set timing_report_fast_mode true
+            
+            
+            set target_library $lib_file_paths
+            set link_library {* /home/subhasis/VSDBabySoC/src/lib/avsdpll.db /home/subhasis/VSDBabySoC/src/lib/avsddac.db}
+            lappend link_library $target_library
+            set search_path {/home/subhasis/VSDBabySoC/src/include /home/subhasis/VSDBabySoC/src/module}
+            read_file {sandpiper_gen.vh  sandpiper.vh  sp_default.vh  sp_verilog.vh clk_gate.v rvmyth.v rvmyth_gen.v vsdbabysoc.v} -autoread -top vsdbabysoc
+            source /home/subhasis/VSDBabySoC/src/sdc/vsdbabysoc_synthesis.sdc
+            link
+            compile_ultra
+            
+            set wns [get_attribute [get_timing_paths -delay_type max -max_paths 1] slack]
+            set whs [get_attribute [get_timing_paths -delay_type min -max_paths 1] slack]
+            
+            puts $FH "$pvt\t$wns\t$whs"
+            
+            reset_design
+            }
+            
+            close $FH
+     
+  3) Invoke dc_shell and `source` the above script to synthesize the BabySoC design with different PVT Corners and also report the corresponding `Worst Negative/Setup Slack (WNS) & Worst Hold 
+     Slack (WHS)` into a `.rpt` file.
 
-
+  4) After the design has been synthesized for all `PVT` corners, open `report_timing.rpt` file in present working directory in a text editor to view all the `WNS` & `WHS` for different PVT Corners.
 
 **Table for Worst Negative/Setup Slack (WNS) & Worst Hold Slack (WHS) for different available PVT corners, for our BabySoC Design :**
 
