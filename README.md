@@ -3165,10 +3165,14 @@ Timing report after Synthesis was done with above constraints :
 
 Engineers must design integrated circuits to function correctly across all possible PVT corners - the combinations of process, voltage, and temperature extremes.
 
-This is done through static timing analysis (STA) to ensure timing constraints are met under all conditions.Accounting for PVT variations is crucial for robust and reliable chip design.
+This is done through static timing analysis (STA) to ensure timing constraints are met under all conditions.
+
+Accounting for PVT variations is crucial for robust and reliable chip design.
 
 
-
+| Attempt | #1 | #2 | #3 | #4 | #5 | #6 | #7 | #8 | #9 | #10 | #11 | #12 |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| Seconds | 301 | 283 | 290 | 286 | 289 | 285 | 287 | 287 | 272 | 276 | 269 | 254 |
 
 
 
