@@ -3188,8 +3188,6 @@ Accounting for PVT variations is crucial for robust and reliable chip design.
 |ss_n40C_1v76|	0.00544834|	-0.0055871|
 |tt_025C_1v80|	0.198813|	-0.184026|
 |tt_100C_1v80|	0.00269318|	-0.179197|
-![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/5e6fd5fc-9d2f-4372-81d3-dcd700f9ed29)
-
 
 
 
