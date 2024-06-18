@@ -3276,6 +3276,9 @@ Accounting for PVT variations is crucial for robust and reliable chip design.
 
 #### Physical Design Flow :
 
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/025b0f94-2fec-4585-8868-458af7c61506)
+
+
 Physical Design is the process of translating the gate level netlist into a physical layout. This physical layout consists of various metal shapes and sizes which can be drawn onto masks and manufactured on the 
 silicon wafer.
 
@@ -3335,7 +3338,13 @@ fabrication specified rules and can be easily manufactured. Various checks that 
 * Antenna check
 * EM (Electromigration Analysis)
 
-* Once the physical verification is done, the layout is streamed out in the form of a GDSII or OASIS file for fabrication which is called **design tapeout**.
+Once the physical verification is done, the layout is streamed out in the form of a GDSII or OASIS file for fabrication which is called **design tapeout**.
+
+
+
+
+
+
 
 
 
