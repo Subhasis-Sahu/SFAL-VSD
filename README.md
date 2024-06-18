@@ -3265,6 +3265,12 @@ Accounting for PVT variations is crucial for robust and reliable chip design.
 
 
 
+</details>
+
+<details>
+
+<summary>Day 15 - Floorplanning & Power Planning of BabySoC</summary>
+
 
 
 
