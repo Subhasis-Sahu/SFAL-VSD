@@ -3274,7 +3274,68 @@ Accounting for PVT variations is crucial for robust and reliable chip design.
 <summary>Day 15 - Floorplanning & Power Planning of BabySoC</summary>
 
 
+#### Physical Design Flow :
 
+Physical Design is the process of translating the gate level netlist into a physical layout. This physical layout consists of various metal shapes and sizes which can be drawn onto masks and manufactured on the 
+silicon wafer.
+
+The Physical Design process can be broken down into multiple stages as illustrated below. It is often an iterative process where a number of optimizations are performed at each step to meet the design performance, area & power requirements.
+
+**Floorplanning** :
+
+Floorplanning is the first step of physical design. The design is first partitioned into various smaller subsystems based on the system architecture and design requirements.  Floorplanning determines the aspect 
+ratio and area of the layout. Here we create the placement rows for standard cells and fix the placement of I/Os around the boundary. Any macros in the design are also placed during the floorplan stage.
+
+**Power planning** is also typically done during floorplanning. The power grid network is created to distribute power to all the std cells rows, macros and all other components of the design. If there are any 
+special IPs being used in the design then all the IP integration guidelines are also considered in floorplanning.
+
+A good floorplan is very critical to the overall quality of your design.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a7840b37-9a89-4e92-89d5-71db9e1594b2)
+ 
+
+**Logic Placement** :
+
+In this stage all the standard cells in the design are placed and assigned a legal location. After the placement EDA tools performs a number of optimizations to improve placement and congestion. A bad placement 
+might lead to larger area utilization and timing issues.
+
+EDA tools also use timing driven placement algorithms to optimize the placement while considering the timing requirements of the design.
+
+ 
+
+**Clock Tree Synthesis** :
+
+During the Floorplanning & placement stage, the clock is considered as an ideal network. The optimizations in the placement stage are performed based on the assumption of an ideal clock reaching to all flops at 
+the same time. In CTS, a clock network is created to distribute the clock to all flops. This clock tree is built using buffers or inverters along the clock paths of design in order to achieve zero/minimum skew 
+based on design requirement. A good quality clock network is very crucial to meet the timing requirements of the design.
+
+**Routing** :
+
+Once all the standard cells are legally placed and the clock network is synthesized, all the connecting data nets need to be laid out on the metal layers. This is done during the routing stage. After routing all the nets, a number of optimizations are performed based on the design timing requirements and analysis.
+
+ 
+
+**Timing Analysis & Signoff** :
+
+After the design Routing, static timing analysis is performed on the design. This step is critical to analyze the performance of the design. During STA, we break down the design into timing paths and calculate 
+the signal propagation delay along each path. Then each path is checked for violations of timing constraints. If any path is violated then these violations need to be addressed before signing off on the design.
+
+The timing signoff ensures that all the design elements are meeting the specified timing requirements and the design is working at the desired frequency.
+
+ 
+
+**Physical Verification & Signoff** :
+
+After the routing is completed, the layout must be completely verified to ensure its correct electrical and logical functionality. The physical verification signoff ensures that the design meets all the 
+fabrication specified rules and can be easily manufactured. Various checks that are performed at this stage includes :
+
+* DRC (Design Rule Check)
+* LVS (Layout Vs Schematic)
+* ERC (Electrical Rule Check)
+* Antenna check
+* EM (Electromigration Analysis)
+
+* Once the physical verification is done, the layout is streamed out in the form of a GDSII or OASIS file for fabrication which is called **design tapeout**.
 
 
 
