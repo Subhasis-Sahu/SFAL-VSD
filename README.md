@@ -3341,7 +3341,19 @@ fabrication specified rules and can be easily manufactured. Various checks that 
 Once the physical verification is done, the layout is streamed out in the form of a GDSII or OASIS file for fabrication which is called **design tapeout**.
 
 
+#### Floorplanning Theory :
 
+
+
+
+
+#### Lab - Floorplanning of VSDBabySoC :
+
+* **Downloading Physical design Collaterals :**
+
+* `git clone https://github.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/tree/master` - to download all Technology file (`.techlef`) for skywater130nm pdk and all the `.lef` files for all standard cells.
+* `git clone https://github.com/bharath19-gs/synopsys_ICC2flow_130nm` - to download Technology file (`.tf`) for skywater130nm pdk and RC Tech file (parasitics file) in `.itf` format for the PDK.
+* `git clone https://github.com/kunalg123/icc2_workshop_collaterals` - to download all the scripts to setup and run Physical Design flow in ICC2 Compiler tool.
 
 
 
