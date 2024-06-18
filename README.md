@@ -3261,7 +3261,9 @@ Accounting for PVT variations is crucial for robust and reliable chip design.
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/21b91919-8647-407f-9a05-a44be48e34be)
 
-
+* Hence fromm analysing the data from above table , the following two PVT corners were selected for multi-mode multi corner analysis for our BabySoC design :
+    * `ff_n40C_1v95` - PVT corner for hold analysis (Worst WHS observed)
+    * `ss_n40C_1v28` - PVT corner for setup analysis (Worst WNS observed)
 
 
 
