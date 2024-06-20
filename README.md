@@ -3343,36 +3343,13 @@ Once the physical verification is done, the layout is streamed out in the form o
 
 #### What is Floorplanning? :
 
-Floorplanning in VLSI (Very Large Scale Integration) is the process of arranging and placing the various functional blocks or modules of an integrated circuit (IC) design on the available chip area. 
+In VLSI design, **Floorplanning** is a crucial step in physical design that involves placing blocks and macros in the chip or core area.
 
-The key objectives of floorplanning are:
+The primary objectives of floorplanning are to minimize area, timing, wire length, and power consumption while ensuring easy routing and reliability.
 
-1. Minimize the overall chip area: The floorplan should optimize the placement of blocks to minimize the total chip area required.
+Here are the key aspects of floorplanning:
 
-2. Improve performance: The floorplan should minimize the interconnect lengths between communicating blocks to reduce signal delays and improve the overall performance of the chip.
-
-3. Facilitate routing: The floorplan should create a layout that makes the subsequent routing phase easier and more efficient.
-
-The main steps involved in the floorplanning process are:
-
-1. Defining the chip/core size and aspect ratio: Determining the overall dimensions of the chip based on the design requirements.
-
-2. I/O pin placement: Placing the input/output pins around the chip periphery.
-
-3. Macro placement: Positioning the large pre-designed functional blocks (macros) within the chip area.
-
-4. Power planning: Designing the power distribution network to provide power to all the blocks.
-
-5. Standard cell row creation: Defining the regions for placing the smaller standard cell logic.
-
-6. Blockage definition: Reserving areas for special purposes like clock trees, test structures, etc.
-
-![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/7c735fc4-a7a5-43e5-b0b5-053aae3a0876)
-
-
-A good floorplan can significantly impact the overall quality, performance, and power consumption of the final VLSI chip design. It is an iterative process that involves trade-offs between various design constraints and objectives.
-
-Inputs for Floorplanning :
+#### Inputs for Floorplanning :
 
 * Gate level netlist (.v)
 * Physical & Logical Libraries. (.lefs & .libs for all standard cell,macros,IO Pads etc.)
@@ -3382,13 +3359,14 @@ Inputs for Floorplanning :
 * Physical Partitioning information of the design.
 * Floorplanning Parameters like height,width,aspect ratio etc.
 
-Outputs of Floorplanning :
 
-* Die/Core area
-* I/O pad location
-* Placed macros location
-* Power grid design
-* Blockages (Placement) defined
+### Outputs of Floorplanning
+1. **Die/Core Area**: The physical description of the ASIC design.
+2. **IO Pad Information**: The placement of I/O pins.
+3. **Placed Macros Information**: The placement of macros.
+4. **Standard Cell Placement Areas**: The areas where standard cells are placed.
+5. **Power Grid Design**: The power distribution plan.
+6. **Blockages**: The defined regions where cells cannot be placed.
 
 Sources:
 
@@ -3399,8 +3377,58 @@ Sources:
 5) https://vlsitutor.com/nots/introduction-to-floorplan/
 
 
+#### Types of floorplan techniques used in Full Chip plan :
+
+1. **Abutted Floorplan**: This technique involves channel-less placement of blocks, where there is no gap between the blocks.
+2. **Non-Abutted Floorplan**: In this technique, blocks are placed with a gap between them, and connections are made through routing nets.
+3. **Mix of Both**: This approach combines abutted and non-abutted techniques, using both channels and direct connections.
+   
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/aed37295-7821-4c80-9e6d-8bd190b8faa0)
 
 
+### Floorplan Control Parameters
+1. **Aspect Ratio**: The ratio of the height to the width of the chip, which affects routing resources and congestion[1][3].
+2. **Core Utilization**: The percentage of the core area occupied by standard cells, macros, and blockages[1][3].
+
+### Floorplan Steps
+1. **Define Width and Height**: Determine the size of the core and die.
+2. **IO Pin Placement**: Place I/O pins at the boundary of the chip.
+3. **Power Planning**: Plan the power grid and power distribution.
+4. **Macro Placement**: Place macros manually using flylines.
+5. **Standard Cell Row Creation**: Create areas for standard cell placement.
+6. **Blockages**: Define blockages to ensure proper placement and routing.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/7c735fc4-a7a5-43e5-b0b5-053aae3a0876)
+
+### Key Terms
+1. **Standard Cell Row**: The area where standard cells are placed, divided into rows with varying heights[2].
+2. **Flylines**: Virtual connections between macros and IO pads, helping in logical placement and reducing routing resources[2].
+3. **Halo (Keep Out Margin)**: The region around fixed macros where other macros and standard cells cannot be placed[2].
+
+
+### Issues with Bad Floorplanning
+1. **Area and Power Consumption**: A bad floorplan can increase the area and power consumption of the chip.
+2. **Reliability**: It can affect the reliability of the chip.
+3. **Timing Closure**: A bad floorplan can make timing closure difficult.
+
+### Qualifying a Good Floorplan
+1. **Meet Timing and Congestion Constraints**: Ensure that the floorplan meets timing and congestion constraints.
+2. **Optimize Area and Power**: Optimize the area and power consumption of the chip.
+3. **Ensure Routing and Placement**: Ensure that the floorplan allows for easy routing and placement.
+
+### Automatic Floorplan Options
+1. **Automatic Macro Placement**: Most PnR tools provide automatic floorplan options, but these may not always produce optimal results[3].
+
+### Macro Placement Tips
+1. **Understand Pins and Orientation**: Understand the pin requirements and orientation of macros.
+2. **Follow Data Flow**: Place macros following the data flow and hierarchy.
+3. **Ensure Proper Orientation**: Ensure that all macro pins point towards the core logic.
+4. **Channel Size**: Ensure that channels between macros are large enough for routing and power grids[3].
+
+### Blockages
+1. **Soft Blockages**: Partial blockages that can be removed during placement.
+2. **Hard Blockages**: Permanent blockages that cannot be removed.
+3. **Partial Blockages**: Blockages that can be removed during placement but are used to prevent congestion[4].
 
 
 #### Lab - Floorplanning of VSDBabySoC :
