@@ -3392,11 +3392,11 @@ Outputs of Floorplanning :
 
 Citations:
 
-1 [](https://www.vlsisystemdesign.com/floorplanning/)
-[2](https://www.vlsi4freshers.com/2020/01/floorplanning.html)
-[3](https://www.physicaldesign4u.com/2019/12/floorplanning-floor-planning-is-art-of.html)
-[4](http://vlsibegin.blogspot.com/p/floorplanning_7.html)
-[5](https://vlsitutor.com/nots/introduction-to-floorplan/)
+1 (https://www.vlsisystemdesign.com/floorplanning/)
+2 (https://www.vlsi4freshers.com/2020/01/floorplanning.html)
+3 (https://www.physicaldesign4u.com/2019/12/floorplanning-floor-planning-is-art-of.html)
+4 (http://vlsibegin.blogspot.com/p/floorplanning_7.html)
+5 (https://vlsitutor.com/nots/introduction-to-floorplan/)
 
 
 
