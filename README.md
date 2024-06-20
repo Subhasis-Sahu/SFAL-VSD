@@ -3262,8 +3262,8 @@ Accounting for PVT variations is crucial for robust and reliable chip design.
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/21b91919-8647-407f-9a05-a44be48e34be)
 
 * Hence fromm analysing the data from above table , the following two PVT corners were selected for multi-mode multi corner analysis for our BabySoC design :
-    * `ff_n40C_1v95` - PVT corner for hold analysis (Worst WHS observed)
-    * `ss_n40C_1v28` - PVT corner for setup analysis (Worst WNS observed)
+    * `ff_n40C_1v95` - PVT corner for hold analysis (Worst WHS observed).
+    * `ss_n40C_1v28` - PVT corner for setup analysis (Worst WNS observed).
 
 
 
@@ -3341,7 +3341,63 @@ fabrication specified rules and can be easily manufactured. Various checks that 
 Once the physical verification is done, the layout is streamed out in the form of a GDSII or OASIS file for fabrication which is called **design tapeout**.
 
 
-#### Floorplanning Theory :
+#### What is Floorplanning? :
+
+Floorplanning in VLSI (Very Large Scale Integration) is the process of arranging and placing the various functional blocks or modules of an integrated circuit (IC) design on the available chip area. 
+
+The key objectives of floorplanning are:
+
+1. Minimize the overall chip area: The floorplan should optimize the placement of blocks to minimize the total chip area required.
+
+2. Improve performance: The floorplan should minimize the interconnect lengths between communicating blocks to reduce signal delays and improve the overall performance of the chip.
+
+3. Facilitate routing: The floorplan should create a layout that makes the subsequent routing phase easier and more efficient.
+
+The main steps involved in the floorplanning process are:
+
+1. Defining the chip/core size and aspect ratio: Determining the overall dimensions of the chip based on the design requirements.
+
+2. I/O pin placement: Placing the input/output pins around the chip periphery.
+
+3. Macro placement: Positioning the large pre-designed functional blocks (macros) within the chip area.
+
+4. Power planning: Designing the power distribution network to provide power to all the blocks.
+
+5. Standard cell row creation: Defining the regions for placing the smaller standard cell logic.
+
+6. Blockage definition: Reserving areas for special purposes like clock trees, test structures, etc.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/7c735fc4-a7a5-43e5-b0b5-053aae3a0876)
+
+
+A good floorplan can significantly impact the overall quality, performance, and power consumption of the final VLSI chip design. It is an iterative process that involves trade-offs between various design constraints and objectives.
+
+Inputs for Floorplanning :
+
+* Gate level netlist (.v)
+* Physical & Logical Libraries. (.lefs & .libs for all standard cell,macros,IO Pads etc.)
+* Synopsys design constraints (.sdc).
+* RC Tech File (TLU+ file) - to determine RC values of interconnect layers/metal layers of technology node used in our design, and hence provide RC values for computation of wire delays.
+* Technology File (.tf).
+* Physical Partitioning information of the design.
+* Floorplanning Parameters like height,width,aspect ratio etc.
+
+Outputs of Floorplanning :
+
+* Die/Core area
+* I/O pad location
+* Placed macros location
+* Power grid design
+* Blockages (Placement) defined
+
+Citations:
+
+[1](https://www.vlsisystemdesign.com/floorplanning/)
+[2](https://www.vlsi4freshers.com/2020/01/floorplanning.html)
+[3](https://www.physicaldesign4u.com/2019/12/floorplanning-floor-planning-is-art-of.html)
+[4](http://vlsibegin.blogspot.com/p/floorplanning_7.html)
+[5](https://vlsitutor.com/nots/introduction-to-floorplan/)
+
 
 
 
