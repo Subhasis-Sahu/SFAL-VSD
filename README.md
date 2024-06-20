@@ -3387,8 +3387,8 @@ Sources:
 
 
 ### Floorplan Control Parameters
-1. **Aspect Ratio**: The ratio of the height to the width of the chip, which affects routing resources and congestion[1][3].
-2. **Core Utilization**: The percentage of the core area occupied by standard cells, macros, and blockages[1][3].
+1. **Aspect Ratio**: The ratio of the height to the width of the chip, which affects routing resources and congestion.
+2. **Core Utilization**: The percentage of the core area occupied by standard cells, macros, and blockages.
 
 ### Floorplan Steps
 1. **Define Width and Height**: Determine the size of the core and die.
@@ -3401,9 +3401,9 @@ Sources:
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/7c735fc4-a7a5-43e5-b0b5-053aae3a0876)
 
 ### Key Terms
-1. **Standard Cell Row**: The area where standard cells are placed, divided into rows with varying heights[2].
-2. **Flylines**: Virtual connections between macros and IO pads, helping in logical placement and reducing routing resources[2].
-3. **Halo (Keep Out Margin)**: The region around fixed macros where other macros and standard cells cannot be placed[2].
+1. **Standard Cell Row**: The area where standard cells are placed, divided into rows with varying heights.
+2. **Flylines**: Virtual connections between macros and IO pads, helping in logical placement and reducing routing resources.
+3. **Halo (Keep Out Margin)**: The region around fixed macros where other macros and standard cells cannot be placed.
 
 
 ### Issues with Bad Floorplanning
@@ -3417,18 +3417,18 @@ Sources:
 3. **Ensure Routing and Placement**: Ensure that the floorplan allows for easy routing and placement.
 
 ### Automatic Floorplan Options
-1. **Automatic Macro Placement**: Most PnR tools provide automatic floorplan options, but these may not always produce optimal results[3].
+1. **Automatic Macro Placement**: Most PnR tools provide automatic floorplan options, but these may not always produce optimal results.
 
 ### Macro Placement Tips
 1. **Understand Pins and Orientation**: Understand the pin requirements and orientation of macros.
 2. **Follow Data Flow**: Place macros following the data flow and hierarchy.
 3. **Ensure Proper Orientation**: Ensure that all macro pins point towards the core logic.
-4. **Channel Size**: Ensure that channels between macros are large enough for routing and power grids[3].
+4. **Channel Size**: Ensure that channels between macros are large enough for routing and power grids.
 
 ### Blockages
 1. **Soft Blockages**: Partial blockages that can be removed during placement.
 2. **Hard Blockages**: Permanent blockages that cannot be removed.
-3. **Partial Blockages**: Blockages that can be removed during placement but are used to prevent congestion[4].
+3. **Partial Blockages**: Blockages that can be removed during placement but are used to prevent congestion.
 
 
 #### Lab - Floorplanning of VSDBabySoC :
