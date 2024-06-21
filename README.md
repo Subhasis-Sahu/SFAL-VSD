@@ -3435,9 +3435,222 @@ Sources:
 
 * **Downloading Physical design Collaterals :**
 
-* `git clone https://github.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/tree/master` - to download all Technology file (`.techlef`) for skywater130nm pdk and all the `.lef` files for all standard cells.
-* `git clone https://github.com/bharath19-gs/synopsys_ICC2flow_130nm` - to download Technology file (`.tf`) for skywater130nm pdk and RC Tech file (parasitics file) in `.itf` format for the PDK.
-* `git clone https://github.com/kunalg123/icc2_workshop_collaterals` - to download all the scripts to setup and run Physical Design flow in ICC2 Compiler tool.
+    * `git clone https://github.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/tree/master` - to download all Technology file (`.techlef`) for skywater130nm pdk and all the `.lef` files for all standard cells.
+    * `git clone https://github.com/bharath19-gs/synopsys_ICC2flow_130nm` - to download Technology file (`.tf`) for skywater130nm pdk and RC Tech file (parasitics file) in `.itf` format for the PDK.
+    * `git clone https://github.com/kunalg123/icc2_workshop_collaterals` - to download all the scripts to setup and run Physical Design flow in ICC2 Compiler tool.
+
+**SDC Constraints Used for Synthesis :**
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/d4e89316-d137-451c-a79d-5e03c07ae5b2)
+
+**QoR report :**
+
+    Information: Updating design information... (UID-85)
+     
+    ****************************************
+    Report : qor
+    Design : vsdbabysoc
+    Version: T-2022.03-SP5-6
+    Date   : Fri Jun 21 14:39:04 2024
+    ****************************************
+    
+    
+      Timing Path Group 'clk'
+      -----------------------------------
+      Levels of Logic:              39.00
+      Critical Path Length:          9.37
+      Critical Path Slack:           0.03
+      Critical Path Clk Period:     10.00
+      Total Negative Slack:          0.00
+      No. of Violating Paths:        0.00
+      Worst Hold Violation:         -0.18
+      Total Hold Violation:        -28.27
+      No. of Hold Violations:      585.00
+      -----------------------------------
+    
+      Timing Path Group 'default'
+      -----------------------------------
+      Levels of Logic:               1.00
+      Critical Path Length:          0.87
+      Critical Path Slack:           9.13
+      Critical Path Clk Period:       n/a
+      Total Negative Slack:          0.00
+      No. of Violating Paths:        0.00
+      Worst Hold Violation:          0.00
+      Total Hold Violation:          0.00
+      No. of Hold Violations:        0.00
+      -----------------------------------
+    
+    
+      Cell Count
+      -----------------------------------
+      Hierarchical Cell Count:          1
+      Hierarchical Port Count:         12
+      Leaf Cell Count:               2743
+      Buf/Inv Cell Count:             578
+      Buf Cell Count:                   2
+      Inv Cell Count:                 576
+      CT Buf/Inv Cell Count:            0
+      Combinational Cell Count:      2067
+      Sequential Cell Count:          676
+      Macro Count:                      0
+      -----------------------------------
+    
+    
+      Area
+      -----------------------------------
+      Combinational Area:    11407.190234
+      Noncombinational Area: 13532.978775
+      Buf/Inv Area:           2169.580732
+      Total Buffer Area:             7.51
+      Total Inverter Area:        2162.07
+      Macro/Black Box Area:      0.000000
+      Net Area:                  0.000000
+      -----------------------------------
+      Cell Area:             24940.169009
+      Design Area:           24940.169009
+    
+    
+      Design Rules
+      -----------------------------------
+      Total Number of Nets:          2763
+      Nets With Violations:             0
+      Max Trans Violations:             0
+      Max Cap Violations:               0
+      -----------------------------------
+    
+    
+      Hostname: sfalvsd
+    
+      Compile CPU Statistics
+      -----------------------------------------
+      Resource Sharing:                    5.01
+      Logic Optimization:                  3.67
+      Mapping Optimization:                3.90
+      -----------------------------------------
+      Overall Compile Time:               34.67
+      Overall Compile Wall Clock Time:    35.32
+    
+      --------------------------------------------------------------------
+    
+      Design  WNS: 0.00  TNS: 0.00  Number of Violating Paths: 0
+    
+    
+      Design (Hold)  WNS: 0.18  TNS: 28.27  Number of Violating Paths: 585
+    
+      --------------------------------------------------------------------
+
+**Area Report :**
+
+     
+    ****************************************
+    Report : area
+    Design : vsdbabysoc
+    Version: T-2022.03-SP5-6
+    Date   : Fri Jun 21 14:39:04 2024
+    ****************************************
+    
+    Library(s) Used:
+    
+        sky130_fd_sc_hd__tt_025C_1v80 (File: /home/subhasis/VSDBabySoC/src/lib/sky130_fd_sc_hd__tt_025C_1v80.db)
+        avsddac (File: /home/subhasis/VSDBabySoC/src/lib/avsddac.db)
+        avsdpll (File: /home/subhasis/VSDBabySoC/src/lib/avsdpll.db)
+    
+    Number of ports:                           19
+    Number of nets:                          2775
+    Number of cells:                         2744
+    Number of combinational cells:           2065
+    Number of sequential cells:               676
+    Number of macros/black boxes:               2
+    Number of buf/inv:                        578
+    Number of references:                       4
+    
+    Combinational area:              11407.190234
+    Buf/Inv area:                     2169.580732
+    Noncombinational area:           13532.978775
+    Macro/Black Box area:                0.000000
+    Net Interconnect area:      undefined  (Wire load has zero net area)
+    
+    Total cell area:                 24940.169009
+    Total area:                 undefined
+    1
+
+Power Report :
+
+     
+    ****************************************
+    Report : power
+            -analysis_effort low
+    Design : vsdbabysoc
+    Version: T-2022.03-SP5-6
+    Date   : Fri Jun 21 14:39:04 2024
+    ****************************************
+    
+    
+    Library(s) Used:
+    
+        sky130_fd_sc_hd__tt_025C_1v80 (File: /home/subhasis/VSDBabySoC/src/lib/sky130_fd_sc_hd__tt_025C_1v80.db)
+        avsddac (File: /home/subhasis/VSDBabySoC/src/lib/avsddac.db)
+        avsdpll (File: /home/subhasis/VSDBabySoC/src/lib/avsdpll.db)
+    
+    
+    Operating Conditions: tt_025C_1v80   Library: sky130_fd_sc_hd__tt_025C_1v80
+    Wire Load Model Mode: top
+    
+    Design        Wire Load Model            Library
+    ------------------------------------------------
+    vsdbabysoc             Small             sky130_fd_sc_hd__tt_025C_1v80
+    
+    
+    Global Operating Voltage = 1.8  
+    Power-specific unit information :
+        Voltage Units = 1V
+        Capacitance Units = 1.000000pf
+        Time Units = 1ns
+        Dynamic Power Units = 1mW    (derived from V,C,T units)
+        Leakage Power Units = 1nW
+    
+    
+    Attributes
+    ----------
+    i - Including register clock pin internal power
+    
+    
+      Cell Internal Power  =   2.8495 mW   (83%)
+      Net Switching Power  = 592.4229 uW   (17%)
+                             ---------
+    Total Dynamic Power    =   3.4419 mW  (100%)
+    
+    Cell Leakage Power     =   8.0225 nW
+    
+    
+                     Internal         Switching           Leakage            Total
+    Power Group      Power            Power               Power              Power   (   %    )  Attrs
+    --------------------------------------------------------------------------------------------------
+    io_pad             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+    memory             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+    black_box          0.0000            0.4454            0.0000            0.4454  (  12.94%)
+    clock_network      2.7524            0.0000            0.0000            2.7524  (  79.97%)  i
+    register       4.6345e-02        2.0562e-02            5.4668        6.6912e-02  (   1.94%)
+    sequential         0.0000            0.0000            0.0000            0.0000  (   0.00%)
+    combinational  5.0792e-02            0.1265            2.5557            0.1773  (   5.15%)
+    --------------------------------------------------------------------------------------------------
+    Total              2.8495 mW         0.5924 mW         8.0225 nW         3.4419 mW
+    1
+
+VSDBabySoC Schematic :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/28a8404a-7087-4c17-a5d6-f86207af0282)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a77ad395-da54-4a90-a04b-ebe0a1dc015a)
+
+RVMYTH Core Schematic :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/63ee3939-b705-4cce-aa72-c73a39cc9c0d)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/39d5bcbd-fda7-46e8-9344-c5736353ac70)
+
+
 
 
 
