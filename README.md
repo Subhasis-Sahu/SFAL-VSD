@@ -3438,6 +3438,34 @@ Sources:
     * `git clone https://github.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/tree/master` - to download all Technology file (`.techlef`) for skywater130nm pdk and all the `.lef` files for all standard cells.
     * `git clone https://github.com/bharath19-gs/synopsys_ICC2flow_130nm` - to download Technology file (`.tf`) for skywater130nm pdk and RC Tech file (parasitics file) in `.itf` format for the PDK.
     * `git clone https://github.com/kunalg123/icc2_workshop_collaterals` - to download all the scripts to setup and run Physical Design flow in ICC2 Compiler tool.
+ 
+* The Interconnect Technology Format (ITF) file is a critical component in the physical design of integrated circuits (ICs). Here is a concise summary of what the ITF file contains and how it is used:
+
+The ITF file provides a detailed description of the process technology, including the physical attributes of the conductor and dielectric layers. Specifically, it specifies:
+
+* The thickness, minimum width, and minimum spacing of each conductor layer.
+* The sheet resistance (RPSQ) of each conductor layer.
+* The thickness and dielectric constant (ER) of each dielectric layer.
+* The resistivity (RHO) and area (AREA) of each via layer.
+
+This information is used to accurately model the parasitic resistance and capacitance (RC) of the interconnect in the design. 
+
+The ITF file is a critical input for parasitic extraction tools to generate the RC parasitics needed for timing, signal integrity, power, and reliability analysis.
+
+Additionally, the ITF file can be used to generate TLU+ files, which are another important technology file used in physical design.
+
+To convert `.itf` file to `.tluplus` format,perform the following steps :
+
+    1) cd `/home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/itf_files`
+    2) In Linux Terminal,
+        grdgenxo -itf2TLUPlus -i skywater130.nominal.itf -o skywater130.nominal.tluplus # to generate TLUplus RC Tech file from .itf file format using StarRC tool.
+
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/123f1f0e-6005-4579-82a4-24af99682e49)
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/69e83696-1ab6-4747-b580-2f9674cbde7a)
+
+
 
 **SDC Constraints Used for Synthesis :**
 
@@ -3649,6 +3677,8 @@ RVMYTH Core Schematic :
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/63ee3939-b705-4cce-aa72-c73a39cc9c0d)
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/39d5bcbd-fda7-46e8-9344-c5736353ac70)
+
+
 
 
 
