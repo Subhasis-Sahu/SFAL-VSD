@@ -3714,14 +3714,13 @@ RVMYTH Core Schematic :
 
 Collaterals can be setup in the following files present in this path `/home/subhasis/VSDBabySoC/scripts/PD_flow/` :
 
-compile_pg_example.tcl 
-init_design.mcmm_example.auto_expanded.tcl
-init_design.read_parasitic_tech_example.tcl
-init_design.tech_setup.tcl
-
-pns_example.tcl
-top.tcl
-write_block_data.tcl
+* compile_pg_example.tcl
+* init_design.mcmm_example.auto_expanded.tcl
+* init_design.read_parasitic_tech_example.tcl
+* init_design.tech_setup.tcl
+* pns_example.tcl
+* top.tcl
+* write_block_data.tcl
 
 ICC2 Screenshot after floorplanning & Powerplanning :
 
