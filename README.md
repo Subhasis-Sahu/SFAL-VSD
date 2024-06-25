@@ -3430,6 +3430,39 @@ Sources:
 2. **Hard Blockages**: Permanent blockages that cannot be removed.
 3. **Partial Blockages**: Blockages that can be removed during placement but are used to prevent congestion.
 
+#### What is Power Planning ?
+
+Power planning in VLSI design is the process of creating a power distribution network (PDN) to provide power to all the components of the chip, including macros, standard cells, and other cells. The main objectives of power planning are:
+
+1. **Maintain a stable voltage** across the chip with minimal noise.
+2. **Avoid electromigration** and self-heating issues.
+3. **Consume minimal chip area and wiring resources**
+4. **Meet IR drop budget targets** for reliable operation.
+
+The key steps in power planning are:
+
+1. **Calculating the number of power pins required**, based on the total power consumption of the chip.
+2. **Determining the number of power rings, stripes, and rails** needed to distribute power uniformly.
+3. **Sizing the width of power rings and stripes** to handle the required current.
+4. **Analyzing IR drop** and taking measures to keep it within acceptable limits.
+
+The power distribution hierarchy consists of:
+
+1. **Power pads** that bring power from outside the chip.
+2. **Power rings** around the core area.
+3. **Power stripes** that distribute power horizontally and vertically across the core.
+4. **Power rails** that connect the power stripes to the standard cells.
+
+Power planning is typically done during the floorplanning stage, before signal routing. It involves creating a power mesh using the top metal layers, which have lower resistance compared to lower metal layers. 
+
+The power mesh is connected to the standard cells through power rails.
+
+Proper power planning is critical in modern VLSI designs to ensure reliable operation and meet power budget constraints, especially in deep sub-micron technologies where power has become a primary concern over 
+area and performance.
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/885628b2-ad44-468e-b2cd-aaed55df3199)
+
+
 
 #### Lab - Floorplanning of VSDBabySoC :
 
@@ -3678,6 +3711,21 @@ RVMYTH Core Schematic :
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/39d5bcbd-fda7-46e8-9344-c5736353ac70)
 
+
+Collaterals can be setup in the following files present in this path `/home/subhasis/VSDBabySoC/scripts/PD_flow/` :
+
+compile_pg_example.tcl 
+init_design.mcmm_example.auto_expanded.tcl
+init_design.read_parasitic_tech_example.tcl
+init_design.tech_setup.tcl
+
+pns_example.tcl
+top.tcl
+write_block_data.tcl
+
+ICC2 Screenshot after floorplanning & Powerplanning :
+
+![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/27d8f8ed-9147-4592-940f-5f1837397b9d)
 
 
 
