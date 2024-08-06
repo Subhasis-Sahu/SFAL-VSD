@@ -1,0 +1,136 @@
+****************************************
+ Report : check_design
+ Options: { dp_pre_pin_placement }
+ Design : vsdbabysoc
+ Version: T-2022.03-SP5
+ Date   : Tue Jul  2 12:52:14 2024
+****************************************
+
+Running atomic-check 'dp_pre_pin_placement'
+Start checking for pin placement ...
+-------------------- Start Of Pin Constraints Check --------------------
+
+Checking for Pin Constraints
+Warning: Didn't find any enabled planning block for place_pins. (DPPA-268)
+-------------------- Start Of MIB Pin Placement Check --------------------
+
+Checking for MIB Pin Placement
+Warning: Didn't find any enabled planning block for check_mib_for_pin_placement. (DPPA-268)
+-------------------- Start Of Swapped Connection Check --------------------
+
+Checking for Swapped Connections
+
+--------------------- End Of Swapped Connection Check ---------------------
+
+-------------------- Start Of Top Level Terminal Check --------------------
+
+MIBs absent, not checking top level terminals.
+--------------------- End Of Top Level Terminal Check ---------------------
+
+-------------------- Start Of Logical Asymmetry Check ---------------------
+
+MIBs absent, not checking for asymmetrical connections.
+--------------------- End Of Logical Asymmetry Check ----------------------
+
+-------------------- End Of MIB Pin Placement Check --------------------
+
+-------------------- Start of Pre Pin Placement Check --------------------
+
+      ************** Start of Block Pin Check **************      
+
+0 total number of edges loaded
+0 total number of pre-routes loaded
+0 total number of vias loaded
+----------------------- Start Of Off Edge Pin Check -----------------------
+------------------------ End Of Off Edge Pin Check ------------------------
+
+------------------ Start Of Potential Unalignment Check -------------------
+------------------- End Of Potential Unalignment Check --------------------
+
+----------------------- Start Of Pin Blockage Check -----------------------
+------------------------ End Of Pin Blockage Check ------------------------
+
+-------------------- Start Of Pin Corner KeepOut Check --------------------
+--------------------- End Of Pin Corner KeepOut Check ---------------------
+
+------------------- Start Of Pin Pre-Route Short Check --------------------
+-------------------- End Of Pin Pre-Route Short Check ---------------------
+
+---------------------- Start Of Route Corridor Check ----------------------
+----------------------- End Of Route Corridor Check -----------------------
+
+---------------------- Start Of Bad Constraint Check ----------------------
+----------------------- End Of Bad Constraint Check -----------------------
+
+------------------------ Start Of Bad Tracks Check ------------------------
+------------------------- End Of Bad Tracks Check -------------------------
+
+-------------------- Start Of Ambiguous Bundles Check ---------------------
+--------------------- End Of Ambiguous Bundles Check ----------------------
+
+-------------------- Start Of Bad Block Boundary Check --------------------
+--------------------- End Of Bad Block Boundary Check ---------------------
+
+------------------- Start Of Fixed Pin Alignment Check --------------------
+All numbers cited pertain only to two-connection nets with at least one block connection
+0 total two-connection nets
+0 alignable two-connection nets (0 non-blocked)
+0 unaligned alignable two-connection nets (0 non-blocked)
+0 unaligned unalignable two-connection nets
+0 aligned two-connection nets on different metal layers
+0 aligned two-connection nets on different metal layers (block-block)
+************************* total unaligned nets ***********************
+
+-------------------- End Of Fixed Pin Alignment Check ---------------------
+
+------------------------ Start Of Pin Guide Check -------------------------
+------------------------- End Of Pin Guide Check --------------------------
+
+------------------------ Start Of Pin Short Check -------------------------
+------------------------- End Of Pin Short Check --------------------------
+
+No violation has been found
+      ************** End of Block Pin Check **************      
+
+      ************** Start of TOP Port Check **************      
+
+0 total number of edges loaded
+731 total number of pre-routes loaded
+140 total number of vias loaded
+----------------------- Start Of Off Edge Pin Check -----------------------
+------------------------ End Of Off Edge Pin Check ------------------------
+
+---------------------- Start Of Bad Constraint Check ----------------------
+----------------------- End Of Bad Constraint Check -----------------------
+
+------------------------ Start Of Bad Tracks Check ------------------------
+------------------------- End Of Bad Tracks Check -------------------------
+
+-------------------- Start Of Ambiguous Bundles Check ---------------------
+--------------------- End Of Ambiguous Bundles Check ----------------------
+
+-------------------- Start Of Bad Block Boundary Check --------------------
+Warning: Detected dimension mismatch between the boundary and bbox, for block vsdbabysoc/init_dp in design view. At least one side the block bbox cannot be touched by the block boundary. (DPPA-475)
+--------------------- End Of Bad Block Boundary Check ---------------------
+
+      ************** End of TOP Port Check **************      
+
+-------------------- End of Pre Pin Placement Check --------------------
+
+End checking for pin placement
+
+1
+
+  *** EMS Message summary ***
+  Total 0 EMS messages : 0 errors, 0 warnings, 0 info.
+  ----------------------------------------------------------------------------------------------------
+
+  *** Non-EMS message summary *** 
+  ----------------------------------------------------------------------------------------------------
+   Rule         Type   Count      Message
+  ----------------------------------------------------------------------------------------------------
+      DPPA-268   Warn          2 Didn't find any enabled planning block for %s.
+      DPPA-475   Warn          1 Detected dimension mismatch between the boundary and bbox, for b...
+  ----------------------------------------------------------------------------------------------------
+  Total 3 non-EMS messages : 0 errors, 3 warnings, 0 info.
+  ----------------------------------------------------------------------------------------------------

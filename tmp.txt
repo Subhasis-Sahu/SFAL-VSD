@@ -1,0 +1,1582 @@
+2.  Synopsys Commands                                        Command Reference
+                                fix_eco_timing
+
+NAME
+       fix_eco_timing
+              Fixes  or  improves timing violations through engineering change
+              orders (ECOs).
+
+SYNTAX
+       status fix_eco_timing
+          -type setup | hold
+          [-methods method_list]
+          [-slack_lesser_than slack_limit]
+          [-slack_greater_than slack_limit]
+          [-group group_name]
+          [-pba_mode none | path | exhaustive | ml_exhaustive]
+          [-from from_list]
+          [-to to_list]
+          [-setup_margin margin]
+          [-hold_margin margin]
+          [-buffer_list list]
+          [-verbose]
+          [-current_library]
+          [-ignore_drc]
+          [-cell_type combinational | sequential | clock_network]
+          [-physical_mode none | open_site | occupied_site | freeze_silicon]
+          [-path_selection_options option_string]
+          [-timeout seconds]
+          [-power_attribute power_attribute_name]
+          [-clock_fixes_per_change violation_limit]
+          [-clock_max_level_from_reg level_limit]
+          [-estimate_unfixable_reasons]
+          [-power_mode total | dynamic | leakage]
+          [-leakage_scenario scenario_name]
+          [-dynamic_scenario scenario_name]
+          [-load_cell_list list]
+          [-target_violation_type violation_type]
+          [-wns_limit wns_value]
+          [-unfixable_reasons_format text | csv]
+          [-unfixable_reasons_prefix string]
+
+   Data Types
+       method_list          list
+       slack_limit          float
+       group_name           string
+       from_list            list
+       to_list              list
+       margin               float
+       list                 list
+       option_string        string
+       seconds              integer
+       power_attribute_name string
+       violation_limit      integer
+       level_limit          integer
+       scenario_name        string
+       violation_type       string
+       wns_value            float
+       string               string
+
+ARGUMENTS
+       -type setup | hold
+              Specifies fixing of either setup (maximum delay) or hold  (mini-
+              mum delay) timing violations.
+
+       -methods method_list
+              Specifies one or more fixing methods from the following list:
+
+              o  size_cell  - Replaces cells in the timing path with logically
+                identical cells that have a different drive strength
+              o size_cell_side_load - Same as  size_cell,  but  also  replaces
+                cells  in  the  fanout  of  drivers in the path with logically
+                identical cells to reduce parasitic load capacitance along the
+                path (used only for -type setup fixing)
+              o  insert_buffer - Inserts buffers in the timing path, using the
+                library cells specified by the -buffer_list option
+              o insert_buffer_at_load_pins - Inserts  buffers  in  the  timing
+                path only at load pins, not at driver pins
+              o  insert_buffer_at_driver_pins  - Inserts buffers in the timing
+                path only at driver pins, not at load pins
+              o insert_inverter_pair - Inserts pairs of inverter cells instead
+                of  buffer cells; cannot be used together with the insert_buf-
+                fer method
+              o bypass_buffer - Bypasses buffers or inverter pairs in a  clock
+                network;  can be used only when the clock_network cell type is
+                specified.
+              o remove_buffer - Removes buffers to improve setup timing  with-
+                out introducing or worsening hold timing and DRC violations.
+
+              For setup fixing (-type setup), you can specify either size_cell
+              or size_cell_side_load; the default is size_cell_side_load.  You
+              can   use  the  insert_buffer  method  alone  or  together  with
+              size_cell or size_cell_side_load if the -physical_mode option is
+              set to either open_site or occupied_site; for the freeze_silicon
+              setting, insert_buffer is the only method allowed.
+
+              For hold fixing (-type hold), you can specify one or more of the
+              methods  size_cell,  insert_buffer,  insert_buffer_at_load_pins,
+              and insert_inverter_pair; the default is {size_cell  insert_buf-
+              fer}.  By  default,  the insert_buffer method inserts buffers at
+              both driver and load pins.  To insert buffers only at load pins,
+              use    the   insert_buffer_at_load_pins   option   without   the
+              insert_buffer option.
+
+              The insert_inverter_pair method inserts inverter pairs  both  at
+              driver  and  load pins, choosing from the inverter library cells
+              specified by the -buffer_list option.  This  method  works  well
+              together      with      size_cell      (-methods      {size_cell
+              insert_inverter_pair}).
+
+              The remove_buffer method has the following restrictions:
+
+              o  It  cannot  be  used  with  any  of  the  following  options:
+                -cell_type,         -power_attribute,        -current_library,
+                -load_cell_list, -timeout, -unfixable_reasons_format,  -unfix-
+                able_reasons_prefix, and -power_mode.
+              o  In setup fixing, it cannot be combined with other methods; it
+                must be used by itself.
+              o It cannot be used in hold fixing.
+
+       -slack_lesser_than slack_limit
+              Specifies fixing of only the paths with a slack worse  than  the
+              specified  slack  limit.  The default is zero, which attempts to
+              fix all timing violations.
+
+       -slack_greater_than slack_limit
+              Specifies fixing of only the paths with a slack better than  the
+              specified  slack limit. By default, the command tries to fix all
+              timing violations.  You can use this option to avoid  considera-
+              tion  of  paths with very negative slacks caused by known design
+              problems or constraints, while still  considering  less  extreme
+              violations.
+
+              You  can  combine the -slack_lesser_than and -slack_greater_than
+              options to fix paths that have a slack within a specified range.
+
+       -group group_name
+              Restricts fixing to paths that  belong  to  the  specified  path
+              groups.  By  default, paths are divided into groups according to
+              the clock that captures data at the path endpoint; a path  group
+              is  created  by  each  create_clock command. You can also create
+              path groups explicitly by using the group_path command.  You can
+              specify  multiple  path  groups  by  using a list of group names
+              (wildcards   allowed)   or   a   collection   created   by   the
+              get_path_groups command.
+
+       -pba_mode none | path | exhaustive | ml_exhaustive
+              Specifies one of the following timing analysis modes:
+
+              o  none (the default) - Disables path-based analysis and enables
+                ordinary graph-based analysis. This is the fastest mode.
+              o path - Performs path-based analysis on paths after  they  have
+                been gathered by graph-based analysis, producing more accurate
+                timing results for those paths.
+              o exhaustive - Performs an  exhaustive  path-based  analysis  to
+                determine  the  truly worst-case paths in the design.  This is
+                the most accurate and most computation-intensive mode.
+              o ml_exhaustive - Performs  machine  learning  based  exhaustive
+                path-based analysis. This mechanism will deploy machine learn-
+                ing techniques to trade runtime vs accuracy during the  design
+                flow.   Accuracy  and runtime will match the -pba_mode exhaus-
+                tive option as the design approaches signoff.
+
+              This option works like the -pba_mode option in the report_timing
+              and get_timing_paths commands. The fixing process uses the spec-
+              ified analysis mode to find the timing violations that  need  to
+              be fixed.
+
+       -from from_list
+              Specifies  a list of "from" pins or ports. Only the timing paths
+              that start from the specified objects are considered for fixing.
+
+       -to to_list
+              Specifies a list of "to" pins or ports. Only  the  timing  paths
+              that end at the specified objects are considered for fixing.
+
+              The  -from and -to options are like the options of the same name
+              in the report_timing and get_timing_paths commands, except  that
+              you  can  only  specify pins or ports, not nets or cells, as the
+              objects. The default behavior is to consider all pins and ports,
+              and  to  select  the  path with the worst slack within each path
+              group.
+
+       -setup_margin margin
+              Specifies an additional margin for setup fixing, in library time
+              units.  The default margin is zero. This option affects the tar-
+              get amount of timing slack to achieve during  setup  fixing,  or
+              the  minimum amount of setup margin to maintain during hold fix-
+              ing.  Use  this  option  together  with  the  -slack_lesser_than
+              option,  specifying  a positive slack value, to target fixing of
+              paths with positive slack and obtain the desired margin.
+
+              During setup fixing, a  positive  margin  specifies  overfixing,
+              which  attempts to achieve the specified positive slack value. A
+              negative margin specifies underfixing, which attempts to improve
+              the  timing  and achieve the specified negative slack value. For
+              paths not already selected for setup fixing (by  default,  paths
+              with  zero  or  better slack), there is no attempt to change the
+              path to meet the margin requirement; only paths already targeted
+              for setup fixing are modified.
+
+              During  hold fixing, the tool attempts to preserve the specified
+              setup margin while making changes to fix hold violations.
+
+       -hold_margin margin
+              Specifies an additional margin for hold fixing, in library  time
+              units.  The default margin is zero. This option affects the tar-
+              get amount of timing slack to achieve during hold fixing, or the
+              minimum  amount  of hold margin to maintain during setup fixing.
+              Use this option together  with  the  -slack_lesser_than  option,
+              specifying  a  positive  slack  value, to target fixing of paths
+              with positive slack and obtain the desired margin.
+
+              During hold fixing, a positive hold margin specifies overfixing,
+              which  attempts to achieve the specified positive slack value. A
+              negative margin specifies underfixing, which attempts to improve
+              the  timing  and achieve the specified negative slack value. For
+              paths not already selected for hold fixing  (by  default,  paths
+              with  zero  or  better slack), there is no attempt to change the
+              path to meet the margin requirement; only paths already targeted
+              for hold fixing are modified.
+
+              During setup fixing, the tool attempts to preserve the specified
+              hold margin while making changes to fix setup violations.
+
+              In the absence of explicit setup and hold values provided by the
+              user, the tool tries to preserve DRC and timing by default, how-
+              ever, the results might not match  explicit  settings  of  -set-
+              up_margin 0.0 and -hold_margin 0.0.
+
+       -buffer_list buffer_list
+              Specifies the list of library cell buffers that can be used with
+              the insert_buffer method or inverters that can be used with  the
+              insert_inverter_pair   method.   To  use  the  insert_buffer  or
+              insert_inverter_pair method, you must also use the  -buffer_list
+              option to specify the allowed library cells; there is no default
+              list.
+
+              Specify the list of  buffers  using  simple  library  cell  base
+              names,  without  the  library  name. The command gets the buffer
+              cells from the libraries listed in the  link_path  variable.  It
+              searches  the libraries in order and uses the first library cell
+              found with a matching name.
+
+              The command can use a listed library cell for  buffer  insertion
+              even  if  its  dont_use  attribute  is set to true. The dont_use
+              attribute applies only to cell sizing.
+
+              In hold fixing, if you use -methods  {size_cell  insert_buffer},
+              the  command  can insert a buffer from the list and then size it
+              to a different buffer, even if the sized  library  cell  is  not
+              explicitly included in the -buffer_list list.
+
+       -verbose
+              Shows  additional information during the fixing process. In dis-
+              tributed multi-scenario  analysis,  violation  information  from
+              each scenario is displayed.
+
+              The verbose mode also generates an "Unfixable Violations" report
+              upon  completion  of  fixing  if   the   eco_report_unfixed_rea-
+              son_max_endpoints  variable  is  set  to a positive integer. The
+              report shows a list of pins where  fixing  was  considered,  the
+              reason that the fix was not performed at the pin, and the fixing
+              priority for the pin.  For  details,  see  "Unfixable  Violation
+              Report" in the DESCRIPTION section of this man page. To generate
+              the report without  actually  performing  any  fixing,  use  the
+              -estimate_unfixable_reasons option.
+
+       -current_library
+              Specifies  the usage of library cells from the same library when
+              performing cell sizing. With this option, the  replacement  cell
+              must  come  from  the  same  library  as the original cell. This
+              option can improve runtime because fewer cells are considered as
+              potential  replacements.   However,  it might degrade quality of
+              results because the variety  of  available  alternative  library
+              cells could be reduced.
+
+       -ignore_drc
+              Causes  timing fixing to ignore DRC violations. By default, tim-
+              ing fixing is not performed when there are any existing DRC vio-
+              lations   on  the  path  (max_transition,  max_capacitance,  and
+              max_fanout violations). With this option, the  command  proceeds
+              with  timing fixing without considering DRC violations, possibly
+              worsening those violations.
+
+       -cell_type combinational | sequential | clock_network
+              Specifies the type of cells to be modified for timing fixing:
+
+              o combinational (the default) - Fixing is performed by sizing or
+                inserting combinational logic cells in the data path.
+              o sequential - Fixing is performed by sizing sequential cells to
+                fix violations at the sequential cell's input or  output  pin.
+                Only  the size_cell fixing method (-methods size_cell) is sup-
+                ported for this type of fixing.
+              o clock_network - Fixing is performed by sizing, inserting  com-
+                binational  cells,  or  bypassing  combinational  cells in the
+                clock network, thereby changing clock arrival times.
+
+              You can specify just one of these options, or both combinational
+              and sequential together to fix both cell types simultaneously.
+
+              The   sequential   and   clock_network  type  modifications  can
+              adversely affect clock tree timing, so you should  try  combina-
+              tional  type  fixing first and only apply the other types after-
+              ward if needed.
+
+       -physical_mode none | open_site | occupied_site | freeze_silicon
+              Specifies the usage of physical data to size cells or place buf-
+              fers:
+
+              o none (the default) - Timing fixing does not use physical data.
+                For setup fixing using buffer insertion (-type setup  -methods
+                {insert_buffer  ...}),  you must use physical data by choosing
+                one of the other physical mode options.
+
+              o open_site  - Timing fixing sizes  a  cell  only  if  there  is
+                enough  room  available  around  the cell and inserts a buffer
+                only if there is an empty site with enough room to accept  the
+                new  cell  without  moving nearby cells. This mode retains the
+                placement of existing cells.
+
+              o  occupied_site - Timing fixing can size a cell  and  insert  a
+                buffer  that  overlaps existing neighbor cells, as long as the
+                cell density (area utilization) is low enough that the  nearby
+                cells  can  be  moved  to  make  the required space. After the
+                change is made, you need to use a physical implementation tool
+                such  as  IC Compiler II to move the existing cells and create
+                room for the sized or inserted cell.
+
+              o  freeze_silicon - Timing fixing uses spare  cells  defined  in
+                the  physical  data  files  and  identified  by  the -program-
+                mable_spare_cell_names option of the set_eco_options  command;
+                it does not insert new cells or size existing cells. This mode
+                works with the IC Compiler II  physical  implementation  tool.
+                For details, see "Physically Aware Freeze Silicon Flow" in the
+                DESCRIPTION section.
+
+       -path_selection_options option_string
+              Specifies the path selection options  for  the  get_timing_paths
+              command, which the fix_eco_timing command uses to collect timing
+              paths for fixing.  Because fixing is  performed  only  on  these
+              paths,  to  check  the  quality of results after fixing, use the
+              get_timing_paths or report_timing command with the same options.
+
+              The -path_selection_options option cannot be used together  with
+              the   -from,  -to,  -group,  -pba_mode,  -slack_lesser_than,  or
+              -slack_greater_than options.
+
+              The  -path_selection_options option
+              o Supports only the options of the get_timing_paths command that
+                are relevant to ECO timing fixing.
+              o  Must  be  enclosed with curly braces { } when it contains any
+                collection.
+              o Must explicitly use the -max_paths and  -nworst  options  with
+                values  that  are suitable for timing fixing unless either the
+                -start_end_pair or -cover_design option is used.
+
+       -timeout seconds
+              Specifies a timeout limit, in seconds, that sets a maximum total
+              runtime  for  the  command. At the end of each fixing iteration,
+              the tool checks the total elapsed wall clock time. If  the  time
+              limit  is  reached,  the command stops running and ends with the
+              current iteration.  If you do not use this option,  the  command
+              does  not  directly consider the total elapsed time. Instead, it
+              considers quality of results, fix rate, and expected benefits of
+              running more iterations.
+
+       -power_attribute power_attribute_name
+              Specifies  a  user-defined  attribute  for  library  cells  that
+              defines the leakage power of the library cell at the worst oper-
+              ating  condition  corner  for leakage. When you use this option,
+              timing fixing attempts to minimize the increase  in  leakage  by
+              giving  higher  priority  to library cells with less leakage. By
+              default, without  this  option,  timing  fixing  considers  area
+              instead of leakage.
+
+       -clock_fixes_per_change violation_limit
+              Specifies  the minimum number of violations to be fixed per cell
+              sizing, buffer insertion, or  inverter  pair  insertion  in  the
+              clock network. This setting has an effect only if the -cell_type
+              option is set to clock_network.  The  default  is  1.  Set  this
+              option  to a value larger than 1 to reduce the number of changes
+              made to the clock network.
+
+              For example, if you set this option to 4, the  command  makes  a
+              change  in the clock network only if the change fixes at least 4
+              violating endpoints at leaf sequential cells in  the  transitive
+              fanout  of the change. Setting a larger value reduces the number
+              of changes and also forces them to occur at higher levels of the
+              clock  network,  closer to the clock source and farther from the
+              sequential cells.
+
+       -clock_max_level_from_reg level_limit
+              Specifies the highest level of a clock  network  tree  in  which
+              timing  fixes can occur. The higher the level is, the closer the
+              fix is performed to the clock source. This option has an  effect
+              only  if  the  -cell_type  option  is  set to clock_network. The
+              default is 0, which disables the limit and allows  changes  any-
+              where in the clock network.
+
+              Setting  this  option to 1 allows changes to be made only at the
+              immediate driver cell to a clock pin of a  sequential  cell.  In
+              this case, the command can size the immediate driver or insert a
+              buffer between this driver and the clock pin of  the  sequential
+              cell.  Setting this option to 2 allows the command to make these
+              changes at both the immediate driver and one buffer level  above
+              the immediate driver; and so on for larger settings.
+
+       -estimate_unfixable_reasons
+              Performs a fixing analysis (without actually making any changes)
+              and generates a report on violations that  are  unlikely  to  be
+              fixed  and  the  reasons that they are unfixable. This option is
+              similar to the -verbose option, except that no actual fixing  is
+              performed; only the report is generated. To use this option, the
+              eco_report_unfixed_reason_max_endpoints variable must be set  to
+              a  positive integer (the default is 0). For details, see "Unfix-
+              able Violation Report" in the DESCRIPTION section.
+
+       -power_mode total | dynamic | leakage
+              Specifies usage of PrimePower power analysis data, and specifies
+              the  types  of  power  considered  during timing fixing: dynamic
+              power only, leakage power only, or total power (both dynamic and
+              leakage).   Power  analysis data must be available from previous
+              usage of the update_power or report_power  command.  You  cannot
+              use   the   -power_mode  option  with  the  -power_attribute  or
+              -cell_type clock_network option.
+
+              When you use the -power_mode option for setup fixing,  the  tool
+              tries to minimize the increase in the specified type of power by
+              giving higher priority to library cells  that  use  less  power.
+              This    includes    side-load    sizing    by    the    -methods
+              size_cell_side_load option.
+
+              Similarly, for hold fixing, the  tool  prioritizes  the  library
+              cells with lower power during cell sizing and buffer insertion.
+
+              By  default,  without the -power_mode option, timing fixing con-
+              siders area instead of power.
+
+       -leakage_scenario scenario_name
+              Specifies the name of the scenario from which to get the leakage
+              power  data in a DMSA flow when using the -power_mode option. It
+              should be the scenario with the worst leakage power.
+
+       -dynamic_scenario scenario_name
+              Specifies the name of the scenario from which to get the dynamic
+              power  data in a DMSA flow when using the -power_mode option. It
+              should be the scenario with the worst dynamic power.
+
+              The -leakage_scenario and -dynamic_scenario options can  be  set
+              to the same scenario or two different scenarios.
+
+       -load_cell_list list
+              Specifies  a  list  of  library  load  capacitance cells, buffer
+              cells, or inverter cells that can be used along  the  data  path
+              for  hold fixing with the insert_buffer method.  You can specify
+              usage of these special single-pin cells to fix  hold  violations
+              on  the  order of picoseconds, either alone or together with the
+              -buffer_list option.
+
+       -target_violation_type endpoint | tns
+              Specifies the target violation type for  clock  network  fixing.
+              This option can be used only when clock_network is specified for
+              the -cell_type option.
+
+              o endpoint (the default) - Timing fixing targets improvement  of
+                endpoint  slack for each endpoint without degrading any exist-
+                ing endpoint violation.
+
+              o tns - Timing fixing targets improvement of overall Total Nega-
+                tive  Slack  (TNS).  It might degrade existing endpoint viola-
+                tions even further, up to the  current  Worst  Negative  Slack
+                (WNS)  as  long  as  TNS improves. If the -wns_limit option is
+                used, it allows degradation of existing endpoint violations to
+                the specified WNS limit.
+
+              Note: The tns value requires a PrimeTime-ADV license.
+
+       -wns_limit limit_value
+              Specifies  the limit of Worst Negative Slack (WNS) for the -tar-
+              get_violation_type tns option. The default is the existing WNS.
+
+       -unfixable_reasons_format text | csv
+              Generates an unfixable reasons report file in the specified for-
+              mat, either text or csv (comma-separated values). The CSV report
+              format is compatible with the PrimeTime GUI and spreadsheet pro-
+              grams.  By default, without this option, both text and csv files
+              are generated.
+
+       -unfixable_reasons_prefix string
+              Specifies a prefix used for naming the  file  generated  by  the
+              -unfixable_reasons_format  option.  For  example, specifying the
+              prefix "abc" and using the CSV format writes out  a  file  named
+              abc_eco_tim.csv.  If  you  omit this option, no files are gener-
+              ated.
+
+DESCRIPTION
+       The fix_eco_timing command fixes or improves timing violations by  siz-
+       ing  cells  and inserting buffers or inverter pairs. It attempts to fix
+       the specified types of violations while minimizing the impact  on  area
+       and power.
+
+       After the violations are fixed, you can write out the design changes as
+       a script by using the write_changes command. You can use the script  to
+       implement the same changes in another PrimeTime session or another tool
+       (Design Compiler, IC Compiler, or IC Compiler II).  A  list  of  design
+       changes  created  in  this  flow  is called an engineering change order
+       (ECO).
+
+       The fix_eco_timing command has options to specify the following  fixing
+       parameters:
+
+       o The type of timing violations to fix (setup or hold)
+       o  The  scope of the design to be fixed (from/to startpoints/endpoints,
+         path groups, a path collection, or the whole design)
+       o The fixing methods (cell sizing, buffer insertion, or  inverter  pair
+         insertion)
+       o  The  list  of  library cells that can be used for buffer or inverter
+         pair insertion
+       o The types of cells to be modified (data paths, sequential  cells,  or
+         clock networks)
+       o The targeted amount of timing margin (slack) to achieve
+       o The graph-based analysis mode (graph-based, path-based, or path-based
+         exhaustive)
+       o The physical placement and sizing mode  (none,  open  site,  occupied
+         site, or freeze silicon)
+
+       You must specify the fixing type, either setup or hold, using the -type
+       option because of the different nature of these violations. By default,
+       setup fixing uses cell sizing alone to reduce data path delays, whereas
+       hold fixing uses both cell sizing and buffer insertion to increase data
+       path delays. By default, fixing occurs only in data paths, not in clock
+       networks.
+
+       The command performs fixing using multiple  iterations,  starting  with
+       the worst violations. It repeats fixing iterations until all violations
+       are fixed or it determines that further fixing is not worth the runtime
+       cost,  based  on  the current quality of results and fixing option set-
+       tings.  You can generate a report on unfixable violations by using  the
+       -verbose  or  -estimate_unfixable_reasons  option. Based on the report,
+       you can target the unfixed violations using another fix_eco_timing com-
+       mand with different option settings.
+
+       Setup fixing seeks to avoid introducing design rule checking (DRC) vio-
+       lations, but it is allowed to introduce hold violations  because  setup
+       violations  are  harder to fix.  Hold fixing seeks to avoid introducing
+       both setup and DRC violations. To fix both setup and  hold  violations,
+       fix  setup  violations  first,  then  hold  violations,  using separate
+       fix_eco_timing commands.
+
+       The fix_eco_timing command is  compatible  with  single-core  analysis,
+       distributed  multi-scenario analysis (DMSA), and multicore analysis. To
+       ensure consistent results during DMSA  fixing,  apply  any  dont_touch,
+       dont_use and size_only attributes identically to all scenarios.
+
+       The  -from, -to, -path_selection_options, and -group options allow tar-
+       geted fixing of the design. The -from and -to options  restrict  fixing
+       to  paths  with  specific  startpoints  and endpoints. The -path_selec-
+       tion_options restricts fixing to a path collection created in a  manner
+       similar  to  the  get_timing_paths command. The -group option restricts
+       fixing to named path groups.
+
+       The fix_eco_timing command requires pin slack information. If the  tim-
+       ing_save_pin_arrival_and_slack variable is not already set to true, the
+       fix_eco_timing command automatically sets it to true  and  updates  the
+       design with arrival and slack information.
+
+       The fix_eco_timing command is intended for the signoff flow using delay
+       and slew calculation in the PrimeTime tool, based  on  extracted  para-
+       sitic data. If delays and slews are annotated directly (for example, in
+       SDF format), the quality of results cannot be guaranteed.
+
+   Setup Fixing
+       By default, setup fixing uses cell sizing alone  to  reduce  data  path
+       delays.   You  can  specify  the  maximum  area increase by setting the
+       eco_alternative_area_ratio_threshold variable.  By default,  the  vari-
+       able  is  set to 2, which limits the area increase to twice the area of
+       the cell before fixing. Note that this limit applies to each  iteration
+       of  setup  fixing, so in multiple fixing iterations, the final size can
+       be more than twice the original size. If you set  the  variable  to  0,
+       there is no size limit on upsizing.
+
+       Limiting  the  area increase can result in better timing predictability
+       after physical implementation of the ECO changes, as  the  changes  are
+       less likely to disturb the existing layout during incremental placement
+       and routing.   However,  more  changes  (and  more  runtime)  might  be
+       required to achieve the needed slack improvement.
+
+       In  addition  to  cell  sizing,  you can use buffer insertion (-methods
+       {insert_buffer}) to reduce path delays to critical loads. It is  recom-
+       mended   that   you   perform  cell  sizing  first,  using  a  separate
+       fix_eco_timing command, to reduce the number of  buffers  required  and
+       minimize the layout disturbance.
+
+       For setup fixing using buffer insertion, the -physical_mode option must
+       be set to open_site, occupied_site, or freeze_silicon.  The fixing rate
+       depends very much on having empty sites available in the layout.  Using
+       the -buffer_list option, specify a good representative set  of  buffers
+       that  cover the necessary delay and area range. Be sure to specify buf-
+       fers with good drive strength and short delays, and omit  buffers  with
+       long delays.
+
+       Buffers and delay cells placed by the hold fixing tool might hurt setup
+       paths.  To remove the redundant buffers that cause the setup violation,
+       use  the  -methods {remove_buffer} otion. A buffer in a setup violation
+       path is removed if the following conditions are met:
+
+       o It does not worsen existing violations or does not cause the slack to
+         become  worse than the margins set by the -hold_margin or -setup_mar-
+         gin options.
+       o Removing the buffer  does  not  introduce  any  new  DRC  violations:
+         max_transition, max_capacitance, or max_fanout.
+
+       The fix_eco_timing -methods {remove_buffer} command only removes buffer
+       cells. To also perform cell sizing for setup  fixing,  use  a  separate
+       fix_eco_timing command with appropriate option settings.
+
+   Hold Fixing
+       By  default,  hold fixing uses both cell sizing and buffer insertion to
+       increase delays in the data path (-methods {size_cell  insert_buffer}).
+       You  can  choose to use these methods separately or together. When used
+       together, the command performs cell sizing first,  then  buffer  inser-
+       tion,  to reduce the number of buffers required and minimize the layout
+       disturbance.  Cell sizing includes downsizing, upsizing, and  same-size
+       cell replacement of buffer and delay cells to fix hold violations.
+
+       When  using  the  -buffer_list  option, specify a representative set of
+       buffers that cover the necessary delay range. However, avoid specifying
+       an  excessive  number of similar buffers, which can lead to longer run-
+       times with no fixing benefit.
+
+       To fix small hold violations (on the order of 5 ps or  less),  you  can
+       insert  load  capacitance cells in the data path instead of buffers. To
+       insert  load  cells,  use  the  fix_eco_timing  -type  hold  with   the
+       -load_cell_list  option  with a list of load cells. If you use both the
+       -load_cell_list and -buffer_list options  in  the  same  fix_eco_timing
+       command,  the tool automatically fixes small hold violations by insert-
+       ing load cells and larger hold violations by inserting buffers.
+
+   Restricting the Library Cells Used for Sizing
+       To prevent the tool from using specific library cells for sizing, apply
+       the  dont_use  attribute  to  these library cells with the set_dont_use
+       command. Note that this usage restriction applies only to cell  sizing,
+       not  buffer  insertion.  The  tool  uses buffers specified by the -buf-
+       fer_list option, irrespective of the dont_use attribute.
+
+       Usage  of  library  cells  can  also  be  restricted  by  applying  the
+       pt_dont_use  user-defined attribute on the restricted lib_cell objects,
+       which is a legacy  feature.  For  an  example  of  how  to  apply  this
+       attribute, see the EXAMPLES section.
+
+   Preserving Specific Cells and Nets During Fixing
+       To  prevent  the  fix_eco_timing command from performing fixing on spe-
+       cific cells or nets, apply a dont_touch attribute to the cell  or  net.
+       For example,
+
+       pt_shell> set_dont_touch [get_nets n123] true
+
+       The  fix_eco_timing  command  does  not size any cell with a dont_touch
+       setting and does not insert a buffer or inverter pair on any net with a
+       dont_touch setting.
+
+       If  you apply a dont_touch setting to a hierarchical cell, that setting
+       propagates downward to the child cells and  nets  of  the  hierarchical
+       cell.  You can override the dont_touch setting for specific lower-level
+       cells and nets by setting the dont_touch attribute to false  for  those
+       objects.
+
+   Preventing Specific Cell Instances From Being Removed
+       Among  the  cells,  you  might  want to prevent specific instances from
+       being removed but allow other sizing operations on them.  To  do  this,
+       use the set_size_only command. For example,
+
+         set_size_only [get_cells {U28}] true
+
+       This  command  sets  the  size_only attribute to true for cell instance
+       U28, which prevents the cell from being removed by ECO commands.
+
+   Fixing Margin
+       The -setup_margin and -hold_margin options let you  specify  overfixing
+       or underfixing of timing violations. By default, when the command finds
+       a violation, it tries to fix the violation to attain a slack  of  zero.
+       Setting  a positive margin changes the target to the specified positive
+       slack value (overfixing); this results in  safer  timing  but  requires
+       more  fixing  effort.  Conversely, specifying a negative margin changes
+       the target to the specified negative slack  value  (underfixing);  this
+       does not completely fix the violation but is more likely to be success-
+       ful.
+
+       Note that the margin setting affects only the target slack  for  viola-
+       tions being fixed; it has no effect on the choice of paths to be fixed.
+       To choose violations for fixing based on existing slack values, use the
+       -slack_lesser_than and -slack_greater_than options.
+
+       You  can  specify  both  a  setup margin and a hold margin for a fixing
+       operation.  This can be useful during hold  fixing  because  downsizing
+       cells  or  inserting buffers in a data path to fix a hold violation can
+       worsen setup timing for the same path. By specifying a setup margin  of
+       zero  or  more  during  hold  fixing,  the tool checks for setup timing
+       effects and ensures that no new setup violations are introduced.
+
+       When you use path-based analysis  (-pba_mode  option  set  to  path  or
+       exhaustive),  the margin setting applies to path-based calculated slack
+       only for the matching fixing type, either setup or hold.  For  example,
+       during  hold  fixing  (-type hold), the -hold_margin setting applies to
+       the path-based slack being recalculated, whereas  setup  checking  per-
+       formed  in the background uses graph-based analysis, so the -setup_mar-
+       gin setting applies to the graph-based slack.
+
+   Total Percentage of Violations Fixed (Fix Rate)
+       Upon completion of fixing, the fix_eco_timing command reports the total
+       percentage  of  violations  fixed, sometimes called the "fix rate." For
+       example,
+
+       Fixing Summary:
+       ----------------------------------------------
+       Total violating endpoints found             25
+       Total violating endpoints fixed             23
+       Total violating endpoints remaining          2
+       Total percentage of violations fixed      92.0%
+
+       This report is based on the number of violating endpoints fixed,  which
+       can  be  less than the number of fixed violations of various types. For
+       example, when the command fixes rise and fall violations from  multiple
+       startpoints  that end at a single endpoint, all of the fixed violations
+       count as a single fixed violating endpoint.
+
+       In distributed multi-scenario analysis, the fix rate is  based  on  the
+       sum of all detected and fixed violating endpoints across all scenarios,
+       even if some endpoints overlap between the scenarios. For example, sup-
+       pose  that  scenario S1 has 100 violating endpoints and scenario S2 has
+       and 200 violating endpoints. If the  fix_eco_timing  command  fixes  99
+       violations  in  scenario  S1  and  198  in scenario S2, the fix rate is
+       (99+198)/(100+200) = 99.0%.
+
+   Remaining Violations
+       The fix_eco_timing command applies an intelligent adaptive algorithm to
+       optimize runtime, memory, fix rate, and number of changes. It typically
+       runs multiple fixing iterations in an attempt  to  address  all  viola-
+       tions. However, some violations can remain unfixed due to the high cost
+       of fixing.
+
+       For example, if a path has a huge hold violation that would require  15
+       buffers  to  be inserted in one stage, the fix_eco_timing command stops
+       fixing the path because this large number  of  buffers  might  cause  a
+       large  timing  difference  in the physical implementation tool. In this
+       case, it is recommended to fix such violations  in  the  implementation
+       tool or adjust the constraints so that violations are more realistic.
+
+       However,  if  you  still  want to fix these violations, you can run the
+       fix_eco_timing command multiple times, perhaps using  different  fixing
+       options, until they are all fixed.
+
+   Unfixable Violation Report
+       The fix_eco_timing command, upon completion of violation fixing, gener-
+       ates a report on unfixable violations when you use the -verbose option.
+       You  can get the same type of report without performing any actual fix-
+       ing by using the -estimate_unfixable_reasons option.
+
+       To generate  the  report,  the  eco_report_unfixed_reason_max_endpoints
+       variable  must  be  set  to a positive integer. For DMSA, this variable
+       must be set in the manager.
+
+       Here is a report example:
+
+         pt_shell> fix_eco_timing -type hold -buffer_list {BUFX1 BUFX2 BUFX3} \
+                   -physical_mode open_site -verbose
+           ...
+         Unfixable violations:
+           A - There are available library cells outside area limit
+           B - Delay improvement is too small to fix the violation
+           C - The violation is in clock network
+           D - Cell or net is located in high density area
+           E - Physical information is incomplete or unavailable
+           H - Logical and physical hierarchies are inconsistent
+           I - Buffer insertion with given library cells cannot fix the violation
+           L - Available physical area limits the use of one or more library cells
+           O - No open free site is available
+           R - No locations are available in parasitics or location transformation failed
+           S - Cell sizing with alternative library cells cannot fix the violation
+           T - Timing margin is too tight to fix the violation
+           U - UPF restricts fixing the violation
+           V - Net or cell is invalid or has dont_touch attribute
+           W - Fixing the violation might degrade DRC violations
+
+           Violation                                        Reasons  Prio/slk
+           ------------------------------------------------------------------
+           S:U2/Z                                                 T        P7
+             U3/Z                                               I W        P6
+             U4/Z                                                 U        P9
+             U6/Z                                                 U        P6
+           E:U8/I                                                      -2.105
+           C:U3/Z                                               I W        P6
+             U5/Z                                                 S        P3
+             U7/Z                                                 U        P0
+           E:U9/A                                                      -0.307
+           ...
+
+       The "Violation" column shows the cell pins where  unfixable  violations
+       are  located.  The letter codes S and E indicate the start and end of a
+       sequence of pins in a violating path. The letter code C indicates  con-
+       tinuation of a path segment from a point in a timing path with a shared
+       segment already reported earlier in the table.
+
+       The "Reasons" column shows the reason or reasons that a violation could
+       not  be fixed at the cell pin, using letter codes from the key shown at
+       the beginning of the report.
+
+       The "Prio/slk" column shows the fixing priority or endpoint slack.  For
+       each  pin in a timing path, the fixing priority is ranked from P0 to P9
+       (lowest to highest priority), with the fixing of  higher-priority  pins
+       potentially  more  effective in reducing violations than lower-priority
+       pins. For each path endpoint ("E" in the Violation column),  the  total
+       path slack is shown.
+
+       In  the foregoing example, the first entry in the table is pin U2/Z, at
+       the start (S) of the timing path having the worst slack. The  unfixable
+       reason  "T" means that U2/Z was not fixed because the timing margin was
+       too tight, and fixing the timing at this point has  a  relatively  high
+       priority (P7).
+
+       The  entries  in  the table are organized in order from path startpoint
+       (S) to path endpoint (E), and the timing paths are shown  in  order  of
+       slack,  worst-slack paths first. The first path sequence shows the full
+       path from U2/Z through U8/I.  At the path endpoint, the path  slack  is
+       reported in the "Prio/slk" column, -2.105.
+
+       The  second  path sequence is reported as starting from U3/Z and ending
+       at U9/A, omitting the segment of the path from U2/Z  and  U3/Z  already
+       reported  for  the  first  path.  The letter C at the begriming of this
+       sequence indicates the continuation of a path segment partially  shared
+       with  an earlier path, starting with the last shared point, which helps
+       to avoid duplicate entries in the table.
+
+       You can interpret the reported priority P0 through P9 as a fixing  bot-
+       tleneck  ranking. If you are able to fix only some of a large number of
+       violations, to get the best possible gain from each fix, you  can  col-
+       lect stages with higher priorities and try to fix them first.
+
+       These are the unfixable reason codes reported in the "Reasons" column:
+
+       o A - There are available library cells outside area limit
+         Library cells that might have been used to fix the violation exceeded
+         the area limit specified by the  eco_alternative_area_ratio_threshold
+         variable.   You  might be able to fix the violation by increasing the
+         area limit.
+
+       o B - Delay improvement is too small to fix the violation
+         The violating slack was too negative to be  fixed  by  improving  the
+         delay  in  this  stage.  You can improve (but not completely fix) the
+         violation by setting a negative margin for the target slack using the
+         -setup_margin or -hold_margin option.
+
+       o C - The violation is in clock network
+         The violation is in a clock network. By default, the command does not
+         attempt to fix timing violations in clock networks because  doing  so
+         can  change the clock tree timing and possibly create new timing vio-
+         lations. If data path fixing and sequential cell fixing are not  suc-
+         cessful  (-cell_type  combinational,  -cell_type sequential), you can
+         try clock network fixing (-cell_type clock_network).
+
+       o D - Cell or net is located in high density area
+         There is not enough room physically available in the vicinity of  the
+         violation.  In  the physical implementation tool (such as IC Compiler
+         II), check the area utilization in that location.  Note that when the
+         eco_allow_filler_cells_as_open_sites  variable  is  set  to true (the
+         default), physically aware ECO commands treat filler  cells  as  open
+         sites.
+
+       o E - Physical information is incomplete or unavailable
+         The  physical  information  is incomplete or unavailable for the spe-
+         cific net or cell, or the net is marked as "+USE CLOCK"  in  the  DEF
+         file specified by the set_eco_options command. See if the DEF and LEF
+         files are consistent with your current design.
+
+       o H - Logical and physical hierarchy is inconsistent
+         The netlist and physical layout are not consistent, and a buffer can-
+         not  be inserted. Use the physical implementation tool to resolve the
+         inconsistency.
+
+       o I - Buffer insertion with given library cells cannot fix  the  viola-
+         tion
+         The  violation  cannot be fixed using the library cells listed by the
+         -buffer_list option. Specifying a wider range of buffer  cells  might
+         allow the command to fix the violation.
+
+       o  L  -  Available  physical area limits the use of one or more library
+         cells
+         The area of a library cell that could be used for fixing exceeds  the
+         available  area  in the physical layout. Use the physical implementa-
+         tion tool to increase the available area.
+
+       o M - Violations in leaf cells are less than the threshold
+         The tool did not perform a fix at this clock network location because
+         the number of violations that could be fixed in the leaf cells of the
+         transitive fanout of this location is less than the threshold  speci-
+         fied  by  the -clock_fixes_per_change violation_limit option. The fix
+         might be performed if you set a lower limit.
+
+       o N - Cell level higher than the threshold
+         The tool did not perform a fix at this clock network location because
+         the  clock  tree  level of this location is higher than the threshold
+         specified by the -clock_max_level_from_reg option. The fix  might  be
+         performed if you set a higher limit or disable the limit.
+
+       o O - No open free site is available
+         There is no empty free site available on the route or in the vicinity
+         of the violation. Inspect the LEF/DEF file for filler cells  and  see
+         whether   they   are   treated   as   empty  free  sites.   When  the
+         eco_allow_filler_cells_as_open_sites variable is  set  to  true  (the
+         default),  physically  aware  ECO  commands treat all filler cells as
+         empty free sites. Also, you can use the physical implementation  tool
+         (such as IC Compiler II) to create empty free sites.
+
+         If  the  -physical_lib_constraint_file  option of the set_eco_options
+         command has been used to specify intercell or  advanced-node  spacing
+         rule  constraints,  some  empty  sites might not be wide enough to be
+         used.  In that case, you can use the physical implementation tool  to
+         examine the spacing rule constraints and the cells in the vicinity of
+         such free sites.
+
+       o Q - Capture and launch timing conflict with each other
+         Both the capture and launch sides of a flip-flop have  timing  viola-
+         tions,  and the -cell_type option is set to clock_network.  For exam-
+         ple, suppose that a flip-flop has a setup slack of -2.0 on the D  pin
+         and  a  hold  slack  of -1.0 on the Q pin. Changing the clock arrival
+         time to fix one violation would worsen the other  violation,  so  the
+         two violations cannot be fixed by this method.  If a branch cell in a
+         clock network shows this unfixed violation reason, it  means  that  a
+         leaf  sequential  cell  in  its clock tree has violations on both the
+         capture and launch sides.
+
+       o R - No locations are available in parasitics or location  transforma-
+         tion failed
+         Either  the  parasitics  files  do  not contain location coordinates,
+         which are required to use the buffer insertion method for setup  fix-
+         ing, or location transformation has failed.
+
+       o  S - Cell sizing with alternative library cells cannot fix the viola-
+         tion
+         All alternative library cells have been considered for sizing to  fix
+         the  violation, but the violation cannot be fixed by cell sizing. Use
+         a buffer insertion method to fix the violation, if needed.
+
+       o T - Timing margin is too tight to fix the violation
+         The violation is on a critical or near-critical setup or hold  timing
+         path and the opposite constraint does not have enough timing slack to
+         allow fixing of the targeted violation. To allow fixing  to  proceed,
+         you  can  relax  the fixing constraints by specifying negative values
+         for the -setup_margin and -hold_margin options.
+
+       o U - UPF restricts fixing the violation
+         Certain UPF cells cannot be sized or buffered. For details,  see  the
+         "UPF Cells" section of this man page.
+
+       o V - Net or cell is invalid or has dont_touch attribute
+         One  or  more  leaf  cells or nets under the cell have the dont_touch
+         attribute set to true. Check to see if the reason is justified.
+
+       o W - Fixing the violations might degrade DRC violations
+         Timing fixing would create new DRC violations or worsen existing  DRC
+         violations.  To  fix  timing  violations at the expense of DRC viola-
+         tions, use the -ignore_drc option.
+
+       To write out the unfixable violation report as a separate file, use the
+       -unfixable_reasons_format  option and specify either text or csv as the
+       format. To specify a prefix for the file name, use the  -unfixable_rea-
+       sons_prefix option.
+
+       The  CSV  report  file is compatible with the PrimeTime GUI and spread-
+       sheet programs. To read the report into the PrimeTime GUI,  choose  the
+       Report  > ECO Unfixed Violation menu command. You can use the PrimeTime
+       GUI to investigate and fix the remaining violations. The entries in the
+       violation  table  are  cross-referenced  to  the  timing  reports, path
+       inspector, and layout view shown in the GUI.
+
+   UPF Cells
+       By default, UPF cells are not considered  for  sizing.  UPF  cells  are
+       cells  that  have  one or more of the following attributes set to true:
+       always_on, is_isolation, is_retention, or is_level_shifter.
+
+       To  allow   UPF   cells   to   be   sized,   set   the   eco_allow_siz-
+       ing_with_lib_cell_attributes variable. For example,
+
+       pt_shell> set_app_var eco_allow_sizing_with_lib_cell_attributes   {always_on is_isolation is_retention is_level_shifter}
+
+       For  distributed  multi-scenario  analysis (DMSA), set this variable in
+       each worker process.
+
+       A buffer inserted into a net must be placed in the same power domain as
+       the  driver and all loads of the net. Buffer insertion is not performed
+       on the following nets:
+
+       o Nets connected to any pins of an always_on cell
+       o Nets connected to control and clock pins of a retention cell
+       o A net between a port and an isolation cell
+       o A net between a port and a level shifter cell
+
+       Note that the fix_eco_drc command allows always_on buffer insertion  on
+       nets  connected  with  an  always_on  cell if the eco_allow_insert_buf-
+       fer_always_on_cells variable is set to true (false by default).
+
+   Writing Changes
+       After you fix violations using the fix_eco_timing command and other ECO
+       commands, you can write out the design changes as a script by using the
+       write_changes command. You can use the script  to  implement  the  same
+       changes  in another PrimeTime session or another tool (Design Compiler,
+       IC Compiler, or IC  Compiler  II).   Use  the  -format  option  of  the
+       write_changes command to specify the format of the script.
+
+       The number of changes in the write_changes script can be different from
+       the number  of  sized  cells  and  inserted  buffers  reported  by  the
+       fix_eco_timing  command.  For  example,  if  the fix_eco_timing command
+       inserts a buffer in the first iteration and then sizes  the  buffer  in
+       the  next  iteration,  it reports two changes, one buffer insertion and
+       one sizing. The write_changes command combines these two actions into a
+       single change, insertion of the final sized buffer.
+
+       After  you implement the changes in a physical implementation tool such
+       as IC Compiler II, extract new parasitic  data,  write  a  new  Verilog
+       file, and check the final design timing again in the PrimeTime tool.
+
+   Multiple Fixing Scenarios With Fewer Hosts with Hybrid Timing View
+       In the hybrid timing view ECO flow, the tool uses a combination of live
+       views for accuracy-critical ECO scenarios  and  static  views  of  less
+       critical scenarios. The static-view timing and violation information is
+       merged into the live-view scenarios  at  intervals  determined  by  the
+       tool.
+
+       Suppose  you  have  50  scenarios  for your fixing. If you run ordinary
+       DMSA, you need to have 50 worker processes  simultaneously  running  in
+       one or multiple machines.
+
+       In  the hybrid timing view ECO flow, if you have 15 live-view scenarios
+       that cover 90 percent of the violations, the tool can merge the remain-
+       ing  35 scenarios with the 15 live-view scenarios as static views. Then
+       can run fixing with only 15 DMSA worker processes instead of  50.  Note
+       that  when  the live views have a relatively low coverage of violations
+       (for example, 80 percent), you might not be able to achieve the desired
+       fixing  coverage.   For  more  information,  see  the  man page for the
+       fBwrite_eco_scenario_data and the fBstart_eco_scenarios commands.
+
+   Ignoring DRC Violations
+       If you use the -ignore_drc option, the command ignores  DRC  violations
+       as  it  tries to fix timing violations. This option is recommended only
+       for later stages of an ECO cycle, after you have fixed  all  violations
+       possible without causing or worsening DRC violations. When no more tim-
+       ing violations can be fixed due to DRC constraints, you  can  use  this
+       option to trade off DRC violations to fix more timing violations.
+
+   Physically Aware Timing Fixing
+       Set  the  -physical_mode option to open_site or occupied_site to enable
+       the command to load physical data into memory and use that  data  while
+       fixing  timing  violations.  Before you run the fix_eco_timing command,
+       use the set_eco_options command to specify the paths  to  the  physical
+       data,  either  IC  Compiler  II  database  files or LEF/DEF library and
+       design data exchange files:
+
+       set_eco_options \
+         -physical_tech_lib_path LEF_tech_file_list \
+         -physical_lib_path LEF_lib_file_list \
+         -physical_design_path DEF_design_file_list
+
+       set_eco_options \
+         -physical_icc2_lib icc2_lib_directory_path \
+         -physical_icc2_blocks icc2_block_name_list
+
+       The fix_eco_timing command reads in the physical data files  as  speci-
+       fied by the set_eco_options command if they are not already read in and
+       checked by the check_eco command. To view the chip layout in  the  GUI,
+       open the GUI with the gui_start command and then choose Window > Layout
+       Window.
+
+       With the physical data loaded into memory, the tool considers  physical
+       constraints  such as available free space, cell density, and net topol-
+       ogy when it sizes cells and inserts buffers. For cell sizing, the  tool
+       selects  a  library  cell  that meets both the timing and physical con-
+       straints. For buffer insertion, the tool searches for the  best  place-
+       ment  location  to maximize timing improvement while minimizing distur-
+       bance of existing cells in the layout.
+
+       Early in the ECO cycle, to maximize the  fix  rate,  you  can  set  the
+       -physical_mode  option  to  occupied_site, which allows sized cells and
+       inserted buffers to overlap existing cells, as long as those  cells  to
+       be moved to make space for the changes. Late in the ECO cycle, to mini-
+       mize layout disturbance, set the option to open_site mode,  which  pre-
+       serves the placement of existing cells.
+
+       After  you  finish  running the fix_eco_timing command, you can write a
+       changelist file that can be used by the physical implementation tool to
+       implement  the  ECO  changes.  With the physical mode enabled, the com-
+       mands in the changelist file might contain placement information.
+
+       The following add_buffer_on_route command written by the  write_changes
+       command  specifies  the layout coordinates for the new buffer in the IC
+       Compiler or IC Compiler II tool.
+
+         add_buffer_on_route net1 BUF1X -location {100.0 200.0 0}
+
+       The following size_cell command written by  the  write_changes  command
+       specifies the instance to be sized and the new library cell to be used,
+       which fits in the available space. It does  not  specify  any  location
+       because the cell is upsized in its current location.
+
+         size_cell U16 AND2X
+
+       The  following  insert_buffer command written by the write_changes com-
+       mand places a new buffer in an available free site at a specified loca-
+       tion.
+
+         insert_buffer U2/Z BUF2X -location {200.0 300.0 0}
+
+       After  physical  data  is  loaded into memory, the PrimeTime tool keeps
+       track of ECO changes and updates the physical  database  appropriately.
+       Therefore,  it  is  recommended  that you perform only physically aware
+       fixing in the whole PrimeTime session. For example, after you have per-
+       formed  fixing with the -physical_mode option set to open_site or occu-
+       pied_site, do not run the fix_eco_timing command again with the  option
+       set  to  none. Otherwise, the logic-only fixing changes can corrupt the
+       physical database, resulting in significant layout disturbance when the
+       changes are made in the physical implementation tool. For the same rea-
+       son, you should avoid  what-if  commands  such  as  the  size_cell  and
+       insert_buffer commands.
+
+   Physically Aware Freeze Silicon Flow
+       In  the freeze silicon flow,  fixing is performed only by buffer inser-
+       tion using spare cells already implemented in silicon. Only the  inter-
+       connect  mask layers are modified, which saves the high cost of modify-
+       ing the silicon layer masks. Thus, when the  -physical_mode  option  is
+       set  to  freeze_silicon,  the  -methods  option  can  be  set  only  to
+       insert_buffer. The freeze silicon mode works with the  IC  Compiler  II
+       physical implementation tool.
+
+       In this flow, timing fixing uses spare cells defined in the DEF file or
+       IC Compiler II database. You must identify the spare cells by using the
+       set_eco_options command with the -programmable_spare_cell_names option.
+       You  can  query  the  current  ECO  option  settings   by   using   the
+       report_eco_options command.
+
+       An  ECO  change in the freeze silicon mode inserts a buffer directly on
+       top of a matching programmable spare cell.  The  write_changes  command
+       writes  out  the  change  in the changelist file as an insert_buffer or
+       add_buffer_on_route command output with location. The exact location of
+       the  buffer  in the programmable spare cell is guided by the layout and
+       the net topology.
+
+       The write_changes command also writes out a map_freeze_silicon  command
+       corresponding to each buffer. The IC Compiler II tool uses this command
+       to program the mapped buffer into the spare cell.  If the mapped buffer
+       uses  only a portion of a programmable spare cell, the map_freeze_sili-
+       con command backfills the leftover  space  with  one  or  more  smaller
+       matching  programmable  spare  cells, so that the leftover space can be
+       used later for implementing further ECO changes.
+
+   Fixing in Multiply Instantiated Modules (MIMs)
+       When you set the  eco_enable_mim  variable  to  true  (the  default  is
+       false), the tool performs the same ECO changes across each set of MIMs.
+       In physically aware fixing, the tool recognizes a set of MIM  instances
+       when  they share the same DEF file; in logic-only fixing, it recognizes
+       them when they share the same parasitics file according  to  the  -path
+       option in the read_parasitics command.
+
+       Suppose  a  CPU  module is instantiated four times in the TOP module as
+       CPU1, CPU2, CPU3 and CPU4, and the files CPU.def and CPU.SPEF are asso-
+       ciated  with  the  CPU  module.  The tool derives the MIM configuration
+       when the following settings are used.
+
+       In physically-aware fixing,
+
+         set_eco_options -physical_design_path {TOP.def CPU.def}
+
+       In logic-only fixing,
+         read_parasitics -path {CPU1 CPU2 CPU3 CPU4} CPU.SPEF
+
+         or
+
+         read_parasitics -path [all_instance CPU] CPU.SPEF
+
+       If MIMs are detected, the fix_eco_timing command shows the current  MIM
+       configuration  before  it starts fixing. Verify that the MIM configura-
+       tion matches your expectations. If not, check the  DEF  file  or  para-
+       sitics file configuration in your setup script.
+
+       When  fixing violations, a change in one MIM instances is replicated in
+       all instances of the MIM set. For example, a buffer insertion  in  CPU1
+       is  replicated in CPU2, CPU3, and CPU4.  Whenever the tool fixes a vio-
+       lation, it analyzes all MIM instances and makes sure that it  does  not
+       cause timing violations in other instances. Thus, it is possible to get
+       a lower fix rate with MIM ECO enabled because timing might be more con-
+       strained by multiple instances.
+
+       After  fixing  is  completed, use the write_changes command to generate
+       the changelist file for the associated MIM instances. In the  preceding
+       example,  one  changelist  file  is  written  for the CPU1 through CPU4
+       instances.  For more information, see the man page of the write_changes
+       command.
+
+   Per-Scenario ECO Margins
+       In distributed multi-scenario analysis, you can use different setup and
+       hold margins for different scenarios by specifying their values in  the
+       -timing_setup_margin    and    -timing_hold_margin   options   of   the
+       set_eco_options command in the worker scripts.
+
+       Note  that  the  -setup_margin  and   -hold_margin   options   of   the
+       fix_eco_timing  command have priority over the corresponding options of
+       the set_eco_options command.
+
+   Clock Network Fixing
+       When the -cell_type option is set to clock_network, the  command  makes
+       changes in clock networks to fix timing violations.  Clock network fix-
+       ing methods include cell upsizing, cell downsizing, buffer or  inverter
+       pair insertion and bypass.
+
+       If  the bypass_buffer method is applied, new timing is annotated on the
+       changed nets based on net topology, capacitance and  net  delay  change
+       estimates.   For  signoff accurate timing, it is recommended to run the
+       implement_eco command to implement the changes and get new timing after
+       extracting new parasitics from the changed nets.
+
+       The  fix_eco_timing  command  has  options  to control the scope of the
+       changes in the clock network:
+
+       o Use the -clock_max_level_from_reg option  to  limit  the  changes  to
+         lower levels of the clock trees. For example, setting the option to 1
+         limits changes to the leaf level of the clock tree.
+       o Use the  -clock_fixes_per_change  option  to  reduce  the  number  of
+         changes  in  the  clock network by setting a minimum number of viola-
+         tions to fix per  change.  For  example,  setting  the  option  to  4
+         requires at least four violations to be fixed per change.
+
+       In  physically  aware  timing  fixing, you must use the set_eco_options
+       command with the -physical_enable_clock_data option before you use  the
+       fix_eco_timing  command.  You  must  specify valid buffer library cells
+       that are available to the physical  implementation  tool,  meeting  any
+       special  rules  such  as  nondefault routing (NDR) rules. The PrimeTime
+       tool does not perform any extra rule checking for the provided buffers.
+
+       The PrimeTime tool uses all available alternative library cells to size
+       cells  in  the  clock  network. If your design uses specialized library
+       cells in the clock network, use a Tcl script similar to  the  following
+       example  to limit the sizing candidates to selected library cells. This
+       example limits the library cells to those that  have  prefix  "CLK"  in
+       their library cell base names.
+
+         define_user_attribute -type boolean -class lib_cell is_clk_cell
+         set clk_lcells [get_lib_cell */CLK*]
+         set_user_attribute $clk_lcells is_clk_cell true
+         set eco_alternative_cell_attribute_restrictions is_clk_cell
+
+       In  an  unfixable  violation  report generated by using the -verbose or
+       -estimate_unfixable_reasons option, the unfixable reason  codes  M,  N,
+       and  Q  apply  to  clock network fixing, as described in the "Unfixable
+       Violation Report" section of this man page.
+
+       The tool does not perform fixing on a clock mesh, where multiple  driv-
+       ers  drive  the  same net. However, if the clock mesh is connected to a
+       normal clock tree, the tool can perform ECO changes in the normal clock
+       tree portion of the clock network.
+
+   TNS Driven Timing Fixing With Clock Network ECO
+       If  you  specify tns for the -target_violation_type option, the command
+       attempts to improve overall Total  Negative  Slack  (TNS)  even  if  it
+       degrades  existing endpoint violations. However, the tool limits exist-
+       ing violation degradation to the current Worst  Negative  Slack  (WNS).
+       If you want to improve TNS further by allowing WNS degradation, use the
+       -wns_limit option to specify the allowed limit.
+
+       Suppose a design has WNS of -100, and a specific  flip-flop  has  slack
+       -60  at  D pin and -40 at Q pin. The command may degrade slack from -60
+       to -100 at D  pin  if  TNS  improves.  If  -80  is  specified  for  the
+       -wns_limit option, however, the command only degrades slack from -60 to
+       -80 to meet the  limit  requirement.  If  -200  is  specified  for  the
+       -wns_limit  option,  the  command can degrade slack from -60 to -200 as
+       long as TNS improves.
+
+   Leakage Power
+       Leakage power can increase during timing  fixing.  By  default,  timing
+       fixing performs optimization to meet timing requirements while minimiz-
+       ing the increase in area, without considering leakage.
+
+       If leakage  power  is  more  important  than  area,  you  can  use  the
+       -power_attribute  option  to optimize power during timing fixing, based
+       on a library cell attribute that defines the leakage  power  value  for
+       the cell. For example,
+
+         # Create a user-defined attribute "leak_attr" for lib_cell object
+         define_user_attribute leak_attr -type float -class lib_cell
+
+         # Assign values that reflect leakage of each lib_cell at worst corner
+         set_user_attr -class lib_cell [get_lib_cell LIB_H/INV1X_HVT] leak_attr  1.0
+         set_user_attr -class lib_cell [get_lib_cell LIB_H/INV2X_HVT] leak_attr  2.0
+         set_user_attr -class lib_cell [get_lib_cell LIB_L/INV1X_LVT] leak_attr 10.0
+         set_user_attr -class lib_cell [get_lib_cell LIB_L/INV2X_LVT] leak_attr 15.0
+          ...
+
+         # Perform setup timing fixing with leakage power consideration
+         fix_eco_timing -type setup -power_attribute leak_attr
+
+         # Perform hold timing fixing with leakage power consideration
+         fix_eco_timing -type hold -power_attribute leak_attr
+
+       While fixing timing violations, the tool chooses library cells to mini-
+       mize the increase in leakage power, and  does  not  consider  area.  It
+       replaces only the existing cells that have the leak_attr attribute, and
+       replaces them only with  other  cells  that  also  have  the  leak_attr
+       attribute.
+
+       Instead  of assigning the leakage values explicitly, you can import the
+       attribute values from the  cell  library  database.  For  details,  see
+       SolvNet  2371111,  "Extracting  Leakage  Power  for Library Cells"; and
+       SolvNet 2040404, "PrimeTime J-2014.12 Update Training," Module 8: ECO -
+       Power Recovery.
+
+       In distributed multi-scenario analysis, the respective library cells in
+       different libraries must be assigned matching leakage power values.
+
+   PrimePower Dynamic, Leakage, and Total Power
+       The PrimePower tool performs comprehensive power analysis using  actual
+       switching  activity  and library-defined power data such as dynamic and
+       leakage power of each cell. The tool performs a power analysis when you
+       use the update_power or report_power command at the pt_shell prompt.
+
+       Total  power  (both  dynamic  and  leakage) can increase when cells are
+       upsized to improve timing. By default, the command  performs  optimiza-
+       tion  to  fix  timing violations while minimizing the increase in area,
+       without considering power.
+
+       To better manage the total power overhead, you can use PrimePower power
+       analysis  data  in timing fixing by using the -power_mode option set to
+       dynamic, leakage, or total. Then timing  fixing  tries  to  reduce  the
+       overhead  of  the  dynamic  (switching)  power, leakage power, or total
+       (dynamic plus leakage) power as measured by  the  report_power  command
+       while fixing similar timing violations. For hold fixing, only the leak-
+       age setting is supported.
+
+       With the -power_mode total option, the tool chooses actions to fix set-
+       up  or  hold timing violations while reducing the total power overhead.
+       The action chosen can vary depending on the  local  conditions  in  the
+       design.   For  example, it can choose to fix setup timing violations by
+       either upsizing the cell or by lowering the cell threshold voltage, the
+       choice  depending  on  the  local  switching  activity.  High switching
+       activity favors lowering the threshold  voltage  (to  reduce  switching
+       power  overhead),  whereas  low  switching activity favors upsizing the
+       cell (to reduce leakage power overhead).  A similar strategy applies to
+       buffer  insertion.   Among  the buffers that give similar fix, the ones
+       with lower total power overhead are favored.
+
+       With the -power_mode leakage option, the tool fixes setup or hold  tim-
+       ing violations considering leakage power without requiring user-defined
+       power attributes.
+
+       In the distributed multi-scenario analysis (DMSA) flow, the  tool  gets
+       its  dynamic  power  data  from exactly one scenario, which you specify
+       with the -dynamic_scenario option. Similarly, it gets its leakage power
+       data  from  exactly  one  scenario,  which  you specify with the -leak-
+       age_scenario option. These options are used only in a  DMSA  flow.   In
+       general,  you  should  specify  the  scenario showing the worst dynamic
+       power and worst leakage power, respectively,  for  these  two  options.
+       They could be the same scenario or two different scenarios.
+
+   Load Capacitance Cells for Hold Fixing
+       Hold  fixing can use load capacitance (dummy load) cells along the data
+       path to target violations on order of picoseconds using the insert_buf-
+       fer  method.  You can use the -load_cell_list option separately from or
+       together with the -buffer_list option.
+
+       When the fixing method is specified as {size_cell  insert_buffer}  with
+       both the -load_cell_list and -buffer_list options, the command performs
+       cell sizing first, then load capacitance cell  insertion,  followed  by
+       buffer  insertion.  This sequence minimizes the layoutdisturbance. With
+       the -physical_mode open_site option, to control  the  search  area  for
+       inserting load capacitance cells, set the eco_insert_buffer_search_dis-
+       tance_in_site_rows variable.
+
+       The -load_cell_list option can use buffer cells,  inverter  cells,  and
+       dedicated load cells for load cell insertion. Buffer and inverter cells
+       inserted as load cells have unconnected outputs. Dedicated  load  cells
+       are  smaller  single-pin  cells that are easier to place. They have the
+       following attributes:
+
+       Attribute Name      Type         Value
+       -----------------------------------------
+       function_id         string       unknown
+       is_black_box        boolean      true
+       is_combinational    boolean      true
+       number_of_pins      int          1
+
+       The file written by the write_changes -format icctcl  command  contains
+       commands like the following to set the location and orientation of each
+       new load cell:
+
+         create_cell U_LOAD_CAP_CELL_1 CLOAD1
+         connect_net $existing_target_net [get_pins {U_LOAD_CAP_CELL_1/A}]
+         set_cell_location -coordinates {150.00 30.60} -orientation N
+
+EXAMPLES
+       The following example overfixes setup violations  with  a  slack  worse
+       than  -0.1  to  achieve  a  positive setup slack of 0.1 (while ignoring
+       paths with a setup slack better than -0.1):
+
+         pt_shell> fix_eco_timing -type setup -slack_lesser_than -0.1 -setup_margin 0.1
+
+       The following example overfixes setup violations  with  a  slack  worse
+       than 0.2 to achieve a positive setup slack of 0.2. Note that this over-
+       fixes some positive-slack paths, for example, by increasing  the  slack
+       from 0.1 to 0.2.
+
+         pt_shell> fix_eco_timing -type setup -slack_lesser_than 0.2 -setup_margin 0.2
+
+       The following example overfixes all setup violations to achieve a posi-
+       tive setup slack of 0.2, while preserving a hold slack of at least 0.1:
+
+         pt_shell> fix_eco_timing -type setup -setup_margin 0.2 -hold_margin 0.1
+
+       The following example fixes setup violations with  slack  between  -2.0
+       and 0.0 (while ignoring paths with violations worse than -2.0):
+
+         pt_shell> fix_eco_timing -type setup -slack_greater_than -2.0
+
+       The following example fixes hold violations using only cell sizing.
+
+         pt_shell> fix_eco_timing -type hold -methods size_cell
+
+       The following example fixes a small set of hold violations that have an
+       exhaustive path-based slack of less than zero:
+
+         pt_shell> fix_eco_timing -type hold -pba_mode exhaustive \
+                    -buffer_list {BUFX2 DLY1X2 DLY2X2}
+
+       The following example fixes setup violations only in a selected set  of
+       path groups, with verbose reporting of unfixable violations:
+
+         pt_shell> fix_eco_timing -type setup -group {SYSCLK* IOCLK} -verbose
+
+       The  following example fixes setup violations only by sizing sequential
+       cells:
+
+         pt_shell> fix_eco_timing -type setup -cell_type sequential
+
+       The following example fixes setup violations by sizing both  sequential
+       and combinational cells:
+
+         pt_shell> fix_eco_timing -type setup -cell_type {sequential combinational} \
+          -methods size_cell
+
+       The following example applies the pt_dont_use user-defined attribute to
+       a set of library cells. You  must  define  the  user-defined  attribute
+       first.
+
+         pt_shell> define_user_attribute pt_dont_use \
+                   -quiet -type boolean -class lib_cell
+
+       You can use the attribute directly with the set_user_attribute command,
+       or for convenience, you can define the following procedure:
+
+         proc set_pt_dont_use {lib_cell} {
+           set_user_attribute \
+             -class lib_cell \
+             [get_lib_cell -quiet $lib_cell] \
+             pt_dont_use true
+           }
+
+       Now you can use this procedure to apply the attribute:
+
+         set_pt_dont_use {lib/CLKBUF* lib/CLKMUX*}
+
+       In the distributed multi-scenario analysis (DMSA) flow, you must define
+       and  apply the attribute at the scenarios using the remote_execute com-
+       mand.
+
+       The following example uses the -physical_mode  option  to  specify  the
+       open_site mode.
+
+         pt_shell> fix_eco_timing -type hold -physical_mode open_site \
+                    -buffer_list {BUFX2 DLY1X2 DLY2X2}
+
+       The following example uses the -path_selection_options option to target
+       specific paths for fixing setup violations.
+
+         pt_shell> fix_eco_timing -type setup -path_selection_options \
+                    {-through u01/A -to ff0/D -max_paths 10 -nworst 5}
+
+       The following example uses the -path_selection_options option to target
+       specific paths for fixing hold violations.
+
+         pt_shell> fix_eco_timing -type hold -buffer_list {BUFX2 DLY1X2 DLY2X2} \
+                    -path_selection_options {-delay_type min -from ff0/Q \
+                    -max_paths 100 -nworst 10}
+
+       In  the distributed multi-scenario analysis flow, you must define vari-
+       ables in  the  worker  processes  if  you  want  to  use  them  in  the
+       -path_selection_options   option.   The   following  example  uses  the
+       -path_selection_options option in distributed  multi-scenario  analysis
+       with a variable.
+
+         pt_shell> remote_exec {set startpoints [get_pins {ff0/Q ff1/Q}] }
+         pt_shell> fix_eco_timing -type hold -buffer_list {BUFX2 DLY1X2 DLY2X2} \
+                    -path_selection_options {-delay_type min -from $startpoints \
+                    -max_paths 100 -nworst 5}
+
+       Alternatively,  you can define the variable as a list instead of a col-
+       lection:
+
+         pt_shell> remote_exec {set startpoints "{ff0/Q ff1/Q}"}
+         pt_shell> fix_eco_timing -type hold -buffer_list {BUFX2 DLY1X2 DLY2X2} \
+                    -path_selection_options {-delay_type min -from $startpoints \
+                    -max_paths 100 -nworst 5}
+
+       The following example performs setup fixing by modifying the clock net-
+       work.
+
+         pt_shell> fix_eco_timing -type setup -cell_type clock_network
+
+       The  following  example uses the insert_inverter_pair method to perform
+       setup fixing in a clock network.
+
+         pt_shell> fix_eco_timing -type setup -methods insert_inverter_pair \
+                    -cell_type clock_network -buffer_list {INVX1 INVX2 INVX4}
+
+       The following example uses the insert_inverter_pair method  to  perform
+       hold fixing in data paths.
+
+         pt_shell> fix_eco_timing -type hold -methods insert_inverter_pair \
+                    -buffer_list {INVX1 INVX2 INVX4}
+
+       The  following  example  uses the -estimate_unfixable_reasons option to
+       generate a report of unfixable  reasons  without  actually  fixing  the
+       design.   The  variable eco_report_unfixed_reason_max_endpoints must be
+       set to a positive integer.
+
+       In this example, if the command reports unfixable reason code "I:  buf-
+       fer list with given lib cells cannot fix violation," you can modify the
+       buffer list to include a larger range of buffer library cells and get a
+       quick estimate of the results before you start actual fixing.
+
+         pt_shell> set_app_var eco_report_unfixed_reason_max_endpoints 50
+         pt_shell> fix_eco_timing -type hold -buffer_list {BUFFX1 BUFFX2} \
+                    -estimate_unfixable_reasons
+
+       The  following  example  uses the load_cell_list option to perform hold
+       fixing for violations in order of picoseconds along data path.
+
+         pt_shell> fix_eco_timing -type hold -methods insert_buffer \
+                    -load_cell_list {CLOAD1 CLOAD2} -slack_greater_than -0.005
+
+       The following example uses the -load_cell_list option in single  opera-
+       tion along with the -buffer_list option to fix hold violations.
+
+         pt_shell> fix_eco_timing -type hold -methods insert_buffer \
+                    -load_cell_list {CLOAD1 CLOAD2} -buffer_list {BUFX1 BUFX2}
+
+       The following example uses the remove_buffer method to fix setup viola-
+       tions.
+
+         pt_shell> fix_eco_timing -type setup -methods remove_buffer
+
+SEE ALSO
+       create_clock(2)
+       get_timing_paths(2)
+       group_path(2)
+       insert_buffer(2)
+       remote_execute(2)
+       report_eco_options(2)
+       report_eco_scenarios(2)
+       report_timing(2)
+       set_dont_use(2)
+       set_dont_touch(2)
+       set_size_only(2)
+       set_eco_options(2)
+       set_user_attribute(2)
+       start_eco_scenarios(2)
+       write_changes(2)
+       write_eco_scenario_data(2)
+       eco_allow_filler_cells_as_open_sites(3)
+       eco_allow_insert_buffer_always_on_cells(3)
+       eco_allow_sizing_with_lib_cell_attributes(3)
+       eco_alternative_area_ratio_threshold(3)
+       eco_enable_mim(3)
+       eco_report_unfixed_reason_max_endpoints(3)
+       timing_save_pin_arrival_and_slack(3)
+
+                         Version T-2022.03-SP5-4
+            Copyright (c) 2024 Synopsys, Inc. All rights reserved.

@@ -1,0 +1,133 @@
+ 
+                              Library Manager (TM)
+
+             Version T-2022.03-SP5 for linux64 - Nov 01, 2022 -SLE
+
+                    Copyright (c) 1988 - 2022 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+
+set search_path {/home/subhasis/VSDBabySoC/src/lib/ .}
+/home/subhasis/VSDBabySoC/src/lib/ .
+setenv RUN_RESULT /tmp/.tARL20177/_rrq42Ao5
+/tmp/.tARL20177/_rrq42Ao5
+set_current_mismatch_config auto_fix
+1
+set_app_options -name lib.workspace.build_script -value CLIBs/.scripts/avsdpll.tcl
+lib.workspace.build_script CLIBs/.scripts/avsdpll.tcl
+#suppress_messages
+source -echo -verbose CLIBs/.scripts/avsdpll.tcl
+set NDM_LIBS {}
+set FRAME_LIBS {}
+set LEF_FILES {/home/subhasis/VSDBabySoC/src/lef/avsdpll.lef}
+/home/subhasis/VSDBabySoC/src/lef/avsdpll.lef
+set DB_FILES {/home/subhasis/VSDBabySoC/src/lib/avsdpll.db}
+/home/subhasis/VSDBabySoC/src/lib/avsdpll.db
+set TECH_FILE "/home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/milkywayORtechFiles/sky130_fd_sc_hd.tf"
+/home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/milkywayORtechFiles/sky130_fd_sc_hd.tf
+set_app_options -name lib.workspace.create_cached_lib -value true
+lib.workspace.create_cached_lib true
+#suppress_messages
+set_app_options -name lib.workspace.allow_read_aggregate_lib -value true
+lib.workspace.allow_read_aggregate_lib true
+create_workspace avsdpll -technology $TECH_FILE -scale_factor 10000
+Warning: sky130_fd_sc_hd.tf line 26, unsupported syntax 'fatWireViaKeepoutMode' in 'Technology' section. It will be ignored. (TECH-002)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 846) (TECH-026)
+Warning: Layer 'via4/met4' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 846) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 854) (TECH-026)
+Warning: Layer 'via4/met5' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 854) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 862) (TECH-026)
+Warning: Layer 'via3/met3' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 862) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 870) (TECH-026)
+Warning: Layer 'via3/met4' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 870) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 878) (TECH-026)
+Warning: Layer 'via2/met2' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 878) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 886) (TECH-026)
+Warning: Layer 'via2/met3' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 886) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 894) (TECH-026)
+Warning: Layer 'via/met1' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 894) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 902) (TECH-026)
+Warning: Layer 'via/met2' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 902) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 910) (TECH-026)
+Warning: Layer 'mcon/li1' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 910) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 918) (TECH-026)
+Warning: Layer 'mcon/met1' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 918) (TECH-026)
+Warning: DesignRule is defined with non-consecutive layers 'via4' and 'met4'. (sky130_fd_sc_hd.tf line 851) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via4' and 'met5'. (sky130_fd_sc_hd.tf line 859) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via3' and 'met3'. (sky130_fd_sc_hd.tf line 867) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via3' and 'met4'. (sky130_fd_sc_hd.tf line 875) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via2' and 'met2'. (sky130_fd_sc_hd.tf line 883) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via2' and 'met3'. (sky130_fd_sc_hd.tf line 891) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via' and 'met1'. (sky130_fd_sc_hd.tf line 899) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via' and 'met2'. (sky130_fd_sc_hd.tf line 907) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'mcon' and 'li1'. (sky130_fd_sc_hd.tf line 915) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'mcon' and 'met1'. (sky130_fd_sc_hd.tf line 923) (TECH-034)
+Information: Loading technology file '/home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/milkywayORtechFiles/sky130_fd_sc_hd.tf' (FILE-007)
+... created workspace avsdpll
+read_lef $LEF_FILES
+Information: The default value of lib.workspace.library_developer_mode will be 'true' in future release. (LMUI-054)
+Information: Loading LEF file '/home/subhasis/VSDBabySoC/src/lef/avsdpll.lef' (FILE-007)
+Information: Read LEF into a new library 'avsdpll'. (LEFR-022)
+Warning: Line 5, 'SYMMETRY' is not defined for macro 'avsdpll' , only 'N' rotation is allowed. (LEFR-037)
+Information: Line 5, Set is_zero_spacing for 31/87 non-real cut OBS in macro avsdpll. (LEFR-062)
+{avsdpll}
+read_db $DB_FILES
+Information: Loading db file '/home/subhasis/VSDBabySoC/src/lib/avsdpll.db' (FILE-007)
+{avsdpll}
+process_workspaces -check_options {-allow_missing} -force -directory CLIBs -output avsdpll.ndm
+Checking libraries...
+Information: Only one logical library loaded - internal checks only (LM-005)
+Using avsdpll as the base library.
+Warning: Copied PG pin 'avsdpll/avsdpll/GND#2' from physical source (was missing in logical source) (LM-109)
+Warning: Copied PG pin 'avsdpll/avsdpll/VDD#2' from physical source (was missing in logical source) (LM-109)
+Warning: Copied PG pin 'avsdpll/avsdpll/VDD#3' from physical source (was missing in logical source) (LM-109)
+Warning: Port avsdpll/GND changed from signal to ground.
+        Deleting all arcs and checks at this port (LM-047)
+Warning: Port avsdpll/VDD changed from signal to power.
+        Deleting all arcs and checks at this port (LM-047)
+Warning: Cell avsdpll has more than one physical power pin and none in DB.
+         Some related power pins cannot be derived (LM-064)
+Warning: Cell avsdpll has more than one physical ground pin and none in DB.
+         Some related ground pins cannot be derived (LM-064)
+Error: Direction 'inout' for port GND on avsdpll/avsdpll/design
+        does not match expected value 'in' from avsdpll/avsdpll/timing (NDM-032)
+Error: Direction 'inout' for port VDD on avsdpll/avsdpll/design
+        does not match expected value 'in' from avsdpll/avsdpll/timing (NDM-032)
+Error: Direction 'inout' for port GND#2 on avsdpll/avsdpll/design
+        does not match expected value 'in' from avsdpll/avsdpll/timing (NDM-032)
+Error: Direction 'inout' for port VDD#2 on avsdpll/avsdpll/design
+        does not match expected value 'in' from avsdpll/avsdpll/timing (NDM-032)
+Error: Direction 'inout' for port VDD#3 on avsdpll/avsdpll/design
+        does not match expected value 'in' from avsdpll/avsdpll/timing (NDM-032)
+Information: Fixed direction mismatches for block avsdpll (LM-054)
+Creating default ground rail
+Associated ground rail 1 to pin GND
+Associated ground rail 1 to pin GND#2
+Information: Combined 1 physical design:1 with a design view (1 had ports reordered); (LM-034)
+... creating frames for avsdpll
+Information: Block avsdpll.frame, the feature of blocking core area is set on specific layers. New zero-spacing routing blockages and RC metal are added on layers: li1 met1 met2 met3 nwell. (FRAM-045)
+Information: Block avsdpll.frame, the feature of blockage trimming by pin is set to 'touch' on specific layers. All metal shapes and routing blockages touch pins in design view are trimmed on layers: li1 met1 met2 met3 met4 met5 fieldpoly diff nwell pwell. (FRAM-046)
+... created 1 frames
+
+Workspace check succeeded!
+... wrote CLIBs/avsdpll.ndm
+... removing library 'avsdpll'
+... removing library 'avsdpll'
+... lib workspace removed!
+Maximum memory usage for this session: 100.30 MB
+CPU usage for this session:      2 seconds (  0.00 hours)
+Elapsed time for this session:      5 seconds (  0.00 hours)
+Thank you for using Library Manager.
+

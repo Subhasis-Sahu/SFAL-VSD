@@ -2,13 +2,17 @@ module avsddac (
    OUT,
    D,
    VREFH,
-   VREFL
+   VREFL,
+   VSSA,
+   VDDA
 );
 
    output      OUT;
    input [9:0] D;
    input       VREFH;
    input       VREFL;
+   input       VSSA;
+   input       VDDA;
    
 
    reg  real OUT;

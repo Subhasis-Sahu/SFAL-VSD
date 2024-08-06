@@ -1,0 +1,146 @@
+#@ # 
+#@ # Running icc2_shell Version T-2022.03-SP5 for linux64 -- Nov 01, 2022
+#@ # Date:   Mon Aug  5 14:43:26 2024
+#@ # Run by: subhasis@sfalvsd
+#@ 
+
+open_lib work/vsdbabysocsky130_fd_sc_hd/
+list_block
+open_block vsdbabysoc/post_route.design
+check_routes
+man check_routes
+check_routes
+report_qor -summary
+report_qor
+close_block
+close_block -f
+open_block vsdbabysoc/post_cts
+route_auto -max_detail_route_iterations 5
+route_opt
+save_block -hier -force   -label post_route
+save_lib -all
+check_routes
+source /home/subhasis/VSDBabySoC/output/vsdbabysoc_eco.tcl
+man route_eco
+check_legality
+legalize_placement
+check_legality
+close_block
+close_block -f
+open_block vsdbabysoc/post_route
+start_gui
+gui_set_pref_value -category {SelectByNamePalette} -key {ObjectType} -value {Logical Cells}
+win_set_filter -visible -class cell -filter {clock_margin hard_macro_margin hard_margin route_blockage_margin soft_margin}
+win_set_filter -visible -class pseudo_bump -filter {deleted}
+win_set_filter -visible -class pseudo_tsv -filter {deleted}
+win_set_filter -visible -class placement_blockage -filter {wiring} -layer {0-16}
+win_set_filter -expand_cell_types {soft_macro  }
+win_set_select_class -visible {cell port bound routing_blockage shaping_blockage pg_region bump_region pseudo_bump pseudo_tsv pin_blockage block_shielding topology_node topology_edge topology_repeater annotation_shape core_area die_area edit_group shape via terminal fill_cell placement_blockage }
+win_set_filter -class cell -filter {array clock_margin hard_macro_margin hard_margin route_blockage_margin soft_margin}
+win_set_filter -class pseudo_bump -filter {deleted}
+win_set_filter -class pseudo_tsv -filter {deleted}
+win_set_filter -class placement_blockage -filter {wiring} -layer {0-16}
+win_set_select_class {cell port bound routing_blockage shaping_blockage pg_region bump_region pseudo_bump pseudo_tsv pin_blockage topology_node topology_edge topology_repeater annotation_shape edit_group shape via placement_blockage }
+link_block
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 2 -at_point {666.645 743.405}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 2 -at_point {666.680 743.520}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 2 -at_point {666.680 743.520}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 2 -at_point {666.680 743.520}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 2 -at_point {667.115 743.850}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 0.5 -at_point {669.510 730.865}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 0.5 -at_point {669.510 730.915}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 2 -at_point {675.020 719.160}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 2 -at_point {675.020 719.160}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 2 -at_point {675.040 719.140}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 2 -at_point {675.030 719.135}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 2 -at_point {675.030 719.135}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 0.5 -at_point {675.390 719.635}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 0.5 -at_point {675.395 719.630}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 0.5 -at_point {675.390 719.620}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 0.5 -at_point {675.410 719.625}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 0.5 -at_point {675.355 719.680}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 0.5 -at_point {675.460 719.595}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 0.5 -at_point {675.460 719.375}
+set FILLER_CELLS ""
+echo $FILLER_CELLS
+close_block -f
+open_block vsdbabysoc/post_cts.design
+link_block
+close_block -f
+open_block vsdbabysoc/post_placement
+link_block
+clock_opt
+route_group -all_clock_nets -reuse_existing_global_route true -stop_after_global_route true
+
+route_group -all_clock_nets -reuse_existing_global_route true -stop_after_global_route true
+redirect $::sh_dev_null { set_app_options -name opt.internal.current_block_utilization -value [report_utilization] }
+
+set_app_options -as_user_default -list {route.global.global_route_topology_style 1}
+route_group -all_clock_nets -reuse_existing_global_route true
+set_app_options -as_user_default -list {route.global.global_route_topology_style 0}
+
+
+redirect $::sh_dev_null { set_app_options -name opt.internal.current_block_utilization -value [report_utilization] }
+
+
+
+
+create_routing_rule _snps_autoNdr_power -spacings {met1 {0.280000} met2 {0.280000} met3 {0.600000} met4 {0.600000} met5 {3.200000} }  -spacing_weight_levels {met1 { medium } met2 { medium } met3 { medium } met4 { medium } met5 { medium } } -spacing_length_thresholds {met1 { 1.0 } met2 { 1.0 } met3 { 1.0 } met4 { 1.0 } met5 { 1.0 } }
+remove_routing_rules _snps_autoNdr_power
+save_block -hier -force   -label post_cts
+save_lib -all
+start_gui
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 2 -at_point {1216.180 415.430}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 2 -at_point {1216.305 415.150}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 2 -at_point {1216.305 415.150}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 0.5 -at_point {1204.670 408.565}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 0.5 -at_point {1204.455 408.565}
+route_auto -max_detail_route_iterations 5
+route_opt
+save_block -hier -force   -label post_route
+save_lib -all
+start_gui
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 2 -at_point {1101.040 659.665}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 2 -at_point {1103.920 659.235}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 2 -at_point {1106.995 659.235}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 2 -at_point {1108.970 658.795}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 0.5 -at_point {1108.970 658.795}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 0.5 -at_point {1108.970 658.795}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 0.5 -at_point {1108.750 658.795}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 0.5 -at_point {1108.310 658.355}
+gui_zoom -window [gui_get_current_window -types Layout -mru] -factor 0.5 -at_point {1108.310 657.480}
+write_parasitics -corner func1 -output /home/subhasis/VSDBabySoC/output/vsdbabysoc_parasitics_max_cap
+close_block -f
+open_block vsdbabysoc/post_route
+link_block
+write_parasitics -corner func1 -output /home/subhasis/VSDBabySoC/output/vsdbabysoc_parasitics_max_cap
+write_verilog /home/subhasis/VSDBabySoC/output/vsdbabysoc_post_route_net_max_cap.v
+source /home/subhasis/VSDBabySoC/output/vsdbabysoc_eco.tcl
+check_legality
+legalize_placement
+check_legality
+route_eco
+man route_eco
+write_parasitics -corner func1 -output /home/subhasis/VSDBabySoC/output/vsdbabysoc_parasitics_max_cap_post_eco
+write_verilog /home/subhasis/VSDBabySoC/output/vsdbabysoc_post_route_net_max_cap_post_eco.v
+source /home/subhasis/VSDBabySoC/output/vsdbabysoc_eco.tcl
+legalize_placement
+route_eco
+write_parasitics -corner func1 -output /home/subhasis/VSDBabySoC/output/vsdbabysoc_parasitics_max_cap_post_eco
+write_verilog /home/subhasis/VSDBabySoC/output/vsdbabysoc_post_route_net_max_cap_post_eco.v
+source /home/subhasis/VSDBabySoC/output/vsdbabysoc_eco.tcl
+legalize_placement
+route_eco
+write_parasitics -corner func1 -output /home/subhasis/VSDBabySoC/output/vsdbabysoc_parasitics_max_cap_post_eco
+write_verilog /home/subhasis/VSDBabySoC/output/vsdbabysoc_post_route_net_max_cap_post_eco.v
+source /home/subhasis/VSDBabySoC/output/vsdbabysoc_eco.tcl
+legalize_placement
+route_eco
+write_parasitics -corner func1 -output /home/subhasis/VSDBabySoC/output/vsdbabysoc_parasitics_max_cap_post_eco
+write_verilog /home/subhasis/VSDBabySoC/output/vsdbabysoc_post_route_net_max_cap_post_eco.v
+set FILLER_CELLS [get_object_name [sort_collection -descending [get_lib_cells sky130_fd_sc_hd__fill*] area]]
+create_stdcell_fillers -lib_cells $FILLER_CELLS
+save_block -hier -force   -label post_filler_cell_insertion
+save_lib -all
+report_qor
+exit

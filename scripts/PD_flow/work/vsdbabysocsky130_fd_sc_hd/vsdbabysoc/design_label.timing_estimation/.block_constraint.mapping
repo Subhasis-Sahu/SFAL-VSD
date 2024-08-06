@@ -1,0 +1,2 @@
+vsdbabysoc PG_CONSTRAINT ./block_pg/./vsdbabysoc_pg.tcl
+vsdbabysoc COMPILE_PG ./block_pg/./copy_compile_pg_example.tcl

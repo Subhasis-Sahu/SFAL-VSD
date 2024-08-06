@@ -1,0 +1,45 @@
+[icc2-lic Tue Jul  9 14:49:35 2024] Command 'check_design' requires licenses
+[icc2-lic Tue Jul  9 14:49:35 2024] Attempting to check-out alternate set of keys directly with queueing
+[icc2-lic Tue Jul  9 14:49:35 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jul  9 14:49:35 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jul  9 14:49:35 2024] Sending check-out request for 'ICCompilerII-8' (1) with wait option
+[icc2-lic Tue Jul  9 14:49:35 2024] Check-out request for 'ICCompilerII-8' with wait option succeeded
+[icc2-lic Tue Jul  9 14:49:35 2024] Sending checkout check request for 'ICCompilerII-8' 
+[icc2-lic Tue Jul  9 14:49:35 2024] Checkout check request for 'ICCompilerII-8' returned 0 
+[icc2-lic Tue Jul  9 14:49:35 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jul  9 14:49:35 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jul  9 14:49:35 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jul  9 14:49:35 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jul  9 14:49:35 2024] Sending check-out request for 'ICCompilerII-NX' (1) with wait option
+[icc2-lic Tue Jul  9 14:49:35 2024] Check-out request for 'ICCompilerII-NX' with wait option succeeded
+[icc2-lic Tue Jul  9 14:49:35 2024] Sending checkout check request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jul  9 14:49:35 2024] Checkout check request for 'ICCompilerII-NX' returned 0 
+[icc2-lic Tue Jul  9 14:49:35 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jul  9 14:49:35 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jul  9 14:49:35 2024] Check-out of alternate set of keys directly with queueing was successful
+****************************************
+ Report : check_design 
+ Options: { dp_pre_pin_placement }
+ Design : vsdbabysoc
+ Version: T-2022.03-SP5
+ Date   : Tue Jul  9 14:49:35 2024
+****************************************
+
+Running atomic-check 'dp_pre_pin_placement'
+
+  *** EMS Message summary ***
+  ----------------------------------------------------------------------------------------------------
+  Total 0 EMS messages : 0 errors, 0 warnings, 0 info.
+  ----------------------------------------------------------------------------------------------------
+
+  *** Non-EMS message summary ***
+  ----------------------------------------------------------------------------------------------------
+  Rule         Type   Count      Message
+  ----------------------------------------------------------------------------------------------------
+  DPPA-268     Warn   2          Didn't find any enabled planning block for %s.
+  DPPA-475     Warn   1          Detected dimension mismatch between the boundary and bbox, for b...
+  ----------------------------------------------------------------------------------------------------
+  Total 3 non-EMS messages : 0 errors, 3 warnings, 0 info.
+  ----------------------------------------------------------------------------------------------------
+Information: Non-EMS messages are saved into file 'check_design2024Jul09144935.log'.
+1

@@ -1,0 +1,153 @@
+ 
+                              IC Compiler II (TM)
+
+             Version T-2022.03-SP5 for linux64 - Nov 01, 2022 -SLE
+
+                    Copyright (c) 1988 - 2022 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+
+icc2_shell> man read_parasitic_tech
+2.  Synopsys Commands                                        Command Reference
+                              read_parasitic_tech
+
+NAME
+       read_parasitic_tech
+              Reads  in one or more parasitic model files in TLUPlus format or
+              common nxtgrd file format.
+
+SYNTAX
+       string read_parasitic_tech
+              -tlup tlup_files
+              [-layermap layer_map_file]
+              [-name name]
+              [-sanity_check none | basic | advanced]
+              [-fill_emulation true | false ]
+
+   Data Types
+       tlup_files      string
+       layer_map_file  string
+       name            string
+
+ARGUMENTS
+       -tlup tlup_files
+              Specifies the names of one  or  more  TLUPlus  files  or  common
+              nxtgrd file to read. This argument is required and you must pro-
+              vide at least one TLUPlus file name.
+
+       -layermap layer_map_file
+              Specifies the names of the layer map file between the technology
+              file and the ITF file.
+
+       -name name
+              Specifies  the  name  which identifies this model. If not speci-
+              fied, the base file name is used as  the  parasitic  tech  model
+              name.
+
+       -sanity_check none | basic | advanced
+              Disables  or  enables  certain  level of sanity check on TLUPlus
+              file and layer mapping file.  Default value is basic.  Set value
+              "none"  to  disable  all sanity checks.  Set value "advanced" to
+              enable strict layer mapping file checks.
+
+       -fill_emulation true | false
+              Read TLUPlus file with or without fill emulation.  Default value
+              is  false.   Use this option for the common tech file only.  Set
+              value "false" to read TLUPlus file without fill emulation.   Set
+              value "true" to read TLUPlus file with fill emulation.
+
+              RC  parasitic  extraction recognizes the parasitic tech by model
+              name. A different name implies a different parasitic tech.
+
+DESCRIPTION
+       This command reads in parasitic model data files.  After  the  data  is
+       read  in, it is stored in current library and the TLUPlus files or com-
+       mon tech file are no longer referenced. The data and TLUPlus files name
+       are  saved to disk along with other library data when the save_lib com-
+       mand is issued. The parasitic data is used in RC parasitic  extraction,
+       delay calculation, net estimations, and other applications.
+
+       The  layer map file maps the technology file layer name to Interconnect
+       Technology  Format  (ITF)  layer  name.  The  "conducting_layers"   and
+       "via_layers"  keywords are used to identify the layer properties. Lines
+       starting with * or # are comments in the layer mapping file.  If  there
+       is  no layer map file specified, the ITF layer name is treated the same
+       as the technology layer name.
+
+       The following is an example of the layer map file.
+
+         *****Technology_maskName VS ITF_layerName*****
+         conducting_layers
+         poly      fpoly
+         metal1    metal1
+         metal2    metal2
+         metal3    metal3
+         metal4    metal4
+         metal5    metal5
+         metal6    metal6
+         metal7    metal7
+         via_layers
+         polyCont  polyCont
+         via1      via1
+         via2      via2
+         via3      via3
+         via4      via4
+         via5      via5
+         via6      via6
+
+   Multicorner-Multimode Support
+       This command has no dependency on scenario-specific, mode-specific,  or
+       corner-specific information.
+
+EXAMPLES
+       The following example reads in the file.tlup TLUPlus file.
+
+         prompt> read_parasitic_tech -tlup file.tlup -layermap file.layermap \
+            -name critical_worst_param_1
+
+       The following example reads in the file.nxtgrd nxtgrd file.
+
+         prompt> read_parasitic_tech -tlup file.nxtgrd -layermap file.layermap \
+            -name critical_worst_param_1
+
+SEE ALSO
+       all_corners(2)
+       create_corner(2)
+       create_mode(2)
+       current_corner(2)
+       get_corners(2)
+       get_parasitic_techs(2)
+       remove_corners(2)
+       save_lib(2)
+       set_parasitic_parameters(2)
+       set_scenario_status(2)
+
+                          Version T-2022.03-SP5
+            Copyright (c) 2022 Synopsys, Inc. All rights reserved.
+icc2_shell> help *genx*
+Information: No commands matched '*genx*'. (CMD-040)
+icc2_shell> help *genxo*
+Information: No commands matched '*genxo*'. (CMD-040)
+icc2_shell> help *nxtgrd*
+Information: No commands matched '*nxtgrd*'. (CMD-040)
+icc2_shell> man nxtgrd
+Error: No manual entry for 'nxtgrd' (CMD-025)
+icc2_shell> exit
+Maximum memory usage for this session: 312.24 MB
+Maximum memory usage for this session including child processes: 312.24 MB
+CPU usage for this session:     19 seconds (  0.01 hours)
+Elapsed time for this session:    623 seconds (  0.17 hours)
+Thank you for using IC Compiler II.
+

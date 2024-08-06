@@ -1,0 +1,6 @@
+Error: Line 54, Cell 'avsdpll', The '//pin' attribute/group name cannot be specified here. (LBDB-76)
+Error: Line 58, Cell 'avsdpll', /home/subhasis/VSDBabySoC/src/lib/avsdpll.lib: syntax error on line 58 at or near '}'. (PARSE-1)
+Error: Line 66, Cell 'avsdpll', The '//pin' attribute/group name cannot be specified here. (LBDB-76)
+Error: Line 70, Cell 'avsdpll', /home/subhasis/VSDBabySoC/src/lib/avsdpll.lib: syntax error on line 70 at or near '}'. (PARSE-1)
+Error: Line 72, Cell 'avsdpll', The '//pin' attribute/group name cannot be specified here. (LBDB-76)
+Error: Line 76, Cell 'avsdpll', /home/subhasis/VSDBabySoC/src/lib/avsdpll.lib: syntax error on line 76 at or near '}'. (PARSE-1)

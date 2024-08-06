@@ -1,0 +1,35 @@
+****************************************
+Report : report_macro_constraints
+Design : vsdbabysoc
+Version: T-2022.03-SP5
+Date   : Tue Jul  9 14:49:35 2024
+****************************************
+
+
+  macro 		allowed     			   legal
+  name  		orientations			   orientations
+  -----------------------------------------------------------------------
+  pll
+         		all                                R0
+  dac
+         		all                                R0
+
+
+  macro 		preferred
+  name  		location
+  -----------------------------------------------------------------------
+
+
+  macro   	R0 grid   R0 alignment 	R90 grid   R90 alignment
+  name    	name      point        	name       point
+  -----------------------------------------------------------------------
+
+
+  macro   	R0 align pins   	R90 align pins 
+  name    	to tracks       	to tracks     
+  -----------------------------------------------------------------------
+  pll
+          	false             	false
+  dac
+          	false             	false
+1

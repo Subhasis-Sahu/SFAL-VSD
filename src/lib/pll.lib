@@ -1,0 +1,118 @@
+library(pll) {
+    delay_model : "table_lookup";
+    technology : "cmos";
+
+    /* Units Section */
+    time_unit : "1ns";
+    voltage_unit : "1V";
+    current_unit : "1mA";
+    leakage_power_unit : "1nW";
+    capacitive_load_unit(1, pf);
+
+    voltage_map("VGND", 0.0000000000);
+    voltage_map("VPWR", 1.8000000000);
+
+    /* Operating Conditions Section */
+    operating_conditions(tt) {
+        process : 1;
+        temperature : 25;
+        voltage : 1.2;
+    }
+
+    lu_table_template ("del_1_3_3") {
+        variable_1 : "input_net_transition";
+        variable_2 : "total_output_net_capacitance";
+        index_1("1, 2, 3");
+        index_2("1, 2, 3");
+    }
+
+    /* Default Wire Load Model Section */
+    default_wire_load("10x10");
+
+    wire_load("10x10") {
+        resistance : 0.001;
+        capacitance : 0.002;
+        area : 100;
+        slope : 0.001;
+    }
+
+    /* Cell Definitions Section */
+    cell(pll) {
+        area : 100;
+
+        /* Input Pins */
+        pin(f_clk_in) {
+            direction : input;
+            capacitance : 0.001;
+            }
+       
+       pg_pin ("VGND") {
+            pg_type : "primary_ground";
+            voltage_name : "VGND";
+            }
+
+       pg_pin ("VPWR") {
+            pg_type : "primary_power";
+            voltage_name : "VPWR";
+        }
+        pin(vctrl) {
+            direction : input;
+            capacitance : 0.001;
+        }
+        
+        /* Output Pins */
+        pin(f_vco) {
+            direction : output;
+            capacitance : 0.001;
+            max_capacitance : 0.01; 
+            timing() {
+                related_pin : "f_clk_in";
+                timing_sense : positive_unate;
+                cell_rise ("del_1_3_3") {
+                    index_1("0.01, 0.1, 1");
+                    index_2("0.01, 0.1, 1");
+                    values("0.01, 0.02, 0.03",\
+                           "0.04, 0.05, 0.06",\
+                           "0.07, 0.08, 0.09");
+                    
+                }
+                cell_fall ("del_1_3_3") {
+                    index_1("0.01, 0.1, 1");
+                    index_2("0.01, 0.1, 1");
+                    values("0.01, 0.02, 0.03",\
+                           "0.04, 0.05, 0.06",\
+                           "0.07, 0.08, 0.09");
+
+                }
+                rise_transition ("del_1_3_3") {
+                    index_1("0.01, 0.1, 1");
+                    index_2("0.01, 0.1, 1");
+                    values("0.01, 0.02, 0.03",\
+                           "0.04, 0.05, 0.06",\
+                           "0.07, 0.08, 0.09");
+
+                }
+                fall_transition ("del_1_3_3") {
+                    index_1("0.01, 0.1, 1");
+                    index_2("0.01, 0.1, 1");
+                    values("0.01, 0.02, 0.03",\
+                           "0.04, 0.05, 0.06",\
+                           "0.07, 0.08, 0.09");
+
+                }
+            }
+        }
+        pin(up) {
+            direction : output;
+            capacitance : 0.001;
+            max_capacitance : 0.01;
+            
+        }
+        pin(down) {
+            direction : output;
+            capacitance : 0.001;
+            max_capacitance : 0.01;
+            
+        }
+    }
+}

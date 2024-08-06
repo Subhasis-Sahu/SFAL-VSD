@@ -3,7 +3,10 @@ module avsdpll (
    input  wire VCO_IN,
    input  wire ENb_CP,
    input  wire ENb_VCO,
-   input  wire REF
+   input  wire REF,
+   input  wire VDD,
+   input  wire GND
+
 );
    real period, lastedge, refpd;
 
