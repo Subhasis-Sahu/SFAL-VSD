@@ -1,3 +1,0 @@
-sky130_fd_sc_hd__tap_2	VGND:I VNB:I VPB:I VPWR:I
-Name	Formula	
-Note	Tap pins in this cell are not connected to power buses.
