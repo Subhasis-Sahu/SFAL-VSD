@@ -1,0 +1,74 @@
+ 
+                             Library Compiler (TM)
+                                 DesignWare (R)
+
+             Version T-2022.03-SP5 for linux64 - Oct 13, 2022 -SLE
+
+                    Copyright (c) 1988 - 2022 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+
+Initializing...
+lc_shell> read_lib pll.lib
+Reading '/home/subhasis/VSDBabySoC/src/lib/pll.lib' ...
+Warning: Line 1, The 'default_rise_delay_intercept' attribute is not specified. Using 0.00. (LBDB-172)
+Warning: Line 1, The 'default_output_pin_rise_res' attribute is not specified. Using 0.00. (LBDB-172)
+Warning: Line 1, The 'default_inout_pin_fall_res' attribute is not specified. Using 0.00. (LBDB-172)
+Warning: Line 1, The 'default_inout_pin_rise_res' attribute is not specified. Using 0.00. (LBDB-172)
+Warning: Line 1, The 'default_fanout_load' attribute is not specified. Using 1.00. (LBDB-172)
+Warning: Line 1, The 'default_fall_delay_intercept' attribute is not specified. Using 0.00. (LBDB-172)
+Warning: Line 1, The 'default_slope_rise' attribute is not specified. Using 0.00. (LBDB-172)
+Warning: Line 1, The 'default_output_pin_fall_res' attribute is not specified. Using 0.00. (LBDB-172)
+Warning: Line 1, The 'default_intrinsic_rise' attribute is not specified. Using 1.00. (LBDB-172)
+Warning: Line 1, The 'default_rise_pin_resistance' attribute is not specified. Using 0.00. (LBDB-172)
+Warning: Line 1, The 'default_slope_fall' attribute is not specified. Using 0.00. (LBDB-172)
+Warning: Line 1, The 'default_intrinsic_fall' attribute is not specified. Using 1.00. (LBDB-172)
+Warning: Line 1, The 'default_fall_pin_resistance' attribute is not specified. Using 0.00. (LBDB-172)
+Warning: Line 1, The 'default_inout_pin_cap' attribute is not specified. Using 1.00. (LBDB-172)
+Warning: Line 1, The 'default_input_pin_cap' attribute is not specified. Using 1.00. (LBDB-172)
+Warning: Line 1, The 'default_output_pin_cap' attribute is not specified. Using 0.00. (LBDB-172)
+Warning: Line 1, The default_operating_conditions is not defined. operating_conditions 'tt' is set
+        as the default_operating_conditions. (LBDB-663)
+Warning: Line 1, No 'pulling_resistance_unit' attribute has been specified for the
+        library. This attribute is needed in technology libraries. (LBDB-238)
+Warning: Line 1, Overwrite 'nom_voltage' by default 'voltage' value 1.200000 defined
+        in 'operating_conditions'.  (LBDB-750)
+Warning: Line 1, The attribute 'slew_lower_threshold_pct_rise' is not specified. (LBDB-605)
+Warning: Line 1, The attribute 'slew_upper_threshold_pct_rise' is not specified. (LBDB-605)
+Warning: Line 1, The attribute 'slew_lower_threshold_pct_fall' is not specified. (LBDB-605)
+Warning: Line 1, The attribute 'slew_upper_threshold_pct_fall' is not specified. (LBDB-605)
+Warning: Line 1, The attribute 'input_threshold_pct_rise' is not specified. (LBDB-605)
+Warning: Line 1, The attribute 'output_threshold_pct_rise' is not specified. (LBDB-605)
+Warning: Line 1, The attribute 'input_threshold_pct_fall' is not specified. (LBDB-605)
+Warning: Line 1, The attribute 'output_threshold_pct_fall' is not specified. (LBDB-605)
+Warning: Line 32, The wire_load or wire_load_table '10x10' group has no
+        'fanout_length'. Using the default value of (1, 0.0). (LBDB-60)
+Warning: Line 64, Cell 'pll', pin 'f_vco', The 'f_vco' Pin/bus on the 'pll' cell has no 'function' attribute.
+        The cell becomes a black box. (LIBG-16)
+Warning: Line 105, Cell 'pll', pin 'up', The 'up' Pin/bus on the 'pll' cell has no 'function' attribute.
+        The cell becomes a black box. (LIBG-16)
+Warning: Line 111, Cell 'pll', pin 'down', The 'down' Pin/bus on the 'pll' cell has no 'function' attribute.
+        The cell becomes a black box. (LIBG-16)
+Technology library 'pll' read successfully
+1
+lc_shell> write_lib pll -format db -output pll.db
+Wrote the 'pll' library to '/home/subhasis/VSDBabySoC/src/lib/pll.db' successfully
+1
+lc_shell> exit
+Maximum memory usage for this session: 105.10 MB
+CPU usage for this session:      3 seconds (  0.00 hours)
+Elapsed time for this session:     43 seconds (  0.01 hours)
+Thank you for using Library Compiler.
+

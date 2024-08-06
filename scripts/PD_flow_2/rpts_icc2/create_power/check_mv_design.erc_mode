@@ -1,0 +1,104 @@
+[icc2-lic Tue Jul  9 14:49:49 2024] Command 'check_mv_design' requires licenses
+[icc2-lic Tue Jul  9 14:49:49 2024] Attempting to check-out alternate set of keys directly with queueing
+[icc2-lic Tue Jul  9 14:49:49 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jul  9 14:49:49 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jul  9 14:49:49 2024] Sending check-out request for 'ICCompilerII-8' (1) with wait option
+[icc2-lic Tue Jul  9 14:49:49 2024] Check-out request for 'ICCompilerII-8' with wait option succeeded
+[icc2-lic Tue Jul  9 14:49:49 2024] Sending checkout check request for 'ICCompilerII-8' 
+[icc2-lic Tue Jul  9 14:49:49 2024] Checkout check request for 'ICCompilerII-8' returned 0 
+[icc2-lic Tue Jul  9 14:49:49 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jul  9 14:49:49 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jul  9 14:49:49 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jul  9 14:49:49 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jul  9 14:49:49 2024] Sending check-out request for 'ICCompilerII-NX' (1) with wait option
+[icc2-lic Tue Jul  9 14:49:49 2024] Check-out request for 'ICCompilerII-NX' with wait option succeeded
+[icc2-lic Tue Jul  9 14:49:49 2024] Sending checkout check request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jul  9 14:49:49 2024] Checkout check request for 'ICCompilerII-NX' returned 0 
+[icc2-lic Tue Jul  9 14:49:49 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jul  9 14:49:49 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jul  9 14:49:49 2024] Check-out of alternate set of keys directly with queueing was successful
+****************************************
+Report : check_mv_design
+        -erc_mode
+        -voltage_threshold 0
+Design : vsdbabysoc
+Version: T-2022.03-SP5
+Date   : Tue Jul  9 14:49:49 2024
+****************************************
+
+---------- Power domain rule ----------
+No errors or warnings.
+
+---------- Supply set rule ----------
+No errors or warnings.
+
+---------- Supply net rule ----------
+No errors or warnings.
+
+---------- Supply port rule ----------
+No errors or warnings.
+
+---------- Isolation strategy rule ----------
+No errors or warnings.
+
+---------- Level shifter strategy rule ----------
+No errors or warnings.
+
+---------- Retention strategy rule ----------
+No errors or warnings.
+
+---------- Power switch strategy rule ----------
+No errors or warnings.
+
+---------- Repeater rule ----------
+No errors or warnings.
+
+---------- Terminal boundary rule ----------
+No errors or warnings.
+
+---------- Isolation cell rule ----------
+No errors or warnings.
+
+---------- Level shifter cell rule ----------
+No errors or warnings.
+
+---------- Retention cell rule ----------
+No errors or warnings.
+
+---------- Switch cell rule ----------
+No errors or warnings.
+
+---------- PGMUX rule ----------
+No errors or warnings.
+
+---------- Diode cell rule ----------
+No errors or warnings.
+
+---------- Model rule ----------
+Warning: Pin(s) 'ENb_CP ENb_VCO GND REF VCO_IN VDD CLK' of library cell 'avsdpll' is(are) missing the "is_unconnected" attribute (MV-208)
+Information: Total 1 MV-208 violations. (MV-080)
+
+---------- Isolation rule ----------
+No errors or warnings.
+
+---------- Voltage shifting rule ----------
+No errors or warnings.
+
+---------- Tie-off connection rule ----------
+No errors or warnings.
+
+---------- Analog net rule ----------
+No errors or warnings.
+
+---------- Physical block pin rule ----------
+No errors or warnings.
+
+---------- PG pin rule ----------
+No errors or warnings.
+
+---------- Signal pin rule ----------
+No errors or warnings.
+
+---------- Summary ----------
+Information: Total 0 error(s) and 1 warning(s) from check_mv_design. (MV-082)
+1

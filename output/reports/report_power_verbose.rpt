@@ -1,0 +1,61 @@
+ 
+****************************************
+Report : power
+        -analysis_effort low
+        -verbose
+Design : vsdbabysoc
+Version: T-2022.03-SP5-6
+Date   : Tue Jun 25 14:08:11 2024
+****************************************
+
+
+Library(s) Used:
+
+    sky130_fd_sc_hd__tt_025C_1v80 (File: /home/subhasis/VSDBabySoC/src/lib/sky130_fd_sc_hd__tt_025C_1v80.db)
+    avsddac (File: /home/subhasis/VSDBabySoC/src/lib/avsddac.db)
+    avsdpll (File: /home/subhasis/VSDBabySoC/src/lib/avsdpll.db)
+
+
+Operating Conditions: tt_025C_1v80   Library: sky130_fd_sc_hd__tt_025C_1v80
+Wire Load Model Mode: top
+
+Design        Wire Load Model            Library
+------------------------------------------------
+vsdbabysoc             Small             sky130_fd_sc_hd__tt_025C_1v80
+
+
+Global Operating Voltage = 1.8  
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000pf
+    Time Units = 1ns
+    Dynamic Power Units = 1mW    (derived from V,C,T units)
+    Leakage Power Units = 1nW
+
+
+Attributes
+----------
+i - Including register clock pin internal power
+
+
+  Cell Internal Power  =   2.8495 mW   (83%)
+  Net Switching Power  = 592.4229 uW   (17%)
+                         ---------
+Total Dynamic Power    =   3.4419 mW  (100%)
+
+Cell Leakage Power     =   8.0225 nW
+
+                 Internal         Switching           Leakage            Total                         Cell
+Power Group      Power            Power               Power              Power   (   %    )  Attrs  Count
+---------------------------------------------------------------------------------------------------------
+io_pad             0.0000            0.0000            0.0000            0.0000  (   0.00%)            0
+memory             0.0000            0.0000            0.0000            0.0000  (   0.00%)            0
+black_box          0.0000            0.4454            0.0000            0.4454  (  12.94%)            2
+clock_network      2.7524            0.0000            0.0000            2.7524  (  79.97%)            0
+                                                                                             i
+register       4.6345e-02        2.0562e-02            5.4668        6.6912e-02  (   1.94%)            676
+sequential         0.0000            0.0000            0.0000            0.0000  (   0.00%)            0
+combinational  5.0792e-02            0.1265            2.5557            0.1773  (   5.15%)            2065
+---------------------------------------------------------------------------------------------------------
+Total              2.8495 mW         0.5924 mW         8.0225 nW         3.4419 mW
+1

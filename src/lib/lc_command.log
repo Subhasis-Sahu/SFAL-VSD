@@ -1,0 +1,9 @@
+#@ # 
+#@ # Running lc_shell Version T-2022.03-SP5 for linux64 -- Oct 13, 2022
+#@ # Date:   Wed Jul 10 15:03:18 2024
+#@ # Run by: subhasis@sfalvsd
+#@ 
+
+read_lib pll.lib
+write_lib pll -format db -output pll.db
+exit

@@ -1,0 +1,579 @@
+ 
+                              IC Compiler II (TM)
+
+             Version T-2022.03-SP5 for linux64 - Nov 01, 2022 -SLE
+
+                    Copyright (c) 1988 - 2022 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+
+Loading user preference file /home/subhasis/.synopsys_icc2_gui/preferences.tcl
+icc2_shell> source top.tcl
+puts "RM-info : Running script [info script]\n"
+RM-info : Running script /home/subhasis/VSDBabySoC/scripts/PD_flow_2/icc2_common_setup.tcl
+
+##########################################################################################
+# Tool: IC Compiler II
+# Script: icc2_common_setup.tcl
+# Version: P-2019.03-SP4
+# Copyright (C) 2014-2019 Synopsys, Inc. All rights reserved.
+##########################################################################################
+##########################################################################################
+## Required variables
+## These variables must be correctly filled in for the flow to run properly
+##########################################################################################
+set DESIGN_NAME                 "vsdbabysoc" ;# Required; name of the design to be worked on; also used as the block name when scripts save or copy a block
+set LIBRARY_SUFFIX              "sky130_fd_sc_hd" ;# Suffix for the design library name ; default is unspecified   
+set DESIGN_LIBRARY              "${DESIGN_NAME}${LIBRARY_SUFFIX}" ;# Name of the design library; default is ${DESIGN_NAME}${LIBRARY_SUFFIX}
+set REFERENCE_LIBRARY           [list /home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/LEF/sky130_v5_7magic.lef /home/subhasis/VSDBabySoC/src/lef/avsddac.lef /home/subhasis/VSDBabySoC/src/lef/pll.lef]        ;# Required; a list of reference libraries for the design library.
+;#      for library configuration flow (LIBRARY_CONFIGURATION_FLOW set to true below): 
+;#              - specify the list of physical source files to be used for library configuration during create_lib
+;#      for hierarchical designs using bottom-up flows: include subblock design libraries in the list;
+;#      for hierarchical designs using ETMs: include the ETM library in the list.
+;#              - If unpack_rm_dirs.pl is used to create dir structures for hierarchical designs, 
+;#                in order to transition between hierarchical DP and hierarchical PNR flows properly, 
+;#                absolute paths are a requirement.
+set COMPRESS_LIBS               "false" ;# Save libs as compressed NDM; only used in DP.
+set VERILOG_NETLIST_FILES       "/home/subhasis/VSDBabySoC/output/vsdbabysoc_net_new_pll.v"     ;# Verilog netlist files;
+;#      for DP: required
+;#      for PNR: required if INIT_DESIGN_INPUT is ASCII in icc2_pnr_setup.tcl; not required for DC_ASCII or DP_RM_NDM
+set UPF_FILE                    ""      ;# A UPF file
+;#      for DP: required
+;#      for PNR: required if INIT_DESIGN_INPUT is ASCII in icc2_pnr_setup.tcl; not required for DC_ASCII or DP_RM_NDM
+;#          for hierarchical designs using ETMs, load the block upf file
+;#          for each sub-block linked to ETM, include the following line in the UPF_FILE 
+;#              load_upf block.upf -scope block_instance_name
+set UPF_SUPPLEMENTAL_FILE       ""      ;# The supplemental UPF file. Only needed if you are running golden UPF flow, in which case, you need both UPF_FILE and this.
+;#      for DP: required
+;#      for PNR: required if INIT_DESIGN_INPUT is ASCII in icc2_pnr_setup.tcl; not required for DC_ASCII or DP_RM_NDM
+;#          If UPF_SUPPLEMENTAL_FILE is specified, scripts assume golden UPF flow. load_upf and save_upf commands will be different.    
+set TCL_PARASITIC_SETUP_FILE    "./init_design.read_parasitic_tech_example.tcl" ;# Specify a Tcl script to read in your TLU+ files by using the read_parasitic_tech command;
+;# refer to the example in templates/init_design.read_parasitic_tech_example.tcl 
+#set TCL_MCMM_SETUP_FILE         ""
+set TCL_MCMM_SETUP_FILE         "./init_design.mcmm_example.auto_expanded.tcl"  ;# Specify a Tcl script to create your corners, modes, scenarios and load respective constraints;
+;# two examples are provided in templates/: 
+;# init_design.mcmm_example.explicit.tcl: provide mode, corner, and scenario constraints; create modes, corners, 
+;# and scenarios; source mode, corner, and scenario constraints, respectively 
+;# init_design.mcmm_example.auto_expanded.tcl: provide constraints for the scenarios; create modes, corners, 
+;# and scenarios; source scenario constraints which are then expanded to associated modes and corners
+;#      for DP: required
+;#      for PNR: required if INIT_DESIGN_INPUT is ASCII in icc2_pnr_setup.tcl; not required for DC_ASCII or DP_RM_NDM
+set TECH_FILE                   "/home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/milkywayORtechFiles/sky130_fd_sc_hd.tf"       ;# A technology file; TECH_FILE and TECH_LIB are mutually exclusive ways to specify technology information; 
+;# TECH_FILE is recommended, although TECH_LIB is also supported in ICC2 RM. 
+set TECH_LIB                    ""      ;# Specify the reference library to be used as a dedicated technology library;
+;# as a best practice, please list it as the first library in the REFERENCE_LIBRARY list 
+set TECH_LIB_INCLUDES_TECH_SETUP_INFO true 
+;# Indicate whether TECH_LIB contains technology setup information such as routing layer direction, offset, 
+;# site default, and site symmetry, etc. TECH_LIB may contain this information if loaded during library prep.
+;# true|false; this variable is associated with TECH_LIB. 
+set TCL_TECH_SETUP_FILE         "./init_design.tech_setup.tcl"
+;# Specify a TCL script for setting routing layer direction, offset, site default, and site symmetry list, etc.
+;# init_design.tech_setup.tcl is the default. Use it as a template or provide your own script.
+;# This script will only get sourced if the following conditions are met: 
+;# (1) TECH_FILE is specified (2) TECH_LIB is specified && TECH_LIB_INCLUDES_TECH_SETUP_INFO is false 
+set ROUTING_LAYER_DIRECTION_OFFSET_LIST "{met1 horizontal} {met2 vertical} {met3 horizontal} {met4 vertical} {met5 horizontal}" 
+;# Specify the routing layers as well as their direction and offset in a list of space delimited pairs;
+;# This variable should be defined for all metal routing layers in technology file;
+;# Syntax is "{metal_layer_1 direction offset} {metal_layer_2 direction offset} ...";
+;# It is required to at least specify metal layers and directions. Offsets are optional. 
+;# Example1 is with offsets specified: "{M1 vertical 0.2} {M2 horizontal 0.0} {M3 vertical 0.2}"
+;# Example2 is without offsets specified: "{M1 vertical} {M2 horizontal} {M3 vertical}"
+##########################################################################################
+## Optional variables
+## Specify these variables if the corresponding functions are desired 
+##########################################################################################
+set DESIGN_LIBRARY_SCALE_FACTOR ""      ;# Specify the length precision for the library. Length precision for the design
+;# library and its ref libraries must be identical. Tool default is 10000, which
+;# implies one unit is one Angstrom or 0.1nm.
+set UPF_UPDATE_SUPPLY_SET_FILE  ""      ;# A UPF file to resolve UPF supply sets
+#set DEF_FLOORPLAN_FILES                "/home/kunal/design/scripts/pnr/ICC2-RM_P-2019.03-SP4/write_data_dir/picorv32/picorv32.icc.floorplan/floorplan.def.gz"  ;# DEF files which contain the floorplan information;
+set DEF_FLOORPLAN_FILES                ""  ;# DEF files which contain the floorplan information;
+;#      for DP: not required
+;#      for PNR: required if INIT_DESIGN_INPUT = ASCII in icc2_pnr_setup.tcl and neither TCL_FLOORPLAN_FILE or 
+;#               initialize_floorplan is used; DEF_FLOORPLAN_FILES and TCL_FLOORPLAN_FILE are mutually exclusive;
+;#               not required if INIT_DESIGN_INPUT = DC_ASCII or DP_RM_NDM
+set DEF_SCAN_FILE               ""      ;# A scan DEF file for scan chain information;
+;#      for PNR: not required if INIT_DESIGN_INPUT = DC_ASCII or DP_RM_NDM, as SCANDEF is expected to be loaded already
+set DEF_SITE_NAME_PAIRS         {}      ;# A list of site name pairs for read_def -convert; 
+;# specify site name pairs with from_site first followed by to_site;
+;# Example: set DEF_SITE_NAME_PAIRS {{from_site_1 to_site_1} {from_site_2 to_site_2}}   
+set SITE_DEFAULT                ""      ;# Specify the default site name if there are multiple site defs in the technology file;
+;# this is to be used by initialize_floorplan command; example: set SITE_DEFAULT "unit";
+;# this is applied in the init_design.tech_setup.tcl script 
+set SITE_SYMMETRY_LIST  ""              ;# Specify a list of site def and its symmetry value;
+;# this is to be used by read_def or initialize_floorplan command to control the site symmetry;
+;# example: set SITE_SYMMETRY_LIST "{unit Y} {unit1 Y}"; this is applied in the init_design.tech_setup.tcl script 
+set MIN_ROUTING_LAYER           "met1"  ;# Min routing layer name; normally should be specified; otherwise tool can use all metal layers
+set MAX_ROUTING_LAYER           "met4"  ;# Max routing layer name; normally should be specified; otherwise tool can use all metal layers
+set LIBRARY_CONFIGURATION_FLOW  false   ;# Set it to true enables library configuration flow which calls the library manager under the hood to generate .nlibs, 
+;# save them to disk, and automatically link them to the design.
+;# Requires LINK_LIBRARY to be specified with .db files and REFERENCE_LIBRARY to be specified with physical
+;# source files for the library configuration flow. Also search_path (in icc2_pnr_setup.tcl) should include paths 
+;# to these .db and physical source files.
+set LINK_LIBRARY                [list /home/subhasis/VSDBabySoC/src/lib/sky130_fd_sc_hd__tt_025C_1v80.db /home/subhasis/VSDBabySoC/src/lib/pll.db /home/subhasis/VSDBabySoC/src/lib/avsddac.db] ;# Specify .db files;
+;#      for running VC-LP (vc_lp.tcl) and Formality (fm.tcl): required
+;#      for ICC-II without LIBRARY_CONFIGURATION_FLOW enabled: not required
+;#      for ICC-II with LIBRARY_CONFIGURATION_FLOW enabled: required; 
+;#              - the .db files specified will be used for the library configuration under the hood during create_lib 
+##########################################################################################
+## Variables related to flow controls of flat PNR, hierarchical PNR and transition with DP
+##########################################################################################
+set DESIGN_STYLE                "hier"  ;# Specify the design style; flat|hier; default is flat; 
+;# specify flat for a totally flat flow (flat PNR for short) and 
+;# specify hier for a hierarchical flow (hier PNR for short);
+;#      for hier PNR: required and auto set if unpack_rm_dirs.pl is used; (see README.unpack_rm_dirs.txt for details)
+;#      for flat PNR: this should set to flat (default)
+;#      for DP: not used 
+set PHYSICAL_HIERARCHY_LEVEL    ""      ;# Specify the current level of hierarchy for the hierarchical PNR flow; top|intermediate|bottom;
+;#      for hier PNR: required and auto set if unpack_rm_dirs.pl is used; (see README.unpack_rm_dirs.txt for details)
+;#      for flat PNR and for DP: not used.
+set RELEASE_DIR_DP              "write_data_dir_hier"   ;# Specify the release directory of DP RM; 
+;# this is where init_design.tcl of PNR flow gets DP RM released libraries;
+;#      for hier PNR: required and auto set if unpack_rm_dirs.pl is used; (see README.unpack_rm_dirs.txt for details)
+;#      for flat PNR: required if INIT_DESIGN_INPUT = DP_RM_NDM, as init_design.tcl needs to know where DP RM libraries are
+;#      for DP: not used 
+set RELEASE_LABEL_NAME_DP       "vsdbabysoc_label"      
+;# Specify the label name of the block in the DP RM released library;
+;# this is the label name which init_design.tcl of PNR flow will open. 
+set RELEASE_DIR_PNR             ""      ;# Specify the release directory of PNR RM; 
+;# this is where the init_design.tcl of hierarchical PNR flow gets the sub-block libraries;     
+;#      for hier PNR: required and auto set if unpack_rm_dirs.pl is used; (see README.unpack_rm_dirs.txt for details)
+;#      for flat PNR and for DP: not used.
+##########################################################################################
+## Variables related to REDHAWK ANALYSIS FUSION
+##########################################################################################
+set REDHAWK_SEARCH_PATH         ""      ;# Required. Search path to the NDM, reference libraries, and etc.
+puts "RM-info : Completed script [info script]\n"
+RM-info : Completed script /home/subhasis/VSDBabySoC/scripts/PD_flow_2/icc2_common_setup.tcl
+
+puts "RM-info : Running script [info script]\n"
+RM-info : Running script /home/subhasis/VSDBabySoC/scripts/PD_flow_2/icc2_dp_setup.tcl
+
+##########################################################################################
+# Tool: IC Compiler II 
+# Script: icc2_dp_setup.tcl 
+# Version: P-2019.03-SP4
+# Copyright (C) 2014-2019 Synopsys, Inc. All rights reserved.
+##########################################################################################
+##########################################################################################
+#                               Flow Setup
+##########################################################################################
+set DP_FLOW         "flat"    ;# hier or flat
+set FLOORPLAN_STYLE "channel" ;# Supported design styles channel, abutted
+set CHECK_DESIGN    "true"    ;# run atomic check_design pre checks prior to DP commands
+set DISTRIBUTED 0  ;# Use distributed runs
+### It is required to include the set_host_options command to enable distributed mode tasks. For example,
+set_host_options -max_cores 8
+#set_host_options -name block_script -submit_command [list qsub -P bnormal -l mem_free=6G,qsc=o -cwd]
+set BLOCK_DIST_JOB_FILE             ""     ;# File to set block specific resource requests for distributed jobs
+# For example:
+#   set_host_options -name block_script  -submit_command "bsub -q normal"
+#   set_host_options -name large_block   -submit_command "bsub -q huge"
+#   set_host_options -name special_block -submit_command "rsh" local_machine
+#   set_app_options -block [get_block block4] -list {plan.distributed_run.block_host large_block}
+#   set_app_options -block [get_block block5] -list {plan.distributed_run.block_host large_block}
+#   set_app_options -block [get_block block2] -list {plan.distributed_run.block_host special_block}
+#  
+#   All the jobs associated with blocks that do not have the plan.distributed_run.block_host app option specified
+#   will run using the block_script host option. The jobs for blocks block4 and block5 will use the large_block 
+#   host option. The job form  block2  will  use  the  special_block host option.
+##########################################################################################
+# If the design is run with MIBs then change the block list appropriately
+##########################################################################################
+set DP_BLOCK_REFS                     [list] ;# design names for each physical block (including black boxes) in the design;
+;# this includes bottom and mid level blocks in a Multiple Physical Hierarchy (MPH) design
+set DP_INTERMEDIATE_LEVEL_BLOCK_REFS  [list data_memory] ;# design reference names for mid level blocks only
+set DP_BB_BLOCK_REFS                  [list] ;# Black Box reference names 
+set BOTTOM_BLOCK_VIEW             "abstract" ;# Support abstract or design view for bottom blocks
+;# in the hier flow
+set INTERMEDIATE_BLOCK_VIEW       "abstract" ;# Support abstract or design view for intermediate blocks
+if { [info exists INTERMEDIATE_BLOCK_VIEW] && $INTERMEDIATE_BLOCK_VIEW == "abstract" } {
+   set_app_options -name abstract.allow_all_level_abstract -value true  ;# Dafult value is false
+}
+Warning: Application option 'abstract.allow_all_level_abstract' will be made block-scoped in the upcoming 2019.12 release. (ABS-549)
+# Provide blackbox instanace: target area, BB UPF file, BB Timing file, boundary
+#set DP_BB_BLOCK_REFS "leon3s_bb"
+#set DP_BB_BLOCKS(leon3s_bb,area)        [list 1346051] ;
+#set DP_BB_BLOCKS(leon3s_bb,upf)         [list ${des_dir}/leon3s_bb.upf] ;
+#set DP_BB_BLOCKS(leon3s_bb,timing)      [list ${des_dir}/leon3s_bbt.tcl] ;
+#set DP_BB_BLOCKS(leon3s_bb,boundary)    { {x1 y1} {x2 y1} {x2 y2} {x1 y2} {x1 y1} } ;
+#set DP_BB_SPLIT    "true"
+##########################################################################################
+#                               CONSTRAINTS / UPF INTENT
+##########################################################################################
+set TCL_TIMING_RULER_SETUP_FILE       "" ;# file sourced to define parasitic constraints for use with timing ruler 
+# before full extraction environment is defined
+# Example setup file:
+#       set_parasitic_parameters \
+                                          #         -early_spec para_WORST \
+                                          #         -late_spec para_WORST
+set CONSTRAINT_MAPPING_FILE           "" ;# Constraint Mapping File. Default is "split/mapfile"
+set TCL_UPF_FILE                      "" ;# Optional power intent TCL script
+##########################################################################################
+#                               TOP LEVEL FLOORPLAN CREATION (die, pad, RDL) / PLACE IO
+##########################################################################################
+set TCL_PHYSICAL_CONSTRAINTS_FILE     "" ;# TCL script for primary die area creation. If specified, DEF_FLOORPLAN_FILES will be loaded after TCL_PHYSICAL_CONSTRAINTS_FILE
+set TCL_PRE_COMMIT_FILE               "" ;# file sourced to set attributes, lib cell purposes, .. etc on specific cells, prior to running commit_block
+set TCL_USER_INIT_DP_POST_SCRIPT      "" ;# An optional Tcl file to be sourced at the very end of init_dp.tcl before save_block.
+##########################################################################################
+#                               PRE_SHAPING
+##########################################################################################
+set TCL_USER_PRE_SHAPING_PRE_SCRIPT   "" ;# An optional Tcl file to be sourced at the very beginning of the task
+set TCL_USER_PRE_SHAPING_POST_SCRIPT  "" ;# An optional Tcl file to be sourced at the very end of the task
+##########################################################################################
+#                               PLACE_IO
+##########################################################################################
+set TCL_PAD_CONSTRAINTS_FILE          "" ;# file sourced to create everything needed by place_io to complete IO placement
+;# including flip chip bumps, and io constraints
+set TCL_RDL_FILE                      "" ;# file sourced to create RDL routes
+set TCL_USER_PLACE_IO_PRE_SCRIPT      "" ;# An optional Tcl file to be sourced at the very beginning of the task
+set TCL_USER_PLACE_IO_POST_SCRIPT     "" ;# An optional Tcl file to be sourced at the very end of the task
+##########################################################################################
+#                               SHAPING
+##########################################################################################
+switch $FLOORPLAN_STYLE {
+   channel {set SHAPING_CMD_OPTIONS           "-channels true"} 
+   abutted {set SHAPING_CMD_OPTIONS           "-channels false"} 
+}
+set TCL_SHAPING_CONSTRAINTS_FILE      "" ;# Specify any constraints prior to shaping i.e. set_shaping_options
+# or specify some block shapes manually, for example:
+#    set_block_boundary -cell block1 -boundary {{2.10 2.16} {2.10 273.60} \
+                                          #    {262.02 273.60} {262.02 2.16}} -orientation R0
+#    set_fixed_objects [get_cells block1]
+# Support TCL based shaping constraints
+# An example is in rm_icc2_dp_scripts/tcl_shaping_constraints_example.tcl
+set SHAPING_CONSTRAINTS_FILE          "" ;# Will be included as the -constraint_file option for shape_blocks
+set TCL_SHAPING_PNS_STRATEGY_FILE     "" ;# file sourced to create PG strategies for block grid creation
+set TCL_MANUAL_SHAPING_FILE           "" ;# File sourced to re-create all block shapes.
+# If this file exists, automatic shaping will be by-passed.
+# Existing auto or manual block shapes can be written out using the following:
+#    write_floorplan -objects <BLOCK_INSTS>
+set TCL_USER_SHAPING_PRE_SCRIPT       "" ;# An optional Tcl file to be sourced at the very beginning of the task
+set TCL_USER_SHAPING_POST_SCRIPT      "" ;# An optional Tcl file to be sourced at the very end of the task
+##########################################################################################
+#                               PLACEMENT
+##########################################################################################
+set TCL_PLACEMENT_CONSTRAINTS_FILE    "" ;# Placeholder for any macro or standard cell placement constraints & options.
+# File is sourced prior to DP placement
+set PLACEMENT_PIN_CONSTRAINT_AWARE    "false" ;# tells create_placement to consider pin constraints during placement
+set USE_INCREMENTAL_DATA              "0" ;# Use floorplan constraints that were written out on a previous run
+set CONGESTION_DRIVEN_PLACEMENT       "" ;# Set to one of the following: std_cell, macro, or both to enable congestion driven placement
+set TIMING_DRIVEN_PLACEMENT           "" ;# Set to one of the following: std_cell, macro, or both to enable timing driven placement
+set TCL_USER_PLACEMENT_PRE_SCRIPT     "" ;# An optional Tcl file to be sourced at the very beginning of the task
+set TCL_USER_PLACEMENT_POST_SCRIPT    "" ;# An optional Tcl file to be sourced at the very end of the task
+##########################################################################################
+#                               GLOBAL PLANNING
+##########################################################################################
+set TCL_GLOBAL_PLANNING_FILE          "" ;#Global planning for bus/critical nets
+##########################################################################################
+#                               PNS
+##########################################################################################
+set TCL_PNS_FILE                      "./pns_example.tcl" ;# File sourced to define all power structures. 
+# This file will include the following types of PG commands:
+#   PG Regions
+#   PG Patterns
+#   PG Strategies
+# Note: The file should not contain compile_pg statements
+# An example is in rm_icc2_dp_scripts/pns_example.tcl
+set PNS_CHARACTERIZE_FLOW             "true"  ;# Perform PG characterization and implementation
+set TCL_COMPILE_PG_FILE               "./compile_pg_example.tcl" ;# File should contain all the compile_pg_* commands to create the power networks 
+# specified in the strategies in the TCL_PNS_FILE. 
+# An example is in rm_icc2_dp_scripts/compile_pg_example.tcl
+set TCL_PG_PUSHDOWN_FILE              "" ;# Create this file to facilitate manual pushdown and bypass auto pushdown in the flow.
+set TCL_POST_PNS_FILE                 "" ;# If it exists, this file will be sourced after PG creation.
+set TCL_USER_CREATE_POWER_PRE_SCRIPT  "" ;# An optional Tcl file to be sourced at the very beginning of the task
+set TCL_USER_CREATE_POWER_POST_SCRIPT "" ;# An optional Tcl file to be sourced at the very end of the task
+##########################################################################################
+#                               PLACE PINS
+##########################################################################################
+##Note:Feedthroughs are disabled by default. Enable feedthroughs either through set_*_pin_constraints  Tcl commands or through Pin constraints file
+set TCL_PIN_CONSTRAINT_FILE           "" ;# file sourced to apply set_*_pin_constraints to the design
+set CUSTOM_PIN_CONSTRAINT_FILE        "" ;# will be loaded via read_pin_constraints -file
+;# used for more complex pin constraints, 
+;# or in constraint replay
+set PLACE_PINS_SELF                   "true" ;# Set to true if the block's top level pins are not all connected to IO drivers.
+set TIMING_PIN_PLACEMENT              "true" ;# Set to true for timing driven pin placement
+set TCL_USER_PLACE_PINS_PRE_SCRIPT    "" ;# An optional Tcl file to be sourced at the very beginning of the task
+set TCL_USER_PLACE_PINS_POST_SCRIPT   "" ;# An optional Tcl file to be sourced at the very end of the task
+##########################################################################################
+#                               PRE-TIMING
+##########################################################################################
+set TCL_USER_PRE_TIMING_PRE_SCRIPT    "" ;# An optional Tcl file to be sourced at the very beginning of the task
+set TCL_USER_PRE_TIMING_POST_SCRIPT   "" ;# An optional Tcl file to be sourced at the very end of the task
+##########################################################################################
+#                               TIMING ESTIMATION
+##########################################################################################
+set TCL_TIMING_ESTIMATION_SETUP_FILE       "" ;# Specify any constraints prior to timing estimation
+set TCL_USER_TIMING_ESTIMATION_PRE_SCRIPT  "" ;# An optional Tcl file to be sourced at the very beginning of the task
+set TCL_USER_TIMING_ESTIMATION_POST_SCRIPT "" ;# An optional Tcl file to be sourced at the very end of the task
+set TCL_LIB_CELL_DONT_USE_FILE             "" ;# A Tcl file for customized don't use ("set_lib_cell_purpose -exclude <purpose>" commands);
+;#  to prevent estimate_timing picking a lib_cell not used by pnr flow.
+;#  please specify non-optimization purpose lib cells in the file. 
+##########################################################################################
+#                               BUDGETING
+##########################################################################################
+set TCL_BUDGETING_SETUP_FILE                "" ;# Specify any constraints prior to budgeting
+set TCL_BOUNDARY_BUDGETING_CONSTRAINTS_FILE "" ;# An optional user constraints file to override compute_budget_constraints
+set TCL_USER_BUDGETING_PRE_SCRIPT           "" ;# An optional Tcl file to be sourced at the very beginning of the task
+set TCL_USER_BUDGETING_POST_SCRIPT          "" ;# An optional Tcl file to be sourced at the very end of the task
+##########################################################################################
+## System Variables (there's no need to change the following)
+##########################################################################################
+set WORK_DIR ./work
+set WORK_DIR_WRITE_DATA ./write_data_dir
+if !{[file exists $WORK_DIR]} {file mkdir $WORK_DIR}
+set SPLIT_CONSTRAINTS_LABEL_NAME split_constraints
+set INIT_DP_LABEL_NAME init_dp
+set PRE_SHAPING_LABEL_NAME pre_shaping
+set PLACE_IO_LABEL_NAME place_io
+set SHAPING_LABEL_NAME shaping
+set PLACEMENT_LABEL_NAME placement
+set CREATE_POWER_LABEL_NAME create_power
+set CLOCK_TRUNK_PLANNING_LABEL_NAME clock_trunk_planning
+set PLACE_PINS_LABEL_NAME place_pins
+set PRE_TIMING_LABEL_NAME pre_timing
+set TIMING_ESTIMATION_LABEL_NAME timing_estimation
+set BUDGETING_LABEL_NAME budgeting
+# Block label to be release by write_data
+if {$DP_FLOW == "flat"} {
+   set WRITE_DATA_LABEL_NAME timing_estimation
+} else {
+   set WRITE_DATA_LABEL_NAME budgeting
+}
+## Directories
+set OUTPUTS_DIR "./outputs_icc2"        ;# Directory to write output data files; mainly used by write_data.tcl
+set REPORTS_DIR "./rpts_icc2"           ;# Directory to write reports; mainly used by report_qor.tcl
+set REPORTS_DIR_SPLIT_CONSTRAINTS $REPORTS_DIR/$SPLIT_CONSTRAINTS_LABEL_NAME
+set REPORTS_DIR_INIT_DP $REPORTS_DIR/$INIT_DP_LABEL_NAME
+set REPORTS_DIR_PRE_SHAPING $REPORTS_DIR/$PRE_SHAPING_LABEL_NAME
+set REPORTS_DIR_PLACE_IO $REPORTS_DIR/$PLACE_IO_LABEL_NAME
+set REPORTS_DIR_SHAPING $REPORTS_DIR/$SHAPING_LABEL_NAME
+set REPORTS_DIR_PLACEMENT $REPORTS_DIR/$PLACEMENT_LABEL_NAME
+set REPORTS_DIR_CREATE_POWER $REPORTS_DIR/$CREATE_POWER_LABEL_NAME
+set REPORTS_DIR_CLOCK_TRUNK_PLANNING $REPORTS_DIR/$CLOCK_TRUNK_PLANNING_LABEL_NAME
+set REPORTS_DIR_PLACE_PINS $REPORTS_DIR/$PLACE_PINS_LABEL_NAME
+set REPORTS_DIR_PRE_TIMING $REPORTS_DIR/$PRE_TIMING_LABEL_NAME
+set REPORTS_DIR_TIMING_ESTIMATION $REPORTS_DIR/$TIMING_ESTIMATION_LABEL_NAME
+set REPORTS_DIR_BUDGETING $REPORTS_DIR/$BUDGETING_LABEL_NAME
+if !{[file exists $REPORTS_DIR]} {file mkdir $REPORTS_DIR}
+if !{[file exists $OUTPUTS_DIR]} {file mkdir $OUTPUTS_DIR}
+if !{[file exists $REPORTS_DIR_SPLIT_CONSTRAINTS]} {file mkdir $REPORTS_DIR_SPLIT_CONSTRAINTS}
+if !{[file exists $REPORTS_DIR_INIT_DP]} {file mkdir $REPORTS_DIR_INIT_DP}
+if !{[file exists $REPORTS_DIR_PRE_SHAPING]} {file mkdir $REPORTS_DIR_PRE_SHAPING}
+if !{[file exists $REPORTS_DIR_PLACE_IO]} {file mkdir $REPORTS_DIR_PLACE_IO}
+if !{[file exists $REPORTS_DIR_SHAPING]} {file mkdir $REPORTS_DIR_SHAPING}
+if !{[file exists $REPORTS_DIR_PLACEMENT]} {file mkdir $REPORTS_DIR_PLACEMENT}
+if !{[file exists $REPORTS_DIR_CREATE_POWER]} {file mkdir $REPORTS_DIR_CREATE_POWER}
+if !{[file exists $REPORTS_DIR_CLOCK_TRUNK_PLANNING]} {file mkdir $REPORTS_DIR_CLOCK_TRUNK_PLANNING}
+if !{[file exists $REPORTS_DIR_PLACE_PINS]} {file mkdir $REPORTS_DIR_PLACE_PINS}
+if !{[file exists $REPORTS_DIR_PRE_TIMING]} {file mkdir $REPORTS_DIR_PRE_TIMING}
+if !{[file exists $REPORTS_DIR_TIMING_ESTIMATION]} {file mkdir $REPORTS_DIR_TIMING_ESTIMATION}
+if !{[file exists $REPORTS_DIR_BUDGETING]} {file mkdir $REPORTS_DIR_BUDGETING}
+if {[info exists env(LOGS_DIR)]} {
+   set log_dir $env(LOGS_DIR)
+} else {
+   set log_dir ./logs_icc2 
+}
+set search_path [list ./rm_icc2_dp_scripts ./rm_icc2_pnr_scripts $WORK_DIR ] 
+lappend search_path .
+##########################################################################################
+#                               Optional Settings
+##########################################################################################
+set_message_info -id PVT-012 -limit 1
+set_message_info -id PVT-013 -limit 1
+#set search_path "/home/subhasis/VSDBabySoC/src/lib/"
+#set_app_var link_library "sky130_fd_sc_hd__tt_025C_1v80.db pll.db avsddac.db"
+puts "RM-info : Completed script [info script]\n"
+RM-info : Completed script /home/subhasis/VSDBabySoC/scripts/PD_flow_2/icc2_dp_setup.tcl
+
+RM-info : create_lib ./work/vsdbabysocsky130_fd_sc_hd -tech /home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/milkywayORtechFiles/sky130_fd_sc_hd.tf -ref_libs {/home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/LEF/sky130_v5_7magic.lef /home/subhasis/VSDBabySoC/src/lef/avsddac.lef /home/subhasis/VSDBabySoC/src/lef/pll.lef}
+Warning: sky130_fd_sc_hd.tf line 26, unsupported syntax 'fatWireViaKeepoutMode' in 'Technology' section. It will be ignored. (TECH-002)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 846) (TECH-026)
+Warning: Layer 'via4/met4' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 846) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 854) (TECH-026)
+Warning: Layer 'via4/met5' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 854) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 862) (TECH-026)
+Warning: Layer 'via3/met3' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 862) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 870) (TECH-026)
+Warning: Layer 'via3/met4' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 870) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 878) (TECH-026)
+Warning: Layer 'via2/met2' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 878) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 886) (TECH-026)
+Warning: Layer 'via2/met3' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 886) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 894) (TECH-026)
+Warning: Layer 'via/met1' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 894) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 902) (TECH-026)
+Warning: Layer 'via/met2' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 902) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 910) (TECH-026)
+Warning: Layer 'mcon/li1' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 910) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 918) (TECH-026)
+Warning: Layer 'mcon/met1' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 918) (TECH-026)
+Warning: DesignRule is defined with non-consecutive layers 'via4' and 'met4'. (sky130_fd_sc_hd.tf line 851) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via4' and 'met5'. (sky130_fd_sc_hd.tf line 859) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via3' and 'met3'. (sky130_fd_sc_hd.tf line 867) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via3' and 'met4'. (sky130_fd_sc_hd.tf line 875) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via2' and 'met2'. (sky130_fd_sc_hd.tf line 883) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via2' and 'met3'. (sky130_fd_sc_hd.tf line 891) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via' and 'met1'. (sky130_fd_sc_hd.tf line 899) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via' and 'met2'. (sky130_fd_sc_hd.tf line 907) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'mcon' and 'li1'. (sky130_fd_sc_hd.tf line 915) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'mcon' and 'met1'. (sky130_fd_sc_hd.tf line 923) (TECH-034)
+Information: Loading technology file '/home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/milkywayORtechFiles/sky130_fd_sc_hd.tf' (FILE-007)
+Warning: No db files from link_library to create reference libraries, will create a physical-only reference library. (LIB-081)
+...Created 1 lib groups
+
+... 1 cell library to build.
+
+
+... checking whether need to build cell library: EXPLORE_physical_only.ndm (1/1)
+... checking whether can reuse library under output directory
+reuse existing cell library under output directory: CLIBs/EXPLORE_physical_only.ndm
+
+... 1 cell library can be reused.
+
+
+
+Information: Successfully built 1 reference libraries: EXPLORE_physical_only.ndm. (LIB-093)
+RM-info : Reading full chip verilog (/home/subhasis/VSDBabySoC/output/vsdbabysoc_net_new_pll.v)
+Information: Reading Verilog into new design 'vsdbabysoc/init_dp' in library 'vsdbabysocsky130_fd_sc_hd'. (VR-012)
+Loading verilog file '/home/subhasis/VSDBabySoC/output/vsdbabysoc_net_new_pll.v'
+Number of modules read: 2
+Top level ports: 5
+Total ports in all modules: 17
+Total nets in all modules: 2915
+Total instances in all modules: 2664
+Elapsed = 00:00:00.04, CPU = 00:00:00.04
+RM-info : Sourcing /home/subhasis/VSDBabySoC/scripts/PD_flow_2/init_design.tech_setup.tcl
+puts "RM-info : Running script [info script]\n"
+RM-info : Running script /home/subhasis/VSDBabySoC/scripts/PD_flow_2/init_design.tech_setup.tcl
+
+##########################################################################################
+# Tool: IC Compiler II 
+# Script: tech_setup.tcl
+# Version: P-2019.03-SP4
+# Copyright (C) 2014-2019 Synopsys, Inc. All rights reserved.
+##########################################################################################
+## Set routing_direction and track_offset
+if {$ROUTING_LAYER_DIRECTION_OFFSET_LIST != ""} {
+        foreach direction_offset_pair $ROUTING_LAYER_DIRECTION_OFFSET_LIST {
+                set layer [lindex $direction_offset_pair 0]
+                set direction [lindex $direction_offset_pair 1]
+                set offset [lindex $direction_offset_pair 2]
+                set_attribute [get_layers $layer] routing_direction $direction
+                if {$offset != ""} {
+                        set_attribute [get_layers $layer] track_offset $offset
+                }
+        }
+} else {
+        puts "RM-error : ROUTING_LAYER_DIRECTION_OFFSET_LIST is not specified. You must manually set routing layer directions and offsets!"
+}
+Information: The design specific attribute override for layer 'met1' is set in the current block 'vsdbabysoc', because the actual library setting may not be overwritten. (ATTR-12)
+Information: The design specific attribute override for layer 'met2' is set in the current block 'vsdbabysoc', because the actual library setting may not be overwritten. (ATTR-12)
+Information: The design specific attribute override for layer 'met3' is set in the current block 'vsdbabysoc', because the actual library setting may not be overwritten. (ATTR-12)
+Information: The design specific attribute override for layer 'met4' is set in the current block 'vsdbabysoc', because the actual library setting may not be overwritten. (ATTR-12)
+Information: The design specific attribute override for layer 'met5' is set in the current block 'vsdbabysoc', because the actual library setting may not be overwritten. (ATTR-12)
+## Set site default
+if {$SITE_DEFAULT != ""} {
+        set_attribute [get_site_defs] is_default false
+        set_attribute [get_site_defs $SITE_DEFAULT] is_default true
+}
+## Set site symmetry
+if {$SITE_SYMMETRY_LIST != ""} {
+        foreach sym_pair $SITE_SYMMETRY_LIST {
+                set site_name [lindex $sym_pair 0]
+                set site_sym [lindex $sym_pair 1]
+                set_attribute [get_site_defs $site_name] symmetry $site_sym
+        }       
+}
+puts "RM-info : Completed script [info script]\n"
+RM-info : Completed script /home/subhasis/VSDBabySoC/scripts/PD_flow_2/init_design.tech_setup.tcl
+
+RM-info : Sourcing /home/subhasis/VSDBabySoC/scripts/PD_flow_2/init_design.read_parasitic_tech_example.tcl
+puts "RM-info: Running script [info script]\n"
+RM-info: Running script /home/subhasis/VSDBabySoC/scripts/PD_flow_2/init_design.read_parasitic_tech_example.tcl
+
+##########################################################################################
+# Tool: IC Compiler II
+# Script: init_design.read_parasitic_tech_example.tcl (template)
+# Version: P-2019.03-SP4
+# Copyright (C) 2014-2019 Synopsys, Inc. All rights reserved.
+##########################################################################################
+##############################################################################################
+# The following is a sample script to read two TLU+ files, 
+# which you can expand to accomodate your design.
+##############################################################################################
+########################################
+## Variables
+########################################
+## Parasitic tech files for read_parasitic_tech command; expand the section as needed
+set parasitic1                          "temp1" ;# name of parasitic tech model 1
+set tluplus_file($parasitic1)           "/home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/itf_files/skywater130.nominal.tluplus" ;# TLU+ files to read for parasitic 1
+set layer_map_file($parasitic1)         "/home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/milkywayORtechFiles/skywater130_fd_sc_hd.map" ;# layer mapping file between ITF and tech for parasitic 1
+#set parasitic2                         "temp2" ;# name of parasitic tech model 2
+#set tluplus_file($parasitic2)           "/home/kunal/design/picosoc/pdk/sample_180nm.tluplus" ;# TLU+ files to read for parasitic 2
+#set layer_map_file($parasitic2)         "" ;# layer mapping file between ITF and tech for parasitic 2
+########################################
+## Read parasitic files
+########################################
+## Read in the TLUPlus files first.
+#  Later on in the corner constraints, you can then refer to these parasitic models.
+foreach p [array name tluplus_file] {  
+        puts "RM-info: read_parasitic_tech -tlup $tluplus_file($p) -layermap $layer_map_file($p) -name $p"
+        #read_parasitic_tech -tlup $tluplus_file($p) -layermap $layer_map_file($p) -name $p
+        read_parasitic_tech -tlup $tluplus_file($p)  -name $p
+
+}
+RM-info: read_parasitic_tech -tlup /home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/itf_files/skywater130.nominal.tluplus -layermap /home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/milkywayORtechFiles/skywater130_fd_sc_hd.map -name temp1
+Information: The command 'read_parasitic_tech' cleared the undo history. (UNDO-016)
+puts "RM-info: Completed script [info script]\n"
+RM-info: Completed script /home/subhasis/VSDBabySoC/scripts/PD_flow_2/init_design.read_parasitic_tech_example.tcl
+
+Using libraries: vsdbabysocsky130_fd_sc_hd EXPLORE_physical_only
+Linking block vsdbabysocsky130_fd_sc_hd:vsdbabysoc/init_dp.design
+Warning: Cannot find port 'f_clk_in' on reference 'pll', referenced by instance 'pll_1'. (LNK-008)
+Warning: Cannot find port 'vctrl' on reference 'pll', referenced by instance 'pll_1'. (LNK-008)
+Warning: Cannot find port 'f_vco' on reference 'pll', referenced by instance 'pll_1'. (LNK-008)
+Error: In module 'vsdbabysoc', port mismatch on instance 'pll_1' referencing 'pll'. (LNK-017)
+Warning: Unable to resolve reference to 'pll' first referenced from module 'vsdbabysoc'. (LNK-005)
+Warning: Cannot find port 'VREFL' on reference 'avsddac', referenced by instance 'dac'. (LNK-008)
+Warning: Cannot find port 'VSSA' on reference 'avsddac', referenced by instance 'dac'. (LNK-008)
+Warning: Cannot find port 'VDDA' on reference 'avsddac', referenced by instance 'dac'. (LNK-008)
+Error: In module 'vsdbabysoc', port mismatch on instance 'dac' referencing 'avsddac'. (LNK-017)
+Warning: Unable to resolve reference to 'avsddac' first referenced from module 'vsdbabysoc'. (LNK-005)
+Error: Block 'vsdbabysocsky130_fd_sc_hd:vsdbabysoc/init_dp.design' has 2 inconsistent port references. (LNK-071)
+Information: Block 'vsdbabysocsky130_fd_sc_hd:vsdbabysoc/init_dp.design' has 2 failed port references. (LNK-072)
+Information: Block 'vsdbabysocsky130_fd_sc_hd:vsdbabysoc/init_dp.design' has 2 unbound instances. (LNK-073)
+Information: Block 'vsdbabysocsky130_fd_sc_hd:vsdbabysoc/init_dp.design' has 2 unresolved references. (LNK-074)
+Error: Block 'vsdbabysocsky130_fd_sc_hd:vsdbabysoc/init_dp.design' was not successfully linked. (LNK-003)
+Information: Total 6 mismatches are found on block 'vsdbabysocsky130_fd_sc_hd:vsdbabysoc/init_dp.design'. (DMM-116)
+Error: bad value specified for option -max_routing_layer
+        Use error_info for more info. (CMD-013)
+Information: script '/home/subhasis/VSDBabySoC/scripts/PD_flow_2/top.tcl'
+                stopped at line 52 due to error. (CMD-081)
+Extended error info:
+bad value specified for option -max_routing_layer
+    while executing
+"set_ignored_layers -max_routing_layer $MAX_ROUTING_LAYER"
+    invoked from within
+"if {$MAX_ROUTING_LAYER != ""} {set_ignored_layers -max_routing_layer $MAX_ROUTING_LAYER}"
+    (file "/home/subhasis/VSDBabySoC/scripts/PD_flow_2/top.tcl" line 52)
+ -- End Extended Error Info
+icc2_shell> exit
+Maximum memory usage for this session: 366.75 MB
+Maximum memory usage for this session including child processes: 366.75 MB
+CPU usage for this session:     13 seconds (  0.00 hours)
+Elapsed time for this session:     49 seconds (  0.01 hours)
+Thank you for using IC Compiler II.
+

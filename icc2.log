@@ -1,0 +1,38 @@
+ 
+                              IC Compiler II (TM)
+
+             Version T-2022.03-SP5 for linux64 - Nov 01, 2022 -SLE
+
+                    Copyright (c) 1988 - 2022 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+
+icc2_shell> source scripts/PD_flow/top.tcl
+Error: could not open script file "./icc2_common_setup.tcl" (CMD-015)
+Information: script '/home/subhasis/VSDBabySoC/scripts/PD_flow/top.tcl'
+                stopped at line 1 due to error. (CMD-081)
+Extended error info:
+
+    while executing
+"source -echo ./icc2_common_setup.tcl"
+    (file "/home/subhasis/VSDBabySoC/scripts/PD_flow/top.tcl" line 1)
+ -- End Extended Error Info
+icc2_shell> exit
+Maximum memory usage for this session: 312.23 MB
+Maximum memory usage for this session including child processes: 312.23 MB
+CPU usage for this session:     13 seconds (  0.00 hours)
+Elapsed time for this session:     49 seconds (  0.01 hours)
+Thank you for using IC Compiler II.
+

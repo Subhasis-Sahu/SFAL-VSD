@@ -1,0 +1,46 @@
+[icc2-lic Fri Jul 19 12:52:20 2024] Command 'report_qor' requires licenses
+[icc2-lic Fri Jul 19 12:52:20 2024] Attempting to check-out alternate set of keys directly with queueing
+[icc2-lic Fri Jul 19 12:52:20 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Fri Jul 19 12:52:20 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Fri Jul 19 12:52:20 2024] Sending check-out request for 'ICCompilerII-8' (1) with wait option
+[icc2-lic Fri Jul 19 12:52:20 2024] Check-out request for 'ICCompilerII-8' with wait option succeeded
+[icc2-lic Fri Jul 19 12:52:20 2024] Sending checkout check request for 'ICCompilerII-8' 
+[icc2-lic Fri Jul 19 12:52:20 2024] Checkout check request for 'ICCompilerII-8' returned 0 
+[icc2-lic Fri Jul 19 12:52:20 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Fri Jul 19 12:52:20 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Fri Jul 19 12:52:20 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Fri Jul 19 12:52:20 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Fri Jul 19 12:52:20 2024] Sending check-out request for 'ICCompilerII-NX' (1) with wait option
+[icc2-lic Fri Jul 19 12:52:20 2024] Check-out request for 'ICCompilerII-NX' with wait option succeeded
+[icc2-lic Fri Jul 19 12:52:20 2024] Sending checkout check request for 'ICCompilerII-NX' 
+[icc2-lic Fri Jul 19 12:52:20 2024] Checkout check request for 'ICCompilerII-NX' returned 0 
+[icc2-lic Fri Jul 19 12:52:20 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Fri Jul 19 12:52:20 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Fri Jul 19 12:52:20 2024] Check-out of alternate set of keys directly with queueing was successful
+****************************************
+Report : qor
+        -summary
+Design : vsdbabysoc
+Version: T-2022.03-SP5
+Date   : Fri Jul 19 12:52:20 2024
+****************************************
+
+Timing
+---------------------------------------------------------------------------
+Context                                 WNS            TNS            NVE
+---------------------------------------------------------------------------
+func1::estimated_corner
+                   (Setup)             0.52           0.00              0
+func1              (Setup)            -1.17         -56.76             81
+Design             (Setup)            -1.17         -56.76             81
+
+func1              (Hold)             -0.19         -15.93            388
+Design             (Hold)             -0.19         -15.93            388
+---------------------------------------------------------------------------
+
+Miscellaneous
+---------------------------------------------------------------------------
+Cell Area (netlist):                         696592.54
+Cell Area (netlist and physical only):       696592.55
+Nets with DRC Violations:      434
+1

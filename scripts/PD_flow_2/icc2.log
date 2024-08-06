@@ -1,0 +1,1738 @@
+ 
+                              IC Compiler II (TM)
+
+             Version T-2022.03-SP5 for linux64 - Nov 01, 2022 -SLE
+
+                    Copyright (c) 1988 - 2022 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+
+icc2_shell> source top.tcl
+puts "RM-info : Running script [info script]\n"
+RM-info : Running script /home/subhasis/VSDBabySoC/scripts/PD_flow/icc2_common_setup.tcl
+
+##########################################################################################
+# Tool: IC Compiler II
+# Script: icc2_common_setup.tcl
+# Version: P-2019.03-SP4
+# Copyright (C) 2014-2019 Synopsys, Inc. All rights reserved.
+##########################################################################################
+##########################################################################################
+## Required variables
+## These variables must be correctly filled in for the flow to run properly
+##########################################################################################
+set DESIGN_NAME                 "vsdbabysoc" ;# Required; name of the design to be worked on; also used as the block name when scripts save or copy a block
+set LIBRARY_SUFFIX              "sky130_fd_sc_hd" ;# Suffix for the design library name ; default is unspecified   
+set DESIGN_LIBRARY              "${DESIGN_NAME}${LIBRARY_SUFFIX}" ;# Name of the design library; default is ${DESIGN_NAME}${LIBRARY_SUFFIX}
+set REFERENCE_LIBRARY           [list /home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/LEF/sky130_v5_7magic.lef /home/subhasis/VSDBabySoC/src/lef/avsddac.lef /home/subhasis/VSDBabySoC/src/lef/avsdpll.lef]    ;# Required; a list of reference libraries for the design library.
+;#      for library configuration flow (LIBRARY_CONFIGURATION_FLOW set to true below): 
+;#              - specify the list of physical source files to be used for library configuration during create_lib
+;#      for hierarchical designs using bottom-up flows: include subblock design libraries in the list;
+;#      for hierarchical designs using ETMs: include the ETM library in the list.
+;#              - If unpack_rm_dirs.pl is used to create dir structures for hierarchical designs, 
+;#                in order to transition between hierarchical DP and hierarchical PNR flows properly, 
+;#                absolute paths are a requirement.
+set COMPRESS_LIBS               "false" ;# Save libs as compressed NDM; only used in DP.
+set VERILOG_NETLIST_FILES       "/home/subhasis/VSDBabySoC/output/vsdbabysoc_net.v"     ;# Verilog netlist files;
+;#      for DP: required
+;#      for PNR: required if INIT_DESIGN_INPUT is ASCII in icc2_pnr_setup.tcl; not required for DC_ASCII or DP_RM_NDM
+set UPF_FILE                    ""      ;# A UPF file
+;#      for DP: required
+;#      for PNR: required if INIT_DESIGN_INPUT is ASCII in icc2_pnr_setup.tcl; not required for DC_ASCII or DP_RM_NDM
+;#          for hierarchical designs using ETMs, load the block upf file
+;#          for each sub-block linked to ETM, include the following line in the UPF_FILE 
+;#              load_upf block.upf -scope block_instance_name
+set UPF_SUPPLEMENTAL_FILE       ""      ;# The supplemental UPF file. Only needed if you are running golden UPF flow, in which case, you need both UPF_FILE and this.
+;#      for DP: required
+;#      for PNR: required if INIT_DESIGN_INPUT is ASCII in icc2_pnr_setup.tcl; not required for DC_ASCII or DP_RM_NDM
+;#          If UPF_SUPPLEMENTAL_FILE is specified, scripts assume golden UPF flow. load_upf and save_upf commands will be different.    
+set TCL_PARASITIC_SETUP_FILE    "./init_design.read_parasitic_tech_example.tcl" ;# Specify a Tcl script to read in your TLU+ files by using the read_parasitic_tech command;
+;# refer to the example in templates/init_design.read_parasitic_tech_example.tcl 
+#set TCL_MCMM_SETUP_FILE         ""
+set TCL_MCMM_SETUP_FILE         "./init_design.mcmm_example.auto_expanded.tcl"  ;# Specify a Tcl script to create your corners, modes, scenarios and load respective constraints;
+;# two examples are provided in templates/: 
+;# init_design.mcmm_example.explicit.tcl: provide mode, corner, and scenario constraints; create modes, corners, 
+;# and scenarios; source mode, corner, and scenario constraints, respectively 
+;# init_design.mcmm_example.auto_expanded.tcl: provide constraints for the scenarios; create modes, corners, 
+;# and scenarios; source scenario constraints which are then expanded to associated modes and corners
+;#      for DP: required
+;#      for PNR: required if INIT_DESIGN_INPUT is ASCII in icc2_pnr_setup.tcl; not required for DC_ASCII or DP_RM_NDM
+set TECH_FILE                   "/home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/milkywayORtechFiles/sky130_fd_sc_hd.tf"       ;# A technology file; TECH_FILE and TECH_LIB are mutually exclusive ways to specify technology information; 
+;# TECH_FILE is recommended, although TECH_LIB is also supported in ICC2 RM. 
+set TECH_LIB                    "/home/subhasis/VSDBabySoC/src/lib/sky130_fd_sc_hd__tt_025C_1v80.db"    ;# Specify the reference library to be used as a dedicated technology library;
+;# as a best practice, please list it as the first library in the REFERENCE_LIBRARY list 
+set TECH_LIB_INCLUDES_TECH_SETUP_INFO true 
+;# Indicate whether TECH_LIB contains technology setup information such as routing layer direction, offset, 
+;# site default, and site symmetry, etc. TECH_LIB may contain this information if loaded during library prep.
+;# true|false; this variable is associated with TECH_LIB. 
+set TCL_TECH_SETUP_FILE         "./init_design.tech_setup.tcl"
+;# Specify a TCL script for setting routing layer direction, offset, site default, and site symmetry list, etc.
+;# init_design.tech_setup.tcl is the default. Use it as a template or provide your own script.
+;# This script will only get sourced if the following conditions are met: 
+;# (1) TECH_FILE is specified (2) TECH_LIB is specified && TECH_LIB_INCLUDES_TECH_SETUP_INFO is false 
+set ROUTING_LAYER_DIRECTION_OFFSET_LIST "{met1 horizontal} {met2 vertical} {met3 horizontal} {met4 vertical} {met5 horizontal}" 
+;# Specify the routing layers as well as their direction and offset in a list of space delimited pairs;
+;# This variable should be defined for all metal routing layers in technology file;
+;# Syntax is "{metal_layer_1 direction offset} {metal_layer_2 direction offset} ...";
+;# It is required to at least specify metal layers and directions. Offsets are optional. 
+;# Example1 is with offsets specified: "{M1 vertical 0.2} {M2 horizontal 0.0} {M3 vertical 0.2}"
+;# Example2 is without offsets specified: "{M1 vertical} {M2 horizontal} {M3 vertical}"
+##########################################################################################
+## Optional variables
+## Specify these variables if the corresponding functions are desired 
+##########################################################################################
+set DESIGN_LIBRARY_SCALE_FACTOR ""      ;# Specify the length precision for the library. Length precision for the design
+;# library and its ref libraries must be identical. Tool default is 10000, which
+;# implies one unit is one Angstrom or 0.1nm.
+set UPF_UPDATE_SUPPLY_SET_FILE  ""      ;# A UPF file to resolve UPF supply sets
+#set DEF_FLOORPLAN_FILES                "/home/kunal/design/scripts/pnr/ICC2-RM_P-2019.03-SP4/write_data_dir/picorv32/picorv32.icc.floorplan/floorplan.def.gz"  ;# DEF files which contain the floorplan information;
+set DEF_FLOORPLAN_FILES                ""  ;# DEF files which contain the floorplan information;
+;#      for DP: not required
+;#      for PNR: required if INIT_DESIGN_INPUT = ASCII in icc2_pnr_setup.tcl and neither TCL_FLOORPLAN_FILE or 
+;#               initialize_floorplan is used; DEF_FLOORPLAN_FILES and TCL_FLOORPLAN_FILE are mutually exclusive;
+;#               not required if INIT_DESIGN_INPUT = DC_ASCII or DP_RM_NDM
+set DEF_SCAN_FILE               ""      ;# A scan DEF file for scan chain information;
+;#      for PNR: not required if INIT_DESIGN_INPUT = DC_ASCII or DP_RM_NDM, as SCANDEF is expected to be loaded already
+set DEF_SITE_NAME_PAIRS         {}      ;# A list of site name pairs for read_def -convert; 
+;# specify site name pairs with from_site first followed by to_site;
+;# Example: set DEF_SITE_NAME_PAIRS {{from_site_1 to_site_1} {from_site_2 to_site_2}}   
+set SITE_DEFAULT                ""      ;# Specify the default site name if there are multiple site defs in the technology file;
+;# this is to be used by initialize_floorplan command; example: set SITE_DEFAULT "unit";
+;# this is applied in the init_design.tech_setup.tcl script 
+set SITE_SYMMETRY_LIST  ""              ;# Specify a list of site def and its symmetry value;
+;# this is to be used by read_def or initialize_floorplan command to control the site symmetry;
+;# example: set SITE_SYMMETRY_LIST "{unit Y} {unit1 Y}"; this is applied in the init_design.tech_setup.tcl script 
+set MIN_ROUTING_LAYER           "met1"  ;# Min routing layer name; normally should be specified; otherwise tool can use all metal layers
+set MAX_ROUTING_LAYER           "met5"  ;# Max routing layer name; normally should be specified; otherwise tool can use all metal layers
+set LIBRARY_CONFIGURATION_FLOW  false   ;# Set it to true enables library configuration flow which calls the library manager under the hood to generate .nlibs, 
+;# save them to disk, and automatically link them to the design.
+;# Requires LINK_LIBRARY to be specified with .db files and REFERENCE_LIBRARY to be specified with physical
+;# source files for the library configuration flow. Also search_path (in icc2_pnr_setup.tcl) should include paths 
+;# to these .db and physical source files.
+set LINK_LIBRARY                [list /home/subhasis/VSDBabySoC/src/lib/sky130_fd_sc_hd__tt_025C_1v80.db /home/subhasis/VSDBabySoC/src/lib/avsdpll.db /home/subhasis/VSDBabySoC/src/lib/avsddac.db]     ;# Specify .db files;
+;#      for running VC-LP (vc_lp.tcl) and Formality (fm.tcl): required
+;#      for ICC-II without LIBRARY_CONFIGURATION_FLOW enabled: not required
+;#      for ICC-II with LIBRARY_CONFIGURATION_FLOW enabled: required; 
+;#              - the .db files specified will be used for the library configuration under the hood during create_lib 
+##########################################################################################
+## Variables related to flow controls of flat PNR, hierarchical PNR and transition with DP
+##########################################################################################
+set DESIGN_STYLE                "hier"  ;# Specify the design style; flat|hier; default is flat; 
+;# specify flat for a totally flat flow (flat PNR for short) and 
+;# specify hier for a hierarchical flow (hier PNR for short);
+;#      for hier PNR: required and auto set if unpack_rm_dirs.pl is used; (see README.unpack_rm_dirs.txt for details)
+;#      for flat PNR: this should set to flat (default)
+;#      for DP: not used 
+set PHYSICAL_HIERARCHY_LEVEL    ""      ;# Specify the current level of hierarchy for the hierarchical PNR flow; top|intermediate|bottom;
+;#      for hier PNR: required and auto set if unpack_rm_dirs.pl is used; (see README.unpack_rm_dirs.txt for details)
+;#      for flat PNR and for DP: not used.
+set RELEASE_DIR_DP              "write_data_dir_hier"   ;# Specify the release directory of DP RM; 
+;# this is where init_design.tcl of PNR flow gets DP RM released libraries;
+;#      for hier PNR: required and auto set if unpack_rm_dirs.pl is used; (see README.unpack_rm_dirs.txt for details)
+;#      for flat PNR: required if INIT_DESIGN_INPUT = DP_RM_NDM, as init_design.tcl needs to know where DP RM libraries are
+;#      for DP: not used 
+set RELEASE_LABEL_NAME_DP       "vsdbabysoc_label"      
+;# Specify the label name of the block in the DP RM released library;
+;# this is the label name which init_design.tcl of PNR flow will open. 
+set RELEASE_DIR_PNR             ""      ;# Specify the release directory of PNR RM; 
+;# this is where the init_design.tcl of hierarchical PNR flow gets the sub-block libraries;     
+;#      for hier PNR: required and auto set if unpack_rm_dirs.pl is used; (see README.unpack_rm_dirs.txt for details)
+;#      for flat PNR and for DP: not used.
+##########################################################################################
+## Variables related to REDHAWK ANALYSIS FUSION
+##########################################################################################
+set REDHAWK_SEARCH_PATH         ""      ;# Required. Search path to the NDM, reference libraries, and etc.
+puts "RM-info : Completed script [info script]\n"
+RM-info : Completed script /home/subhasis/VSDBabySoC/scripts/PD_flow/icc2_common_setup.tcl
+
+puts "RM-info : Running script [info script]\n"
+RM-info : Running script /home/subhasis/VSDBabySoC/scripts/PD_flow/icc2_dp_setup.tcl
+
+##########################################################################################
+# Tool: IC Compiler II 
+# Script: icc2_dp_setup.tcl 
+# Version: P-2019.03-SP4
+# Copyright (C) 2014-2019 Synopsys, Inc. All rights reserved.
+##########################################################################################
+##########################################################################################
+#                               Flow Setup
+##########################################################################################
+set DP_FLOW         "flat"    ;# hier or flat
+set FLOORPLAN_STYLE "channel" ;# Supported design styles channel, abutted
+set CHECK_DESIGN    "true"    ;# run atomic check_design pre checks prior to DP commands
+set DISTRIBUTED 0  ;# Use distributed runs
+### It is required to include the set_host_options command to enable distributed mode tasks. For example,
+set_host_options -max_cores 8
+#set_host_options -name block_script -submit_command [list qsub -P bnormal -l mem_free=6G,qsc=o -cwd]
+set BLOCK_DIST_JOB_FILE             ""     ;# File to set block specific resource requests for distributed jobs
+# For example:
+#   set_host_options -name block_script  -submit_command "bsub -q normal"
+#   set_host_options -name large_block   -submit_command "bsub -q huge"
+#   set_host_options -name special_block -submit_command "rsh" local_machine
+#   set_app_options -block [get_block block4] -list {plan.distributed_run.block_host large_block}
+#   set_app_options -block [get_block block5] -list {plan.distributed_run.block_host large_block}
+#   set_app_options -block [get_block block2] -list {plan.distributed_run.block_host special_block}
+#  
+#   All the jobs associated with blocks that do not have the plan.distributed_run.block_host app option specified
+#   will run using the block_script host option. The jobs for blocks block4 and block5 will use the large_block 
+#   host option. The job form  block2  will  use  the  special_block host option.
+##########################################################################################
+# If the design is run with MIBs then change the block list appropriately
+##########################################################################################
+set DP_BLOCK_REFS                     [list] ;# design names for each physical block (including black boxes) in the design;
+;# this includes bottom and mid level blocks in a Multiple Physical Hierarchy (MPH) design
+set DP_INTERMEDIATE_LEVEL_BLOCK_REFS  [list data_memory] ;# design reference names for mid level blocks only
+set DP_BB_BLOCK_REFS                  [list] ;# Black Box reference names 
+set BOTTOM_BLOCK_VIEW             "abstract" ;# Support abstract or design view for bottom blocks
+;# in the hier flow
+set INTERMEDIATE_BLOCK_VIEW       "abstract" ;# Support abstract or design view for intermediate blocks
+if { [info exists INTERMEDIATE_BLOCK_VIEW] && $INTERMEDIATE_BLOCK_VIEW == "abstract" } {
+   set_app_options -name abstract.allow_all_level_abstract -value true  ;# Dafult value is false
+}
+Warning: Application option 'abstract.allow_all_level_abstract' will be made block-scoped in the upcoming 2019.12 release. (ABS-549)
+# Provide blackbox instanace: target area, BB UPF file, BB Timing file, boundary
+#set DP_BB_BLOCK_REFS "leon3s_bb"
+#set DP_BB_BLOCKS(leon3s_bb,area)        [list 1346051] ;
+#set DP_BB_BLOCKS(leon3s_bb,upf)         [list ${des_dir}/leon3s_bb.upf] ;
+#set DP_BB_BLOCKS(leon3s_bb,timing)      [list ${des_dir}/leon3s_bbt.tcl] ;
+#set DP_BB_BLOCKS(leon3s_bb,boundary)    { {x1 y1} {x2 y1} {x2 y2} {x1 y2} {x1 y1} } ;
+#set DP_BB_SPLIT    "true"
+##########################################################################################
+#                               CONSTRAINTS / UPF INTENT
+##########################################################################################
+set TCL_TIMING_RULER_SETUP_FILE       "" ;# file sourced to define parasitic constraints for use with timing ruler 
+# before full extraction environment is defined
+# Example setup file:
+#       set_parasitic_parameters \
+                                          #         -early_spec para_WORST \
+                                          #         -late_spec para_WORST
+set CONSTRAINT_MAPPING_FILE           "" ;# Constraint Mapping File. Default is "split/mapfile"
+set TCL_UPF_FILE                      "" ;# Optional power intent TCL script
+##########################################################################################
+#                               TOP LEVEL FLOORPLAN CREATION (die, pad, RDL) / PLACE IO
+##########################################################################################
+set TCL_PHYSICAL_CONSTRAINTS_FILE     "" ;# TCL script for primary die area creation. If specified, DEF_FLOORPLAN_FILES will be loaded after TCL_PHYSICAL_CONSTRAINTS_FILE
+set TCL_PRE_COMMIT_FILE               "" ;# file sourced to set attributes, lib cell purposes, .. etc on specific cells, prior to running commit_block
+set TCL_USER_INIT_DP_POST_SCRIPT      "" ;# An optional Tcl file to be sourced at the very end of init_dp.tcl before save_block.
+##########################################################################################
+#                               PRE_SHAPING
+##########################################################################################
+set TCL_USER_PRE_SHAPING_PRE_SCRIPT   "" ;# An optional Tcl file to be sourced at the very beginning of the task
+set TCL_USER_PRE_SHAPING_POST_SCRIPT  "" ;# An optional Tcl file to be sourced at the very end of the task
+##########################################################################################
+#                               PLACE_IO
+##########################################################################################
+set TCL_PAD_CONSTRAINTS_FILE          "" ;# file sourced to create everything needed by place_io to complete IO placement
+;# including flip chip bumps, and io constraints
+set TCL_RDL_FILE                      "" ;# file sourced to create RDL routes
+set TCL_USER_PLACE_IO_PRE_SCRIPT      "" ;# An optional Tcl file to be sourced at the very beginning of the task
+set TCL_USER_PLACE_IO_POST_SCRIPT     "" ;# An optional Tcl file to be sourced at the very end of the task
+##########################################################################################
+#                               SHAPING
+##########################################################################################
+switch $FLOORPLAN_STYLE {
+   channel {set SHAPING_CMD_OPTIONS           "-channels true"} 
+   abutted {set SHAPING_CMD_OPTIONS           "-channels false"} 
+}
+set TCL_SHAPING_CONSTRAINTS_FILE      "" ;# Specify any constraints prior to shaping i.e. set_shaping_options
+# or specify some block shapes manually, for example:
+#    set_block_boundary -cell block1 -boundary {{2.10 2.16} {2.10 273.60} \
+                                          #    {262.02 273.60} {262.02 2.16}} -orientation R0
+#    set_fixed_objects [get_cells block1]
+# Support TCL based shaping constraints
+# An example is in rm_icc2_dp_scripts/tcl_shaping_constraints_example.tcl
+set SHAPING_CONSTRAINTS_FILE          "" ;# Will be included as the -constraint_file option for shape_blocks
+set TCL_SHAPING_PNS_STRATEGY_FILE     "" ;# file sourced to create PG strategies for block grid creation
+set TCL_MANUAL_SHAPING_FILE           "" ;# File sourced to re-create all block shapes.
+# If this file exists, automatic shaping will be by-passed.
+# Existing auto or manual block shapes can be written out using the following:
+#    write_floorplan -objects <BLOCK_INSTS>
+set TCL_USER_SHAPING_PRE_SCRIPT       "" ;# An optional Tcl file to be sourced at the very beginning of the task
+set TCL_USER_SHAPING_POST_SCRIPT      "" ;# An optional Tcl file to be sourced at the very end of the task
+##########################################################################################
+#                               PLACEMENT
+##########################################################################################
+set TCL_PLACEMENT_CONSTRAINTS_FILE    "" ;# Placeholder for any macro or standard cell placement constraints & options.
+# File is sourced prior to DP placement
+set PLACEMENT_PIN_CONSTRAINT_AWARE    "false" ;# tells create_placement to consider pin constraints during placement
+set USE_INCREMENTAL_DATA              "0" ;# Use floorplan constraints that were written out on a previous run
+set CONGESTION_DRIVEN_PLACEMENT       "" ;# Set to one of the following: std_cell, macro, or both to enable congestion driven placement
+set TIMING_DRIVEN_PLACEMENT           "" ;# Set to one of the following: std_cell, macro, or both to enable timing driven placement
+set TCL_USER_PLACEMENT_PRE_SCRIPT     "" ;# An optional Tcl file to be sourced at the very beginning of the task
+set TCL_USER_PLACEMENT_POST_SCRIPT    "" ;# An optional Tcl file to be sourced at the very end of the task
+##########################################################################################
+#                               GLOBAL PLANNING
+##########################################################################################
+set TCL_GLOBAL_PLANNING_FILE          "" ;#Global planning for bus/critical nets
+##########################################################################################
+#                               PNS
+##########################################################################################
+set TCL_PNS_FILE                      "./pns_example.tcl" ;# File sourced to define all power structures. 
+# This file will include the following types of PG commands:
+#   PG Regions
+#   PG Patterns
+#   PG Strategies
+# Note: The file should not contain compile_pg statements
+# An example is in rm_icc2_dp_scripts/pns_example.tcl
+set PNS_CHARACTERIZE_FLOW             "true"  ;# Perform PG characterization and implementation
+set TCL_COMPILE_PG_FILE               "./compile_pg_example.tcl" ;# File should contain all the compile_pg_* commands to create the power networks 
+# specified in the strategies in the TCL_PNS_FILE. 
+# An example is in rm_icc2_dp_scripts/compile_pg_example.tcl
+set TCL_PG_PUSHDOWN_FILE              "" ;# Create this file to facilitate manual pushdown and bypass auto pushdown in the flow.
+set TCL_POST_PNS_FILE                 "" ;# If it exists, this file will be sourced after PG creation.
+set TCL_USER_CREATE_POWER_PRE_SCRIPT  "" ;# An optional Tcl file to be sourced at the very beginning of the task
+set TCL_USER_CREATE_POWER_POST_SCRIPT "" ;# An optional Tcl file to be sourced at the very end of the task
+##########################################################################################
+#                               PLACE PINS
+##########################################################################################
+##Note:Feedthroughs are disabled by default. Enable feedthroughs either through set_*_pin_constraints  Tcl commands or through Pin constraints file
+set TCL_PIN_CONSTRAINT_FILE           "" ;# file sourced to apply set_*_pin_constraints to the design
+set CUSTOM_PIN_CONSTRAINT_FILE        "" ;# will be loaded via read_pin_constraints -file
+;# used for more complex pin constraints, 
+;# or in constraint replay
+set PLACE_PINS_SELF                   "true" ;# Set to true if the block's top level pins are not all connected to IO drivers.
+set TIMING_PIN_PLACEMENT              "true" ;# Set to true for timing driven pin placement
+set TCL_USER_PLACE_PINS_PRE_SCRIPT    "" ;# An optional Tcl file to be sourced at the very beginning of the task
+set TCL_USER_PLACE_PINS_POST_SCRIPT   "" ;# An optional Tcl file to be sourced at the very end of the task
+##########################################################################################
+#                               PRE-TIMING
+##########################################################################################
+set TCL_USER_PRE_TIMING_PRE_SCRIPT    "" ;# An optional Tcl file to be sourced at the very beginning of the task
+set TCL_USER_PRE_TIMING_POST_SCRIPT   "" ;# An optional Tcl file to be sourced at the very end of the task
+##########################################################################################
+#                               TIMING ESTIMATION
+##########################################################################################
+set TCL_TIMING_ESTIMATION_SETUP_FILE       "" ;# Specify any constraints prior to timing estimation
+set TCL_USER_TIMING_ESTIMATION_PRE_SCRIPT  "" ;# An optional Tcl file to be sourced at the very beginning of the task
+set TCL_USER_TIMING_ESTIMATION_POST_SCRIPT "" ;# An optional Tcl file to be sourced at the very end of the task
+set TCL_LIB_CELL_DONT_USE_FILE             "" ;# A Tcl file for customized don't use ("set_lib_cell_purpose -exclude <purpose>" commands);
+;#  to prevent estimate_timing picking a lib_cell not used by pnr flow.
+;#  please specify non-optimization purpose lib cells in the file. 
+##########################################################################################
+#                               BUDGETING
+##########################################################################################
+set TCL_BUDGETING_SETUP_FILE                "" ;# Specify any constraints prior to budgeting
+set TCL_BOUNDARY_BUDGETING_CONSTRAINTS_FILE "" ;# An optional user constraints file to override compute_budget_constraints
+set TCL_USER_BUDGETING_PRE_SCRIPT           "" ;# An optional Tcl file to be sourced at the very beginning of the task
+set TCL_USER_BUDGETING_POST_SCRIPT          "" ;# An optional Tcl file to be sourced at the very end of the task
+##########################################################################################
+## System Variables (there's no need to change the following)
+##########################################################################################
+set WORK_DIR ./work
+set WORK_DIR_WRITE_DATA ./write_data_dir
+if !{[file exists $WORK_DIR]} {file mkdir $WORK_DIR}
+set SPLIT_CONSTRAINTS_LABEL_NAME split_constraints
+set INIT_DP_LABEL_NAME init_dp
+set PRE_SHAPING_LABEL_NAME pre_shaping
+set PLACE_IO_LABEL_NAME place_io
+set SHAPING_LABEL_NAME shaping
+set PLACEMENT_LABEL_NAME placement
+set CREATE_POWER_LABEL_NAME create_power
+set CLOCK_TRUNK_PLANNING_LABEL_NAME clock_trunk_planning
+set PLACE_PINS_LABEL_NAME place_pins
+set PRE_TIMING_LABEL_NAME pre_timing
+set TIMING_ESTIMATION_LABEL_NAME timing_estimation
+set BUDGETING_LABEL_NAME budgeting
+# Block label to be release by write_data
+if {$DP_FLOW == "flat"} {
+   set WRITE_DATA_LABEL_NAME timing_estimation
+} else {
+   set WRITE_DATA_LABEL_NAME budgeting
+}
+## Directories
+set OUTPUTS_DIR "./outputs_icc2"        ;# Directory to write output data files; mainly used by write_data.tcl
+set REPORTS_DIR "./rpts_icc2"           ;# Directory to write reports; mainly used by report_qor.tcl
+set REPORTS_DIR_SPLIT_CONSTRAINTS $REPORTS_DIR/$SPLIT_CONSTRAINTS_LABEL_NAME
+set REPORTS_DIR_INIT_DP $REPORTS_DIR/$INIT_DP_LABEL_NAME
+set REPORTS_DIR_PRE_SHAPING $REPORTS_DIR/$PRE_SHAPING_LABEL_NAME
+set REPORTS_DIR_PLACE_IO $REPORTS_DIR/$PLACE_IO_LABEL_NAME
+set REPORTS_DIR_SHAPING $REPORTS_DIR/$SHAPING_LABEL_NAME
+set REPORTS_DIR_PLACEMENT $REPORTS_DIR/$PLACEMENT_LABEL_NAME
+set REPORTS_DIR_CREATE_POWER $REPORTS_DIR/$CREATE_POWER_LABEL_NAME
+set REPORTS_DIR_CLOCK_TRUNK_PLANNING $REPORTS_DIR/$CLOCK_TRUNK_PLANNING_LABEL_NAME
+set REPORTS_DIR_PLACE_PINS $REPORTS_DIR/$PLACE_PINS_LABEL_NAME
+set REPORTS_DIR_PRE_TIMING $REPORTS_DIR/$PRE_TIMING_LABEL_NAME
+set REPORTS_DIR_TIMING_ESTIMATION $REPORTS_DIR/$TIMING_ESTIMATION_LABEL_NAME
+set REPORTS_DIR_BUDGETING $REPORTS_DIR/$BUDGETING_LABEL_NAME
+if !{[file exists $REPORTS_DIR]} {file mkdir $REPORTS_DIR}
+if !{[file exists $OUTPUTS_DIR]} {file mkdir $OUTPUTS_DIR}
+if !{[file exists $REPORTS_DIR_SPLIT_CONSTRAINTS]} {file mkdir $REPORTS_DIR_SPLIT_CONSTRAINTS}
+if !{[file exists $REPORTS_DIR_INIT_DP]} {file mkdir $REPORTS_DIR_INIT_DP}
+if !{[file exists $REPORTS_DIR_PRE_SHAPING]} {file mkdir $REPORTS_DIR_PRE_SHAPING}
+if !{[file exists $REPORTS_DIR_PLACE_IO]} {file mkdir $REPORTS_DIR_PLACE_IO}
+if !{[file exists $REPORTS_DIR_SHAPING]} {file mkdir $REPORTS_DIR_SHAPING}
+if !{[file exists $REPORTS_DIR_PLACEMENT]} {file mkdir $REPORTS_DIR_PLACEMENT}
+if !{[file exists $REPORTS_DIR_CREATE_POWER]} {file mkdir $REPORTS_DIR_CREATE_POWER}
+if !{[file exists $REPORTS_DIR_CLOCK_TRUNK_PLANNING]} {file mkdir $REPORTS_DIR_CLOCK_TRUNK_PLANNING}
+if !{[file exists $REPORTS_DIR_PLACE_PINS]} {file mkdir $REPORTS_DIR_PLACE_PINS}
+if !{[file exists $REPORTS_DIR_PRE_TIMING]} {file mkdir $REPORTS_DIR_PRE_TIMING}
+if !{[file exists $REPORTS_DIR_TIMING_ESTIMATION]} {file mkdir $REPORTS_DIR_TIMING_ESTIMATION}
+if !{[file exists $REPORTS_DIR_BUDGETING]} {file mkdir $REPORTS_DIR_BUDGETING}
+if {[info exists env(LOGS_DIR)]} {
+   set log_dir $env(LOGS_DIR)
+} else {
+   set log_dir ./logs_icc2 
+}
+set search_path [list ./rm_icc2_dp_scripts ./rm_icc2_pnr_scripts $WORK_DIR ] 
+lappend search_path .
+##########################################################################################
+#                               Optional Settings
+##########################################################################################
+set_message_info -id PVT-012 -limit 1
+set_message_info -id PVT-013 -limit 1
+set search_path "/home/subhasis/VSDBabySoC/src/lib/"
+set_app_var link_library "avsdpll.db avsddac.db"
+puts "RM-info : Completed script [info script]\n"
+RM-info : Completed script /home/subhasis/VSDBabySoC/scripts/PD_flow/icc2_dp_setup.tcl
+
+RM-info : create_lib ./work/vsdbabysocsky130_fd_sc_hd -tech /home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/milkywayORtechFiles/sky130_fd_sc_hd.tf -ref_libs {/home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/LEF/sky130_v5_7magic.lef /home/subhasis/VSDBabySoC/src/lef/avsddac.lef /home/subhasis/VSDBabySoC/src/lef/avsdpll.lef}
+Warning: sky130_fd_sc_hd.tf line 26, unsupported syntax 'fatWireViaKeepoutMode' in 'Technology' section. It will be ignored. (TECH-002)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 846) (TECH-026)
+Warning: Layer 'via4/met4' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 846) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 854) (TECH-026)
+Warning: Layer 'via4/met5' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 854) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 862) (TECH-026)
+Warning: Layer 'via3/met3' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 862) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 870) (TECH-026)
+Warning: Layer 'via3/met4' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 870) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 878) (TECH-026)
+Warning: Layer 'via2/met2' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 878) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 886) (TECH-026)
+Warning: Layer 'via2/met3' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 886) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 894) (TECH-026)
+Warning: Layer 'via/met1' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 894) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 902) (TECH-026)
+Warning: Layer 'via/met2' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 902) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 910) (TECH-026)
+Warning: Layer 'mcon/li1' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 910) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 918) (TECH-026)
+Warning: Layer 'mcon/met1' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 918) (TECH-026)
+Warning: DesignRule is defined with non-consecutive layers 'via4' and 'met4'. (sky130_fd_sc_hd.tf line 851) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via4' and 'met5'. (sky130_fd_sc_hd.tf line 859) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via3' and 'met3'. (sky130_fd_sc_hd.tf line 867) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via3' and 'met4'. (sky130_fd_sc_hd.tf line 875) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via2' and 'met2'. (sky130_fd_sc_hd.tf line 883) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via2' and 'met3'. (sky130_fd_sc_hd.tf line 891) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via' and 'met1'. (sky130_fd_sc_hd.tf line 899) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via' and 'met2'. (sky130_fd_sc_hd.tf line 907) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'mcon' and 'li1'. (sky130_fd_sc_hd.tf line 915) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'mcon' and 'met1'. (sky130_fd_sc_hd.tf line 923) (TECH-034)
+Information: Loading technology file '/home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/milkywayORtechFiles/sky130_fd_sc_hd.tf' (FILE-007)
+...Created 3 lib groups
+
+... 3 cell libraries and 1 aggregate library to build.
+
+
+... checking whether need to build aggregate library: EXPLORE_macros.ndm (1/1)
+... checking whether can reuse library under output directory
+reuse existing cell library under output directory: CLIBs/EXPLORE_macros.ndm
+
+... checking whether need to build cell library: EXPLORE_physical_only.ndm (3/3)
+... checking whether can reuse library under output directory
+reuse existing cell library under output directory: CLIBs/EXPLORE_physical_only.ndm
+
+... 3 cell libraries and 1 aggregate library can be reused.
+
+
+
+Information: Successfully built 2 reference libraries: EXPLORE_macros.ndm EXPLORE_physical_only.ndm. (LIB-093)
+RM-info : Reading full chip verilog (/home/subhasis/VSDBabySoC/output/vsdbabysoc_net.v)
+Information: Reading Verilog into new design 'vsdbabysoc/init_dp' in library 'vsdbabysocsky130_fd_sc_hd'. (VR-012)
+Loading verilog file '/home/subhasis/VSDBabySoC/output/vsdbabysoc_net.v'
+Number of modules read: 2
+Top level ports: 7
+Total ports in all modules: 19
+Total nets in all modules: 3004
+Total instances in all modules: 2744
+Elapsed = 00:00:00.05, CPU = 00:00:00.05
+RM-info : Sourcing /home/subhasis/VSDBabySoC/scripts/PD_flow/init_design.tech_setup.tcl
+puts "RM-info : Running script [info script]\n"
+RM-info : Running script /home/subhasis/VSDBabySoC/scripts/PD_flow/init_design.tech_setup.tcl
+
+##########################################################################################
+# Tool: IC Compiler II 
+# Script: tech_setup.tcl
+# Version: P-2019.03-SP4
+# Copyright (C) 2014-2019 Synopsys, Inc. All rights reserved.
+##########################################################################################
+## Set routing_direction and track_offset
+if {$ROUTING_LAYER_DIRECTION_OFFSET_LIST != ""} {
+        foreach direction_offset_pair $ROUTING_LAYER_DIRECTION_OFFSET_LIST {
+                set layer [lindex $direction_offset_pair 0]
+                set direction [lindex $direction_offset_pair 1]
+                set offset [lindex $direction_offset_pair 2]
+                set_attribute [get_layers $layer] routing_direction $direction
+                if {$offset != ""} {
+                        set_attribute [get_layers $layer] track_offset $offset
+                }
+        }
+} else {
+        puts "RM-error : ROUTING_LAYER_DIRECTION_OFFSET_LIST is not specified. You must manually set routing layer directions and offsets!"
+}
+Information: The design specific attribute override for layer 'met1' is set in the current block 'vsdbabysoc', because the actual library setting may not be overwritten. (ATTR-12)
+Information: The design specific attribute override for layer 'met2' is set in the current block 'vsdbabysoc', because the actual library setting may not be overwritten. (ATTR-12)
+Information: The design specific attribute override for layer 'met3' is set in the current block 'vsdbabysoc', because the actual library setting may not be overwritten. (ATTR-12)
+Information: The design specific attribute override for layer 'met4' is set in the current block 'vsdbabysoc', because the actual library setting may not be overwritten. (ATTR-12)
+Information: The design specific attribute override for layer 'met5' is set in the current block 'vsdbabysoc', because the actual library setting may not be overwritten. (ATTR-12)
+## Set site default
+if {$SITE_DEFAULT != ""} {
+        set_attribute [get_site_defs] is_default false
+        set_attribute [get_site_defs $SITE_DEFAULT] is_default true
+}
+## Set site symmetry
+if {$SITE_SYMMETRY_LIST != ""} {
+        foreach sym_pair $SITE_SYMMETRY_LIST {
+                set site_name [lindex $sym_pair 0]
+                set site_sym [lindex $sym_pair 1]
+                set_attribute [get_site_defs $site_name] symmetry $site_sym
+        }       
+}
+puts "RM-info : Completed script [info script]\n"
+RM-info : Completed script /home/subhasis/VSDBabySoC/scripts/PD_flow/init_design.tech_setup.tcl
+
+RM-info : Sourcing /home/subhasis/VSDBabySoC/scripts/PD_flow/init_design.read_parasitic_tech_example.tcl
+puts "RM-info: Running script [info script]\n"
+RM-info: Running script /home/subhasis/VSDBabySoC/scripts/PD_flow/init_design.read_parasitic_tech_example.tcl
+
+##########################################################################################
+# Tool: IC Compiler II
+# Script: init_design.read_parasitic_tech_example.tcl (template)
+# Version: P-2019.03-SP4
+# Copyright (C) 2014-2019 Synopsys, Inc. All rights reserved.
+##########################################################################################
+##############################################################################################
+# The following is a sample script to read two TLU+ files, 
+# which you can expand to accomodate your design.
+##############################################################################################
+########################################
+## Variables
+########################################
+## Parasitic tech files for read_parasitic_tech command; expand the section as needed
+set parasitic1                          "temp1" ;# name of parasitic tech model 1
+set tluplus_file($parasitic1)           "/home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/itf_files/skywater130.nominal.tluplus" ;# TLU+ files to read for parasitic 1
+set layer_map_file($parasitic1)         "/home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/milkywayORtechFiles/skywater130_fd_sc_hd.map" ;# layer mapping file between ITF and tech for parasitic 1
+#set parasitic2                         "temp2" ;# name of parasitic tech model 2
+#set tluplus_file($parasitic2)           "/home/kunal/design/picosoc/pdk/sample_180nm.tluplus" ;# TLU+ files to read for parasitic 2
+#set layer_map_file($parasitic2)         "" ;# layer mapping file between ITF and tech for parasitic 2
+########################################
+## Read parasitic files
+########################################
+## Read in the TLUPlus files first.
+#  Later on in the corner constraints, you can then refer to these parasitic models.
+foreach p [array name tluplus_file] {  
+        puts "RM-info: read_parasitic_tech -tlup $tluplus_file($p) -layermap $layer_map_file($p) -name $p"
+        #read_parasitic_tech -tlup $tluplus_file($p) -layermap $layer_map_file($p) -name $p
+        read_parasitic_tech -tlup $tluplus_file($p)  -name $p
+
+}
+RM-info: read_parasitic_tech -tlup /home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/itf_files/skywater130.nominal.tluplus -layermap /home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/milkywayORtechFiles/skywater130_fd_sc_hd.map -name temp1
+Information: The command 'read_parasitic_tech' cleared the undo history. (UNDO-016)
+puts "RM-info: Completed script [info script]\n"
+RM-info: Completed script /home/subhasis/VSDBabySoC/scripts/PD_flow/init_design.read_parasitic_tech_example.tcl
+
+Using libraries: vsdbabysocsky130_fd_sc_hd EXPLORE_macros EXPLORE_physical_only
+Linking block vsdbabysocsky130_fd_sc_hd:vsdbabysoc/init_dp.design
+Information: User units loaded from library 'EXPLORE_macros|avsdpll' (LNK-040)
+Design 'vsdbabysoc' was successfully linked.
+[icc2-lic Tue Jun 25 17:24:34 2024] Command 'initialize_floorplan' requires licenses
+[icc2-lic Tue Jun 25 17:24:34 2024] Attempting to check-out alternate set of keys directly with queueing
+[icc2-lic Tue Jun 25 17:24:34 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:34 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:34 2024] Sending check-out request for 'ICCompilerII-8' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:34 2024] Check-out request for 'ICCompilerII-8' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:34 2024] Sending checkout check request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:34 2024] Checkout check request for 'ICCompilerII-8' returned 0 
+[icc2-lic Tue Jun 25 17:24:34 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:34 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:34 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:34 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:34 2024] Sending check-out request for 'ICCompilerII-NX' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:34 2024] Check-out request for 'ICCompilerII-NX' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:34 2024] Sending checkout check request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:34 2024] Checkout check request for 'ICCompilerII-NX' returned 0 
+[icc2-lic Tue Jun 25 17:24:34 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:34 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:34 2024] Check-out of alternate set of keys directly with queueing was successful
+Removing existing floorplan objects
+Creating core...
+Core utilization ratio = 58.09%
+Unplacing all cells...
+Creating site array...
+Creating routing tracks...
+Initializing floorplan completed.
+Information: The command 'save_lib' cleared the undo history. (UNDO-016)
+Saving all libraries...
+Information: Saving 'vsdbabysocsky130_fd_sc_hd:vsdbabysoc/init_dp.design' to 'vsdbabysocsky130_fd_sc_hd:floorplan_in_progress.design'. (DES-028)
+RM-info : Running connect_pg_net -automatic on all blocks
+Information: Total 2 netlist change(s) and disconnections have been made to resolve conflicts between power intent and PG netlist. (UPF-073)
+****************************************
+Report : Power/Ground Connection Summary
+Design : vsdbabysoc
+Version: T-2022.03-SP5
+Date   : Tue Jun 25 17:24:34 2024
+****************************************
+P/G net name                  P/G pin count(previous/current)
+--------------------------------------------------------------------------------
+Power net VDD                 0/2745
+Ground net VSS                0/2744
+--------------------------------------------------------------------------------
+Information: connections of 5489 power/ground pin(s) are created or changed.
+Information: The command 'save_block' cleared the undo history. (UNDO-016)
+Information: Saving 'vsdbabysocsky130_fd_sc_hd:vsdbabysoc/init_dp.design' to 'vsdbabysocsky130_fd_sc_hd:vsdbabysoc/pre_shaping.design'. (DES-028)
+Saving all libraries...
+Information: The command 'save_block' cleared the undo history. (UNDO-016)
+Saving all libraries...
+RM-info : Sourcing /home/subhasis/VSDBabySoC/scripts/PD_flow/init_design.read_parasitic_tech_example.tcl
+puts "RM-info: Running script [info script]\n"
+RM-info: Running script /home/subhasis/VSDBabySoC/scripts/PD_flow/init_design.read_parasitic_tech_example.tcl
+
+##########################################################################################
+# Tool: IC Compiler II
+# Script: init_design.read_parasitic_tech_example.tcl (template)
+# Version: P-2019.03-SP4
+# Copyright (C) 2014-2019 Synopsys, Inc. All rights reserved.
+##########################################################################################
+##############################################################################################
+# The following is a sample script to read two TLU+ files, 
+# which you can expand to accomodate your design.
+##############################################################################################
+########################################
+## Variables
+########################################
+## Parasitic tech files for read_parasitic_tech command; expand the section as needed
+set parasitic1                          "temp1" ;# name of parasitic tech model 1
+set tluplus_file($parasitic1)           "/home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/itf_files/skywater130.nominal.tluplus" ;# TLU+ files to read for parasitic 1
+set layer_map_file($parasitic1)         "/home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/milkywayORtechFiles/skywater130_fd_sc_hd.map" ;# layer mapping file between ITF and tech for parasitic 1
+#set parasitic2                         "temp2" ;# name of parasitic tech model 2
+#set tluplus_file($parasitic2)           "/home/kunal/design/picosoc/pdk/sample_180nm.tluplus" ;# TLU+ files to read for parasitic 2
+#set layer_map_file($parasitic2)         "" ;# layer mapping file between ITF and tech for parasitic 2
+########################################
+## Read parasitic files
+########################################
+## Read in the TLUPlus files first.
+#  Later on in the corner constraints, you can then refer to these parasitic models.
+foreach p [array name tluplus_file] {  
+        puts "RM-info: read_parasitic_tech -tlup $tluplus_file($p) -layermap $layer_map_file($p) -name $p"
+        #read_parasitic_tech -tlup $tluplus_file($p) -layermap $layer_map_file($p) -name $p
+        read_parasitic_tech -tlup $tluplus_file($p)  -name $p
+
+}
+RM-info: read_parasitic_tech -tlup /home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/itf_files/skywater130.nominal.tluplus -layermap /home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/milkywayORtechFiles/skywater130_fd_sc_hd.map -name temp1
+puts "RM-info: Completed script [info script]\n"
+RM-info: Completed script /home/subhasis/VSDBabySoC/scripts/PD_flow/init_design.read_parasitic_tech_example.tcl
+
+RM-info : Loading TCL_MCMM_SETUP_FILE (./init_design.mcmm_example.auto_expanded.tcl)
+puts "RM-info: Running script [info script]\n"
+RM-info: Running script /home/subhasis/VSDBabySoC/scripts/PD_flow/init_design.mcmm_example.auto_expanded.tcl
+
+##########################################################################################
+# Tool: IC Compiler II
+# Script: init_design.mcmm_example.auto_expanded.tcl (template)
+# Version: P-2019.03-SP4
+# Copyright (C) 2014-2019 Synopsys, Inc. All rights reserved.
+##########################################################################################
+## Note :
+#  1. To see the full list of mode / corner / scenario specific commands, 
+#      refer to SolvNet 1777585 : "Multicorner-multimode constraint classification" 
+#
+#  2. Corner operating conditions are recommended to be specified directly through 
+#     set_process_number, set_voltage and set_temperature
+#
+#       The PVT resolution function always finds the closest PVT match between the operating conditions and 
+#       the library pane.
+#       A Corner operating condition may be specified directly with the set_process_number, set_voltage and 
+#       set_temperature commands or indirectly with the set_operating_conditions command.
+#       The set_process_label command may be used to distinguish between library panes with the same PVT 
+#       values but different process labels.
+##############################################################################################
+# The following is a sample script to create two scenarios with scenario constraints provided,
+# and let the constraints auto expanded to associated modes and scenarios. At the end of script,
+# remove_duplicate_timing_contexts is used to improve runtime and capacity without loss of constraints.
+# Reading of the TLUPlus files should be done beforehand,
+# so the parasitic models can be referred to in the constraints.
+# Specify TCL_PARASITIC_SETUP_FILE in icc2_common_setup.tcl for your read_parasitic_tech commands.
+# read_parasitic_tech_example.tcl is provided as an example.
+##############################################################################################
+########################################
+## Variables
+########################################
+## Scenario constraints; expand the section as needed
+set scenario1                           "func1" ;# name of scenario1
+set scenario_constraints($scenario1)    "/home/subhasis/VSDBabySoC/src/sdc/vsdbabysoc_synthesis.sdc" ;# for all scenario1 specific constraints
+#set scenario2                          "func2" ;# name of scenario2
+#set scenario_constraints($scenario2)    "/home/kunal/design/picosoc/rtl/picorv32.sdc" ;# for all scenario2 specific constraints
+########################################
+## Create modes, corners, and scenarios
+########################################
+remove_modes -all; remove_corners -all; remove_scenarios -all
+foreach s [array name scenario_constraints] {
+        create_mode $s
+        create_corner $s
+        create_scenario -name $s -mode $s -corner $s
+        set_parasitic_parameters -late_spec temp1 -early_spec temp1 -library ${DESIGN_NAME}${LIBRARY_SUFFIX} 
+         
+}
+Created scenario func1 for mode func1 and corner func1
+All analysis types are activated.
+########################################
+## Populate constraints 
+########################################
+## Populate scenario constraints which will then be automatically expanded to its associated modes and corners
+foreach s [array name scenario_constraints] {
+        current_scenario $s
+        puts "RM-info: current_scenario $s"
+        puts "RM-info: source $scenario_constraints($s)"
+        source $scenario_constraints($s)
+
+        # pls ensure $scenario_constraints($s) includes set_parasitic_parameters command for the corresponding corner,
+        # for example, set_parasitic_parameters -late_spec $parasitics1 -early_spec $parasitics2,
+        # where the command points to the parasitics read by the read_parasitic_tech commands.
+        # Specify TCL_PARASITIC_SETUP_FILE in icc2_common_setup.tcl for your read_parasitic_tech commands.
+        # read_parasitic_tech_example.tcl is provided as an example.    
+}
+RM-info: current_scenario func1
+RM-info: source /home/subhasis/VSDBabySoC/src/sdc/vsdbabysoc_synthesis.sdc
+Warning: Creating a clock on internal pin 'pll/CLK'. (UIC-019)
+Information: Timer using 8 threads
+Warning: Technology layer 'li1' setting 'routing-direction' is not valid (NEX-001)
+Warning: set_max_delay is forcing pin 'dac/OUT' to be a timing startpoint. (UIC-011)
+########################################
+## Configure analysis settings for scenarios
+########################################
+# Below are just examples to show usage of set_scenario_status (actual usage shold depend on your objective)
+# scenario1 is a setup scenario and scenario2 is a hold scenario
+set_scenario_status $scenario1 -none -setup true -hold true -leakage_power true -dynamic_power true -max_transition true -max_capacitance true -min_capacitance false -active true
+Scenario func1 (mode func1 corner func1) is active for setup/hold/leakage_power/dynamic_power/max_transition/max_capacitance analysis.
+#set_scenario_status $scenario2 -none -setup false -hold true -leakage_power true -dynamic_power false -max_transition true -max_capacitance false -min_capacitance true -active true
+#redirect -file ${REPORTS_DIR}/${INIT_DESIGN_BLOCK_NAME}.report_scenarios.rpt {report_scenarios} 
+redirect -file ${DESIGN_NAME}.report_scenarios.rpt {report_scenarios}
+## To remove duplicate modes, corners, scenarios, and to improve runtime and capacity without loss of constraints :
+remove_duplicate_timing_contexts
+Information: No Scenario reduction opportunities were found
+Information: No Mode reduction opportunities were found
+Information: No Corner reduction opportunities were found
+Information: No Mode, Corner or Scenario reduction was possible
+puts "RM-info: Completed script [info script]\n"
+RM-info: Completed script /home/subhasis/VSDBabySoC/scripts/PD_flow/init_design.mcmm_example.auto_expanded.tcl
+
+[icc2-lic Tue Jun 25 17:24:35 2024] Command 'create_placement' requires licenses
+[icc2-lic Tue Jun 25 17:24:35 2024] Attempting to check-out alternate set of keys directly with queueing
+[icc2-lic Tue Jun 25 17:24:35 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:35 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:35 2024] Sending check-out request for 'ICCompilerII-8' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:35 2024] Check-out request for 'ICCompilerII-8' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:35 2024] Sending checkout check request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:35 2024] Checkout check request for 'ICCompilerII-8' returned 0 
+[icc2-lic Tue Jun 25 17:24:35 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:35 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:35 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:35 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:35 2024] Sending check-out request for 'ICCompilerII-NX' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:35 2024] Check-out request for 'ICCompilerII-NX' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:35 2024] Sending checkout check request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:35 2024] Checkout check request for 'ICCompilerII-NX' returned 0 
+[icc2-lic Tue Jun 25 17:24:35 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:35 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:35 2024] Check-out of alternate set of keys directly with queueing was successful
+Information: Starting 'create_placement' (FLW-8000)
+Information: Time: 2024-06-25 17:24:35 / Session: 0.01 hr / Command: 0.00 hr / Memory: 387 MB (FLW-8100)
+Warning: Did not find any buffer or inverter whose reference library cell site matches the block site. (DPP-235)
+Warning: The -congestion_effort option only effects the standard cell congestion reduction, which is not enabled in this run. (DPP-221)
+Creating appropriate block views (if needed)...
+Multi-Processing Summary
+  Max number of cores for parent process: 8; hostname: sfalvsd
+  No distributed processing
+Command Option Settings Summary
+  -floorplan -effort medium -congestion -congestion_effort medium
+Design summary for global macro placement
+  Number of std cells                 : 2741
+  Number of floating/fixed hard macros: 2 / 0
+  Number of blocks/MIBs/VAs           : 0 / 0 / 0
+  Number of (unique) edit groups      : 0
+Information: Trace mode is set to dfa. (DPP-053)
+Info: Running global macro placer.
+coarse place 0% done.
+coarse place 50% done.
+coarse place 100% done.
+Running macro grouping.
+Planning locations for 1 groups of macros.
+Running packing.
+Doing congestion reduction iteration 1 of 1
+  Placing standard cells for congestion reduction
+  Running router for congestion reduction
+Warning: Layer li1 does not have a preferred direction, assigning to vertical. (ZRT-025)
+Warning: Ignore pin (cell avsdpll, pin VDD) on layer nwell. (ZRT-030)
+Warning: Ignore pin (cell avsdpll, pin VDD#2_1) on layer nwell. (ZRT-030)
+Warning: Ignore pin (cell avsdpll, pin VDD#2) on layer nwell. (ZRT-030)
+Warning: Ignore pin (cell avsdpll, pin VDD#3) on layer nwell. (ZRT-030)
+Warning: Ignore 9 top cell ports with no pins. (ZRT-027)
+Warning: Layer met4 pitch 0.920 may be too small: wire/via-down 0.615, wire/via-up 1.040. (ZRT-026)
+Warning: Master cell avsddac has duplicated redundant library pin shapes at {0.000 0.000} {0.170 0.170} on layer li1. (ZRT-625)
+Warning: Master cell avsddac has duplicated redundant library pin shapes at {0.000 0.000} {0.170 0.170} on layer li1. (ZRT-625)
+Updating keepouts for congestion reduction for top
+AOR: Running advanced overlap remover
+AOR: Running solution-finding phases on space Core
+AOR: Solution-finding phase 1 of at most 9
+AOR: Running solution-finding phase with 50 macros per window
+AOR: Running global instance.
+AOR: Legal solution found!
+AOR: Total cost after solution-finding phases: 13600
+AOR: Running post-optimization phase with 20 macros per window
+AOR: Running global instance.
+AOR: Total cost after post-optimization phase: 13600
+AOR: Running post-optimization phase with 10 macros per window
+AOR: Running global instance.
+AOR: Total cost after post-optimization phase: 13600
+AOR: CPU time: 0.01
+Remove overlaps
+Generating automatic soft blockages for vsdbabysoc/init_dp, hor/vert channel sizes are 16.32/16.32
+Macro placement done.
+Placing top level std cells.
+Warning: Technology layer 'li1' setting 'routing-direction' is not valid (NEX-001)
+Error: Unable to characterize the target libraries
+coarse place 0% done.
+coarse place 20% done.
+coarse place 40% done.
+coarse place 60% done.
+coarse place 80% done.
+coarse place 100% done.
+Running block placement.
+Running timing driven standard cell placement
+No editable block found.
+Running virtual optimization on full netlist ...
+Created estimated_corner
+Error: Cannot find buffer or inverter with valid delay for all corners.
+Error: Something is wrong and optimization cannot start (APS-020)
+Creating appropriate block views (if needed)...
+Design summary for global macro placement
+  Number of std cells                 : 2741
+  Number of floating/fixed hard macros: 2 / 0
+  Number of blocks/MIBs/VAs           : 0 / 0 / 0
+  Number of (unique) edit groups      : 0
+Updating keepouts for congestion reduction for top
+AOR: Running advanced overlap remover
+AOR: Running solution-finding phases on space Core
+AOR: Solution-finding phase 1 of at most 9
+AOR: Running solution-finding phase with 50 macros per window
+AOR: Running global instance.
+AOR: Legal solution found!
+AOR: Total cost after solution-finding phases: 9900
+AOR: Running post-optimization phase with 20 macros per window
+AOR: Running global instance.
+AOR: Total cost after post-optimization phase: 9900
+AOR: Running post-optimization phase with 10 macros per window
+AOR: Running global instance.
+AOR: Total cost after post-optimization phase: 9900
+AOR: CPU time: 0
+Remove overlaps
+Generating automatic soft blockages for vsdbabysoc/init_dp, hor/vert channel sizes are 16.32/16.32
+Macro Displacement Report
+  Maximum move distance macro: dac distance: 0.68
+  Maximum move distance macro: pll distance: 0.31
+  Average move distance (only considering moved macros): 0.50
+  Average move distance (over all macros): 0.50
+  Total move distance: 0.99
+  Number of moved macros / total number of macros: 2/2
+Placing top level std cells.
+Warning: Technology layer 'li1' setting 'routing-direction' is not valid (NEX-001)
+Warning: Technology layer 'li1' setting 'routing-direction' is not valid (NEX-001)
+Error: Unable to characterize the target libraries
+coarse place 40% done.
+Warning: Cell ENb_CP cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell ENb_VCO cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell OUT cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell REF cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell VCO_IN cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell VREFH cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell reset cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell ENb_CP cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell ENb_CP cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell ENb_VCO cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell ENb_VCO cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell OUT cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell OUT cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell REF cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell REF cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell VCO_IN cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell VCO_IN cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell VREFH cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell VREFH cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell reset cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell reset cannot satisfy placement constraints. (PLACE-062)
+coarse place 60% done.
+Warning: Cell ENb_CP cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell ENb_VCO cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell OUT cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell REF cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell VCO_IN cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell VREFH cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell reset cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell ENb_CP cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell ENb_CP cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell ENb_VCO cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell ENb_VCO cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell OUT cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell OUT cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell REF cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell REF cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell VCO_IN cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell VCO_IN cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell VREFH cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell VREFH cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell reset cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell reset cannot satisfy placement constraints. (PLACE-062)
+coarse place 80% done.
+Warning: Cell ENb_CP cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell ENb_VCO cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell OUT cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell REF cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell VCO_IN cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell VREFH cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell reset cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell ENb_CP cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell ENb_CP cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell ENb_VCO cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell ENb_VCO cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell OUT cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell OUT cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell REF cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell REF cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell VCO_IN cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell VCO_IN cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell VREFH cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell VREFH cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell reset cannot satisfy placement constraints. (PLACE-062)
+Warning: Cell reset cannot satisfy placement constraints. (PLACE-062)
+coarse place 100% done.
+Running block placement.
+Floorplan placement done.
+[icc2-lic Tue Jun 25 17:24:40 2024] Command 'report_placement' requires licenses
+[icc2-lic Tue Jun 25 17:24:40 2024] Attempting to check-out alternate set of keys directly with queueing
+[icc2-lic Tue Jun 25 17:24:40 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:40 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:40 2024] Sending check-out request for 'ICCompilerII-8' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:40 2024] Check-out request for 'ICCompilerII-8' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:40 2024] Sending checkout check request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:40 2024] Checkout check request for 'ICCompilerII-8' returned 0 
+[icc2-lic Tue Jun 25 17:24:40 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:40 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:40 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:40 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:40 2024] Sending check-out request for 'ICCompilerII-NX' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:40 2024] Check-out request for 'ICCompilerII-NX' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:40 2024] Sending checkout check request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:40 2024] Checkout check request for 'ICCompilerII-NX' returned 0 
+[icc2-lic Tue Jun 25 17:24:40 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:40 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:40 2024] Check-out of alternate set of keys directly with queueing was successful
+****************************************
+Report : report_placement
+Design : vsdbabysoc
+Version: T-2022.03-SP5
+Date   : Tue Jun 25 17:24:40 2024
+****************************************
+  ==================
+  Note: Ignoring violations of fixed cells or between fixed pairs of cells. 
+        To include violations of / between fixed cells, disable -ignore_fixed. 
+  ==================
+
+  Wire length report (all)
+  ==================
+  wire length in design vsdbabysoc/init_dp: 70393.583 microns.
+    number of nets with unassigned pins: 7
+  wire length in design vsdbabysoc/init_dp (see through blk pins): 70393.583 microns.
+  ------------------
+  Total wire length: 70393.583 microns.
+
+  Physical hierarchy violations report
+  ====================================
+  Violations in design vsdbabysoc/init_dp:
+     0 cells have placement violation.
+  ------------------------------------
+  Total 0 cells have placement violation.
+
+  Voltage area violations report
+  ====================================
+  Voltage area placement violations in design vsdbabysoc/init_dp:
+     0 cells placed outside the voltage area which they belong to.
+  ------------------------------------
+  Total 0 macro cells placed outside the voltage area which they belong to.
+
+  Hard macro to hard macro overlap report
+  =======================================
+  HM to HM overlaps in design vsdbabysoc/init_dp: 0
+  ---------------------------------------
+  Total hard macro to hard macro overlaps: 0
+
+Information: Default error view vsdbabysoc_dpplace.err is created in GUI error browser. (DPP-054)
+Information: Elapsed time for create_placement excluding pending time: 00:00:05.55. (DPUI-902)
+Information: CPU time for create_placement : 00:00:08.50. (DPUI-903)
+Information: Peak memory usage for create_placement : 497 MB. (DPUI-904)
+Information: Ending 'create_placement' (FLW-8001)
+Information: Time: 2024-06-25 17:24:40 / Session: 0.01 hr / Command: 0.00 hr / Memory: 497 MB (FLW-8100)
+Information: The command 'save_block' cleared the undo history. (UNDO-016)
+Saving all libraries...
+RM-info : Sourcing TCL_PNS_FILE (./pns_example.tcl)
+### Example script.  For details please refer to the IC Compiler II Design Planning User Guide and command man pages
+################################################################################
+#-------------------------------------------------------------------------------
+# P G   R I N G   C R E A T I O N
+#-------------------------------------------------------------------------------
+################################################################################
+create_pg_ring_pattern ring_pattern -horizontal_layer met4 \
+    -horizontal_width {5} -horizontal_spacing {3.5} \
+    -vertical_layer met5 -vertical_width {5} \
+    -vertical_spacing {3.5} -corner_bridge false
+Successfully create PG ring pattern ring_pattern.
+set_pg_strategy core_ring -core -pattern \
+    {{pattern: ring_pattern}{nets: {VDD VSS}}{offset: {3 3}}} \
+    -extension {{stop: innermost_ring}}
+Successfully set PG strategy core_ring.
+################################################################################
+#-------------------------------------------------------------------------------
+# P A D   T O   R I N G   P G   C O N N E C T I O N S
+#-------------------------------------------------------------------------------
+################################################################################
+#create_pg_macro_conn_pattern hm_pattern -pin_conn_type scattered_pin -layer {metal7 metal8}
+#create_pg_macro_conn_pattern pad_pattern -pin_conn_type scattered_pin -layer {M7 M6}
+#set all_pg_pads [get_cells * -hier -filter "ref_name==VDD_NS || ref_name==VSS_NS"]
+#set_pg_strategy s_pad -macros $all_pg_pads  -pattern {{name: pad_pattern} {nets: {VDD VDD_LOW VSS}}}
+################################################################################
+#-------------------------------------------------------------------------------
+# P G   M E S H   C R E A T I O N
+#-------------------------------------------------------------------------------
+################################################################################
+create_pg_mesh_pattern pg_mesh1 \
+   -parameters {w1 p1 w2 p2 f t} \
+   -layers {{{vertical_layer: met5} {width: @w1} {spacing: interleaving} \
+        {pitch: @p1} {offset: @f} {trim: @t}} \
+             {{horizontal_layer: met4 } {width: @w2} {spacing: interleaving} \
+        {pitch: @p2} {offset: @f} {trim: @t}}}
+Successfully create mesh pattern pg_mesh1.
+set_pg_strategy s_mesh1 \
+   -pattern {{pattern: pg_mesh1} {nets: {VDD VSS VSS VDD}} \
+{offset_start: 10 20} {parameters: 4 80 6 120 3.344 false}} \
+   -core -extension {{stop: outermost_ring}}
+Successfully set PG strategy s_mesh1.
+################################################################################
+#-------------------------------------------------------------------------------
+# M A C R O   P G   C O N N E C T I O N S
+#-------------------------------------------------------------------------------
+################################################################################
+#set toplevel_hms [filter_collection [get_cells * -physical_context] "is_hard_macro == true"]
+#set_pg_strategy macro_con -macros $toplevel_hms -pattern {{name: hm_pattern} {nets: {VDD VSS}}}
+################################################################################
+#-------------------------------------------------------------------------------
+# S T A N D A R D    C E L L    R A I L    I N S E R T I O N
+#-------------------------------------------------------------------------------
+################################################################################
+create_pg_std_cell_conn_pattern \
+    std_cell_rail  \
+    -layers {met1} \
+    -rail_width 0.06
+Successfully create standard cell rail pattern std_cell_rail.
+set_pg_strategy rail_strat -core \
+    -pattern {{name: std_cell_rail} {nets: VDD VSS} }
+Successfully set PG strategy rail_strat.
+RM-info : RUNNING PNS CHARACTERIZATION FLOW because $PNS_CHARACTERIZE_FLOW == true
+[icc2-lic Tue Jun 25 17:24:41 2024] Command 'characterize_block_pg' requires licenses
+[icc2-lic Tue Jun 25 17:24:41 2024] Attempting to check-out alternate set of keys directly with queueing
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending check-out request for 'ICCompilerII-8' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:41 2024] Check-out request for 'ICCompilerII-8' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending checkout check request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Checkout check request for 'ICCompilerII-8' returned 0 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending check-out request for 'ICCompilerII-NX' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:41 2024] Check-out request for 'ICCompilerII-NX' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending checkout check request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Checkout check request for 'ICCompilerII-NX' returned 0 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Check-out of alternate set of keys directly with queueing was successful
+Automatic PG net connection through connect_pg_net is disabled.
+Characterize block PG constraints.
+Load technology.
+Updating PG strategies.
+Updating strategy core_ring.
+Updating strategy s_mesh1.
+Updating strategy rail_strat.
+Characterize top-level PG constraints.
+Characterize PG constraints for top-level design top in script ./block_pg/top_pg.tcl.
+Characterize PG constraints for top-level design vsdbabysoc in script ./block_pg/vsdbabysoc_pg.tcl.
+Create PG mapping file ./block_pg/pg_mapfile.
+[icc2-lic Tue Jun 25 17:24:41 2024] Command 'set_constraint_mapping_file' requires licenses
+[icc2-lic Tue Jun 25 17:24:41 2024] Attempting to check-out alternate set of keys directly with queueing
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending check-out request for 'ICCompilerII-8' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:41 2024] Check-out request for 'ICCompilerII-8' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending checkout check request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Checkout check request for 'ICCompilerII-8' returned 0 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending check-out request for 'ICCompilerII-NX' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:41 2024] Check-out request for 'ICCompilerII-NX' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending checkout check request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Checkout check request for 'ICCompilerII-NX' returned 0 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Check-out of alternate set of keys directly with queueing was successful
+RM-info : Running run_block_compile_pg 
+[icc2-lic Tue Jun 25 17:24:41 2024] Command 'run_block_compile_pg' requires licenses
+[icc2-lic Tue Jun 25 17:24:41 2024] Attempting to check-out alternate set of keys directly with queueing
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending check-out request for 'ICCompilerII-8' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:41 2024] Check-out request for 'ICCompilerII-8' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending checkout check request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Checkout check request for 'ICCompilerII-8' returned 0 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending check-out request for 'ICCompilerII-NX' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:41 2024] Check-out request for 'ICCompilerII-NX' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending checkout check request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Checkout check request for 'ICCompilerII-NX' returned 0 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Check-out of alternate set of keys directly with queueing was successful
+Automatic PG net connection through connect_pg_net is disabled.
+Create PG for the top-portion design.
+[icc2-lic Tue Jun 25 17:24:41 2024] Command 'compile_pg' requires licenses
+[icc2-lic Tue Jun 25 17:24:41 2024] Attempting to check-out alternate set of keys directly with queueing
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending check-out request for 'ICCompilerII-8' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:41 2024] Check-out request for 'ICCompilerII-8' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending checkout check request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Checkout check request for 'ICCompilerII-8' returned 0 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending check-out request for 'ICCompilerII-NX' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:41 2024] Check-out request for 'ICCompilerII-NX' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending checkout check request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Checkout check request for 'ICCompilerII-NX' returned 0 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Check-out of alternate set of keys directly with queueing was successful
+Sanity check for inputs.
+No strategy-level via rule is specified, the default rule will be applied.
+Automatic PG net connection through connect_pg_net is disabled.
+Updating PG strategies.
+Updating strategy core_ring.
+Loading library and design information.
+Number of Standard Cells: 2741
+Number of Hard Macros: 2
+Number of Pads: 0
+Creating rings.
+Creating via connection between strategies and existing shapes.
+Via DRC checking runtime 0.00 seconds.
+via connection runtime: 0 seconds.
+Commiting wires and vias.
+Committed 8 wires.
+Committing wires takes 0.00 seconds.
+Committed 8 vias.
+Committed 0 wires for via creation.
+Committing vias takes 0.00 seconds.
+Overall PG creation runtime: 0 seconds.
+Successfully compiled PG.
+Overall runtime: 0 seconds.
+[icc2-lic Tue Jun 25 17:24:41 2024] Command 'compile_pg' requires licenses
+[icc2-lic Tue Jun 25 17:24:41 2024] Attempting to check-out alternate set of keys directly with queueing
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending check-out request for 'ICCompilerII-8' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:41 2024] Check-out request for 'ICCompilerII-8' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending checkout check request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Checkout check request for 'ICCompilerII-8' returned 0 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending check-out request for 'ICCompilerII-NX' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:41 2024] Check-out request for 'ICCompilerII-NX' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending checkout check request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Checkout check request for 'ICCompilerII-NX' returned 0 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Check-out of alternate set of keys directly with queueing was successful
+Sanity check for inputs.
+No strategy-level via rule is specified, the default rule will be applied.
+Automatic PG net connection through connect_pg_net is disabled.
+Updating PG strategies.
+Updating strategy s_mesh1.
+Loading library and design information.
+Number of Standard Cells: 2741
+Number of Hard Macros: 2
+Number of Pads: 0
+Creating straps and vias in power plan.
+Creating wire shapes for strategies s_mesh1 .
+Creating wire shapes runtime: 0 seconds
+Blockage cutting and DRC fixing for wire shapes for strategies s_mesh1 .
+Check and fix DRC for 123 wires for strategy s_mesh1.
+Number of threads: 8
+Number of partitions: 7
+Direction of partitions: vertical
+Number of wires: 77
+Checking DRC for 77 wires:95% 100%
+Number of threads: 8
+Number of partitions: 3
+Direction of partitions: horizontal
+Number of wires: 46
+Checking DRC for 46 wires:10% 100%
+Creating 121 wires after DRC fixing.
+Wire DRC checking runtime 0.00 seconds.
+Creating via shapes for strategies s_mesh1 .
+Number of threads: 8
+Working on strategy s_mesh1.
+Number of detected intersections: 452
+Total runtime of via shapes creation: 0 seconds
+Check and fix DRC for 452 stacked vias for strategy s_mesh1.
+Number of vias: 9
+Checking DRC for 9 stacked vias:0% 10% 20% 30% 40% 55% 65% 75% 85% 100%
+9 large vertical vias are not fixed
+Number of threads: 8
+Number of partitions: 3
+Direction of partitions: horizontal
+Number of vias: 443
+Checking DRC for 443 stacked vias:10% 30% 35% 55% 60% 65% 70% 75% 80% 100%
+Runtime of via DRC checking for strategy s_mesh1: 0.00 seconds.
+Creating via connection between strategies and existing shapes.
+Check and fix DRCs for 239 stacked vias.
+Number of threads: 8
+Number of partitions: 2
+Direction of partitions: vertical
+Number of vias: 15
+Checking DRC for 15 stacked vias:10% 25% 40% 50% 65% 80% 90% 100%
+15 large vertical vias are not fixed
+0% Number of threads: 8
+Number of partitions: 4
+Direction of partitions: horizontal
+Number of vias: 224
+Checking DRC for 224 stacked vias:5% 15% 20% 25% 30% 40% 45% 50% 55% 60% 65% 70% 75% 80% 85% 90% 95% 100%
+16 regular vias are not fixed
+Via DRC checking runtime 0.00 seconds.
+via connection runtime: 0 seconds.
+Commiting wires and vias.
+Committed 121 wires.
+Committing wires takes 0.00 seconds.
+Committed 651 vias.
+Committed 0 wires for via creation.
+Committing vias takes 0.00 seconds.
+Overall PG creation runtime: 0 seconds.
+Successfully compiled PG.
+Overall runtime: 0 seconds.
+[icc2-lic Tue Jun 25 17:24:41 2024] Command 'compile_pg' requires licenses
+[icc2-lic Tue Jun 25 17:24:41 2024] Attempting to check-out alternate set of keys directly with queueing
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending check-out request for 'ICCompilerII-8' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:41 2024] Check-out request for 'ICCompilerII-8' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending checkout check request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Checkout check request for 'ICCompilerII-8' returned 0 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending check-out request for 'ICCompilerII-NX' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:41 2024] Check-out request for 'ICCompilerII-NX' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending checkout check request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Checkout check request for 'ICCompilerII-NX' returned 0 
+[icc2-lic Tue Jun 25 17:24:41 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:41 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:41 2024] Check-out of alternate set of keys directly with queueing was successful
+Sanity check for inputs.
+No strategy-level via rule is specified, the default rule will be applied.
+Automatic PG net connection through connect_pg_net is disabled.
+Updating PG strategies.
+Updating strategy rail_strat.
+Loading library and design information.
+Number of Standard Cells: 2741
+Number of Hard Macros: 2
+Number of Pads: 0
+Creating standard cell rails.
+Creating standard cell rails for strategy rail_strat.
+User specified width 0.0600 um for net VDD at layer met1 is smaller than the layer min width 0.1400, use min width instead for rail creation.
+User specified width 0.0600 um for net VSS at layer met1 is smaller than the layer min width 0.1400, use min width instead for rail creation.
+DRC checking and fixing for standard cell rail strategy rail_strat.
+Number of threads: 8
+Number of partitions: 27
+Direction of partitions: horizontal
+Number of wires: 508
+Checking DRC for 508 wires:90% 100%
+Creating 508 wires after DRC fixing.
+Wire DRC checking runtime 0.00 seconds.
+Creating via connection between strategies and existing shapes.
+Check and fix DRCs for 4949 stacked vias.
+Number of threads: 8
+Number of partitions: 27
+Direction of partitions: horizontal
+Number of vias: 4949
+Checking DRC for 4949 stacked vias:40% 65% 70% 75% 80% 85% 90% 95% 100%
+Via DRC checking runtime 1.00 seconds.
+via connection runtime: 1 seconds.
+Commiting wires and vias.
+Committed 508 wires.
+Committing wires takes 0.00 seconds.
+Committed 17854 vias.
+Committed 103 wires for via creation.
+Committing vias takes 0.00 seconds.
+Overall PG creation runtime: 1 seconds.
+Successfully compiled PG.
+Overall runtime: 1 seconds.
+PG creation runtime for top-portion design: 5 seconds.
+Successfully run distributed PG creation.
+Checking secondary net through power switch is enabled. 
+Secondary net will be checked together from primary net. They will be treated as the same net
+Primary Net : VDD    Secondary Net:
+Primary Net : VSS    Secondary Net:
+Loading cell instances...
+Number of Standard Cells: 0
+Number of Macro Cells: 2
+Number of IO Pad Cells: 0
+Number of Blocks: 0
+Loading P/G wires and vias...
+Number of VDD Wires: 420
+Number of VDD Vias: 9253
+Number of VDD Terminals: 0
+**************Verify net VDD connectivity*****************
+  Number of floating wires: 149
+  Number of floating vias: 817
+  Number of floating std cells: 0
+  Number of floating hard macros: 2
+  Number of floating I/O pads: 0
+  Number of floating terminals: 0
+  Number of floating hierarchical blocks: 0
+************************************************************
+Loading cell instances...
+Loading P/G wires and vias...
+Number of VSS Wires: 320
+Number of VSS Vias: 9260
+Number of VSS Terminals: 0
+**************Verify net VSS connectivity*****************
+  Number of floating wires: 130
+  Number of floating vias: 1013
+  Number of floating std cells: 0
+  Number of floating hard macros: 2
+  Number of floating I/O pads: 0
+  Number of floating terminals: 0
+  Number of floating hierarchical blocks: 0
+************************************************************
+Overall runtime: 0 seconds.
+Command check_pg_drc started  at Tue Jun 25 17:24:42 2024
+Command check_pg_drc finished at Tue Jun 25 17:24:43 2024
+CPU usage for check_pg_drc: 0.62 seconds ( 0.00 hours)
+Elapsed time for check_pg_drc: 0.13 seconds ( 0.00 hours)
+Total number of errors found: 271
+   263 insufficient spacings on mcon
+   8 insufficient spacings on met4
+------------
+Description of the errors can be seen in gui error set "DRC_report_by_check_pg_drc"
+------------
+Saving all libraries...
+[icc2-lic Tue Jun 25 17:24:43 2024] Command 'place_pins' requires licenses
+[icc2-lic Tue Jun 25 17:24:43 2024] Attempting to check-out alternate set of keys directly with queueing
+[icc2-lic Tue Jun 25 17:24:43 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:43 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:43 2024] Sending check-out request for 'ICCompilerII-8' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:43 2024] Check-out request for 'ICCompilerII-8' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:43 2024] Sending checkout check request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:43 2024] Checkout check request for 'ICCompilerII-8' returned 0 
+[icc2-lic Tue Jun 25 17:24:43 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:43 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:43 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:43 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:43 2024] Sending check-out request for 'ICCompilerII-NX' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:43 2024] Check-out request for 'ICCompilerII-NX' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:43 2024] Sending checkout check request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:43 2024] Checkout check request for 'ICCompilerII-NX' returned 0 
+[icc2-lic Tue Jun 25 17:24:43 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:43 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:43 2024] Check-out of alternate set of keys directly with queueing was successful
+Information: Starting 'place_pins' (FLW-8000)
+Information: Time: 2024-06-25 17:24:43 / Session: 0.01 hr / Command: 0.00 hr / Memory: 497 MB (FLW-8100)
+Load DB...
+CPU Time for load db: 00:00:00.00u 00:00:00.00s 00:00:00.00e: 
+
+Min routing layer: met1
+Max routing layer: met5
+
+
+CPU Time for Top Level Pre-Route Processing: 00:00:00.01u 00:00:00.00s 00:00:00.01e: 
+Warning: Layer li1 does not have a preferred direction, assigning to vertical. (ZRT-025)
+Cell Min-Routing-Layer = met1
+Cell Max-Routing-Layer = met5
+Turn off antenna since no rule is specified
+Information: Option route.detail.force_end_on_preferred_grid will be ignored since none of the layers have preferred grid. (ZRT-703)
+Warning: Ignore pin (cell avsdpll, pin VDD) on layer nwell. (ZRT-030)
+Warning: Ignore pin (cell avsdpll, pin VDD#2_1) on layer nwell. (ZRT-030)
+Warning: Ignore pin (cell avsdpll, pin VDD#2) on layer nwell. (ZRT-030)
+Warning: Ignore pin (cell avsdpll, pin VDD#3) on layer nwell. (ZRT-030)
+Warning: Ignore 9 top cell ports with no pins. (ZRT-027)
+
+Block Pin Constraint   Min Pin Max Pin Reserve
+                       Layer   Layer   Layer    Feedthroughs
+--------------------   ------  ------  ------   ------------
+vsdbabysoc             met1    met5    met5     Not allowed
+
+Via on layer (via4) needs more than one tracks
+Warning: Layer met4 pitch 0.920 may be too small: wire/via-down 0.615, wire/via-up 1.040. (ZRT-026)
+Transition layer name: met4(4)
+Information: When applicable Min-max layer allow_pin_connection mode will allow paths of length 5.75 outside the layer range. (ZRT-707)
+Information: When applicable Min-max layer allow_pin_connection mode will allow paths of length 5.75 outside the layer range on clock nets. (ZRT-718)
+Information: When applicable layer based tapering will taper up to 0.00 in distance from the pin. (ZRT-706)
+Warning: Master cell vsdbabysoc has duplicated redundant library pin shapes at {0.005 -2.040} {1519.595 -1.360} on layer met2. (ZRT-625)
+Warning: Master cell vsdbabysoc has duplicated redundant library pin shapes at {0.005 -2.040} {1519.595 -1.360} on layer met2. (ZRT-625)
+Warning: Master cell vsdbabysoc has duplicated redundant library pin shapes at {0.005 -2.040} {1519.595 -1.360} on layer met2. (ZRT-625)
+Warning: Master cell vsdbabysoc has duplicated redundant library pin shapes at {0.005 821.040} {1519.595 821.720} on layer met2. (ZRT-625)
+Warning: Master cell vsdbabysoc has duplicated redundant library pin shapes at {0.005 -2.040} {1519.595 -1.360} on layer met4. (ZRT-625)
+Warning: Master cell vsdbabysoc has duplicated redundant library pin shapes at {0.005 -2.040} {1519.595 -1.360} on layer met4. (ZRT-625)
+Warning: Master cell vsdbabysoc has duplicated redundant library pin shapes at {0.005 -2.040} {1519.595 -1.360} on layer met4. (ZRT-625)
+Warning: Master cell vsdbabysoc has duplicated redundant library pin shapes at {0.005 821.040} {1519.595 821.720} on layer met4. (ZRT-625)
+Note - message 'ZRT-625' limit (10) exceeded. Remainder will be suppressed.
+Generating Timing information  
+Information: The stitching and editing of coupling caps is turned OFF for design 'vsdbabysocsky130_fd_sc_hd:vsdbabysoc/init_dp.design'. (TIM-125)
+Warning: Technology layer 'li1' setting 'routing-direction' is not valid (NEX-001)
+Information: Design Average RC for design vsdbabysoc  (NEX-011)
+Information: r = 0.462650 ohm/um, via_r = 3.395492 ohm/cut, c = 0.177022 ff/um, cc = 0.000000 ff/um (X dir) (NEX-017)
+Information: r = 0.760966 ohm/um, via_r = 3.587540 ohm/cut, c = 0.151419 ff/um, cc = 0.000000 ff/um (Y dir) (NEX-017)
+Information: The RC mode used is VR for design 'vsdbabysoc'. (NEX-022)
+Information: Update timing completed net estimation for all the timing graph nets (TIM-111)
+Information: Net estimation statistics: timing graph nets = 2763, routed nets = 0, across physical hierarchy nets = 0, parasitics cached nets = 2763, delay annotated nets = 0, parasitics annotated nets = 0, multi-voltage nets = 0. (TIM-112)
+************************************************************
+Timer Settings:
+Delay Calculation Style:                   auto
+Signal Integrity Analysis:                 disabled
+Timing Window Analysis:                    disabled
+Advanced Waveform Propagation:             disabled
+Variation Type:                            fixed_derate
+Clock Reconvergence Pessimism Removal:     disabled
+Advanced Receiver Model:                   disabled
+ML Acceleration:                           off
+************************************************************
+Warning: Technology layer 'li1' setting 'routing-direction' is not valid (NEX-001)
+Design  Scenario func1::estimated_corner (Mode func1 Corner estimated_corner)
+Generating Timing information  ... Done
+Information: The net parasitics of block vsdbabysoc are cleared. (TIM-123)
+[End of Generating Timing Information] Elapsed real time: 0:00:00 
+[End of Generating Timing Information] Elapsed cpu  time: sys=0:00:00 usr=0:00:01 total=0:00:01
+Start Global Route ... 
+[Init] Elapsed real time: 0:00:00 
+[Init] Elapsed cpu  time: sys=0:00:00 usr=0:00:00 total=0:00:00
+[Init] Stage (MB): Used    0  Alloctr    0  Proc    0 
+[Init] Total (MB): Used   32  Alloctr   33  Proc 6090 
+Info: route.global.delay_based_route_rejection is 16.
+Printing options for 'route.common.*'
+
+Printing options for 'route.global.*'
+global.timing_driven                                    :        true                
+
+Begin global routing.
+Loading timing information to the router from design
+Timing information loaded to the router.
+[End of Loading Timing] Elapsed real time: 0:00:00 
+[End of Loading Timing] Elapsed cpu  time: sys=0:00:00 usr=0:00:00 total=0:00:00
+Constructing data structure ...
+Design statistics:
+Design Bounding Box (-2.72um,-2.72um,1522.32um,822.40um)
+Number of routing layers = 6
+layer li1, dir Ver, min width = 0.17um, min space = 0.17um pitch = 0.46um
+layer met1, dir Hor, min width = 0.14um, min space = 0.14um pitch = 0.34um
+layer met2, dir Ver, min width = 0.14um, min space = 0.14um pitch = 0.46um
+layer met3, dir Hor, min width = 0.3um, min space = 0.3um pitch = 0.68um
+layer met4, dir Ver, min width = 0.3um, min space = 0.3um pitch = 0.92um
+layer met5, dir Hor, min width = 1.6um, min space = 1.6um pitch = 3.4um
+Current Stage stats:
+[End of Build Tech Data] Elapsed real time: 0:00:00 
+[End of Build Tech Data] Elapsed cpu  time: sys=0:00:00 usr=0:00:00 total=0:00:00
+[End of Build Tech Data] Stage (MB): Used    1  Alloctr    1  Proc    0 
+[End of Build Tech Data] Total (MB): Used   37  Alloctr   38  Proc 6090 
+Net statistics:
+Total number of nets to route for block pin placement     = 9
+Number of interface nets to route for block pin placement = 9
+Number of single or zero port nets = 2
+Net length statistics: 
+Net Count(Ignore Fully Rted) 14, Total Half Perimeter Wire Length (HPWL) 10098 microns
+HPWL   0 ~   50 microns: Net Count        7     Total HPWL          156 microns
+HPWL  50 ~  100 microns: Net Count        0     Total HPWL            0 microns
+HPWL 100 ~  200 microns: Net Count        0     Total HPWL            0 microns
+HPWL 200 ~  300 microns: Net Count        0     Total HPWL            0 microns
+HPWL 300 ~  400 microns: Net Count        0     Total HPWL            0 microns
+HPWL 400 ~  500 microns: Net Count        0     Total HPWL            0 microns
+HPWL 500 ~  600 microns: Net Count        0     Total HPWL            0 microns
+HPWL 600 ~  700 microns: Net Count        0     Total HPWL            0 microns
+HPWL 700 ~  800 microns: Net Count        0     Total HPWL            0 microns
+HPWL 800 ~  900 microns: Net Count        1     Total HPWL          820 microns
+HPWL 900 ~ 1000 microns: Net Count        0     Total HPWL            0 microns
+HPWL     > 1000 microns: Net Count        6     Total HPWL         9122 microns
+Current Stage stats:
+[End of Build All Nets] Elapsed real time: 0:00:00 
+[End of Build All Nets] Elapsed cpu  time: sys=0:00:00 usr=0:00:00 total=0:00:00
+[End of Build All Nets] Stage (MB): Used    0  Alloctr    0  Proc   16 
+[End of Build All Nets] Total (MB): Used   37  Alloctr   38  Proc 6106 
+Number of partitions: 1 (1 x 1)
+Size of partitions: 72 gCells x 39 gCells
+Average gCell capacity  22.82    on layer (1)    li1
+Average gCell capacity  26.92    on layer (2)    met1
+Average gCell capacity  18.72    on layer (3)    met2
+Average gCell capacity  13.18    on layer (4)    met3
+Average gCell capacity  2.75     on layer (5)    met4
+Average gCell capacity  0.00     on layer (6)    met5
+Average number of tracks per gCell 46.06         on layer (1)    li1
+Average number of tracks per gCell 62.26         on layer (2)    met1
+Average number of tracks per gCell 46.06         on layer (3)    met2
+Average number of tracks per gCell 31.13         on layer (4)    met3
+Average number of tracks per gCell 23.04         on layer (5)    met4
+Average number of tracks per gCell 6.23  on layer (6)    met5
+Number of gCells = 16848
+Current Stage stats:
+[End of Build Congestion Map] Elapsed real time: 0:00:00 
+[End of Build Congestion Map] Elapsed cpu  time: sys=0:00:00 usr=0:00:00 total=0:00:00
+[End of Build Congestion Map] Stage (MB): Used    0  Alloctr    0  Proc    0 
+[End of Build Congestion Map] Total (MB): Used   38  Alloctr   39  Proc 6106 
+Number of partitions: 1 (1 x 1)
+Size of partitions: 72 gCells x 39 gCells
+Current Stage stats:
+[End of Add Nets Demand] Elapsed real time: 0:00:00 
+[End of Add Nets Demand] Elapsed cpu  time: sys=0:00:00 usr=0:00:00 total=0:00:00
+[End of Add Nets Demand] Stage (MB): Used    0  Alloctr    0  Proc    0 
+[End of Add Nets Demand] Total (MB): Used   38  Alloctr   39  Proc 6106 
+Number of user frozen nets = 0
+Information: RC layer preference is turned on for this design. (ZRT-613)
+Total stats:
+[End of Build Data] Elapsed real time: 0:00:00 
+[End of Build Data] Elapsed cpu  time: sys=0:00:00 usr=0:00:00 total=0:00:00
+[End of Build Data] Stage (MB): Used    2  Alloctr    2  Proc   16 
+[End of Build Data] Total (MB): Used   38  Alloctr   39  Proc 6106 
+Number of partitions: 1 (1 x 1)
+Size of partitions: 72 gCells x 39 gCells
+Current Stage stats:
+[End of Blocked Pin Detection] Elapsed real time: 0:00:00 
+[End of Blocked Pin Detection] Elapsed cpu  time: sys=0:00:00 usr=0:00:00 total=0:00:00
+[End of Blocked Pin Detection] Stage (MB): Used   12  Alloctr   12  Proc    0 
+[End of Blocked Pin Detection] Total (MB): Used   50  Alloctr   51  Proc 6106 
+Information: Using 8 threads for routing. (ZRT-444)
+Information: Buffer distance is estimated to be ~4656.0000um (213 gCells)
+
+Start GR phase 0
+Number of partitions: 1 (1 x 1)
+Size of partitions: 72 gCells x 39 gCells
+[rtTop] Elapsed real time: 0:00:00 
+[rtTop] Elapsed cpu  time: sys=0:00:00 usr=0:00:00 total=0:00:00
+Current Stage stats:
+[End of Initial Routing] Elapsed real time: 0:00:00 
+[End of Initial Routing] Elapsed cpu  time: sys=0:00:00 usr=0:00:00 total=0:00:00
+[End of Initial Routing] Stage (MB): Used    0  Alloctr    0  Proc    0 
+[End of Initial Routing] Total (MB): Used   50  Alloctr   51  Proc 6106 
+Initial. Routing result:
+Initial. Both Dirs: Dmd-Cap  =     0 Max = 0 GRCs =     0 (0.00%)
+Initial. H routing: Dmd-Cap  =     0 Max = 0 (GRCs =  0) GRCs =     0 (0.00%)
+Initial. V routing: Dmd-Cap  =     0 Max = 0 (GRCs =  0) GRCs =     0 (0.00%)
+Initial. Both Dirs: Overflow =     0 Max = 0 GRCs =     0 (0.00%)
+Initial. H routing: Overflow =     0 Max = 0 (GRCs =  0) GRCs =     0 (0.00%)
+Initial. V routing: Overflow =     0 Max = 0 (GRCs =  0) GRCs =     0 (0.00%)
+Initial. li1        Overflow =     0 Max = 0 (GRCs =  0) GRCs =     0 (0.00%)
+Initial. met1       Overflow =     0 Max = 0 (GRCs =  0) GRCs =     0 (0.00%)
+Initial. met2       Overflow =     0 Max = 0 (GRCs =  0) GRCs =     0 (0.00%)
+Initial. met3       Overflow =     0 Max = 0 (GRCs =  0) GRCs =     0 (0.00%)
+Initial. met4       Overflow =     0 Max = 0 (GRCs =  0) GRCs =     0 (0.00%)
+Initial. met5       Overflow =     0 Max = 0 (GRCs =  0) GRCs =     0 (0.00%)
+
+
+Density distribution:
+Layer    0.0  0.1  0.2  0.3  0.4  0.5  0.6  0.7  0.8  0.9  1.0  1.1  1.2  > 1.2 
+li1      0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+met1     0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+met2     0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+met3     0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+met4     0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+met5     0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+Total    0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+
+
+Initial. Total Wire Length = 615.55
+Initial. Layer li1 wire length = 0.00
+Initial. Layer met1 wire length = 0.00
+Initial. Layer met2 wire length = 443.50
+Initial. Layer met3 wire length = 172.05
+Initial. Layer met4 wire length = 0.00
+Initial. Layer met5 wire length = 0.00
+Initial. Total Number of Contacts = 5
+Initial. Via L1M1_PR count = 2
+Initial. Via M1M2_PR count = 2
+Initial. Via M2M3_PR count = 0
+Initial. Via M3M4_PR count = 1
+Initial. Via M4M5_PR count = 0
+Initial. completed.
+[End of Whole Chip Routing] Elapsed real time: 0:00:00 
+[End of Whole Chip Routing] Elapsed cpu  time: sys=0:00:00 usr=0:00:00 total=0:00:00
+[End of Whole Chip Routing] Stage (MB): Used   14  Alloctr   14  Proc   16 
+[End of Whole Chip Routing] Total (MB): Used   50  Alloctr   51  Proc 6106 
+[End of Global Routing] Elapsed real time: 0:00:00 
+[End of Global Routing] Elapsed cpu  time: sys=0:00:00 usr=0:00:00 total=0:00:00
+[End of Global Routing] Stage (MB): Used   13  Alloctr   13  Proc   16 
+[End of Global Routing] Total (MB): Used   50  Alloctr   50  Proc 6106 
+[End of dbOut] Elapsed real time: 0:00:00 
+[End of dbOut] Elapsed cpu  time: sys=0:00:00 usr=0:00:00 total=0:00:00
+[End of dbOut] Stage (MB): Used    0  Alloctr    0  Proc    0 
+[End of dbOut] Total (MB): Used   41  Alloctr   42  Proc 6106 
+CPU Time for Global Route: 00:00:02.04u 00:00:00.05s 00:00:00.77e: 
+Number of block ports: 7
+Number of block pin locations assigned from router: 7
+CPU Time for Pin Preparation: 00:00:00.00u 00:00:00.00s 00:00:00.00e: 
+Number of PG ports on blocks: 0
+Number of pins created: 7
+CPU Time for Pin Creation: 00:00:00.00u 00:00:00.00s 00:00:00.00e: 
+Total Pin Placement CPU Time: 00:00:02.06u 00:00:00.05s 00:00:00.79e: 
+Information: Ending 'place_pins' (FLW-8001)
+Information: Time: 2024-06-25 17:24:44 / Session: 0.01 hr / Command: 0.00 hr / Memory: 497 MB (FLW-8100)
+Writing out physical pin constraints based on existing pins ... done
+129 total number of pre-routes loaded
+212 total number of vias loaded
+3 total number of edges loaded
+------------------------ Start Of Pin Layer Check -------------------------
+------------------------- End Of Pin Layer Check --------------------------
+
+----------------------- Start Of Missing Pin Check ------------------------
+------------------------ End Of Missing Pin Check -------------------------
+
+----------------------- Start Of Pin Spacing Check ------------------------
+------------------------ End Of Pin Spacing Check -------------------------
+
+-------------------- Start Of Technology Spacing Check --------------------
+--------------------- End Of Technology Spacing Check ---------------------
+
+------------------------- Start Of Pin Side Check -------------------------
+-------------------------- End Of Pin Side Check --------------------------
+
+----------------------- Start Of Pin Stacking Check -----------------------
+------------------------ End Of Pin Stacking Check ------------------------
+
+------------------------ Start Of Pin Short Check -------------------------
+------------------------- End Of Pin Short Check --------------------------
+
+------------------- Start Of Pin Pre-Route Short Check --------------------
+-------------------- End Of Pin Pre-Route Short Check ---------------------
+
+No violation has been found
+***Summary***
+---------------------------------------------------------------------------
+Type of Violation        |                                            Count
+-------------------------+-------------------------------------------------
+Layer Violation          |                                               0
+Missing Pins             |                                               0
+Pin PreRoute             |                                               0
+Pin Short                |                                               0
+Pin Side                 |                                               0
+Pin Spacing              |                                               0
+Stacking Violation       |                                               0
+Technology Spacing       |                                               0
+-------------------------+-------------------------------------------------
+Total Violations         |                                               0
+---------------------------------------------------------------------------
+Saving all libraries...
+[icc2-lic Tue Jun 25 17:24:44 2024] Command 'estimate_timing' requires licenses
+[icc2-lic Tue Jun 25 17:24:44 2024] Attempting to check-out alternate set of keys directly with queueing
+[icc2-lic Tue Jun 25 17:24:44 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:44 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:44 2024] Sending check-out request for 'ICCompilerII-8' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:44 2024] Check-out request for 'ICCompilerII-8' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:44 2024] Sending checkout check request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:44 2024] Checkout check request for 'ICCompilerII-8' returned 0 
+[icc2-lic Tue Jun 25 17:24:44 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jun 25 17:24:44 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jun 25 17:24:44 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:44 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:44 2024] Sending check-out request for 'ICCompilerII-NX' (1) with wait option
+[icc2-lic Tue Jun 25 17:24:44 2024] Check-out request for 'ICCompilerII-NX' with wait option succeeded
+[icc2-lic Tue Jun 25 17:24:44 2024] Sending checkout check request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:44 2024] Checkout check request for 'ICCompilerII-NX' returned 0 
+[icc2-lic Tue Jun 25 17:24:44 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jun 25 17:24:44 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jun 25 17:24:44 2024] Check-out of alternate set of keys directly with queueing was successful
+Information: Starting 'estimate_timing' (FLW-8000)
+Information: Time: 2024-06-25 17:24:44 / Session: 0.01 hr / Command: 0.00 hr / Memory: 497 MB (FLW-8100)
+Information: The stitching and editing of coupling caps is turned OFF for design 'vsdbabysocsky130_fd_sc_hd:vsdbabysoc/init_dp.design'. (TIM-125)
+Warning: Technology layer 'li1' setting 'routing-direction' is not valid (NEX-001)
+Information: Design Average RC for design vsdbabysoc  (NEX-011)
+Information: r = 0.467100 ohm/um, via_r = 3.413510 ohm/cut, c = 0.176186 ff/um, cc = 0.000000 ff/um (X dir) (NEX-017)
+Information: r = 0.763246 ohm/um, via_r = 3.593891 ohm/cut, c = 0.150021 ff/um, cc = 0.000000 ff/um (Y dir) (NEX-017)
+Information: The RC mode used is VR for design 'vsdbabysoc'. (NEX-022)
+Information: Update timing completed net estimation for all the timing graph nets (TIM-111)
+Information: Net estimation statistics: timing graph nets = 2763, routed nets = 0, across physical hierarchy nets = 0, parasitics cached nets = 2763, delay annotated nets = 0, parasitics annotated nets = 0, multi-voltage nets = 0. (TIM-112)
+Information: Freeing timing information from routing. (ZRT-574)
+Error: Cannot find buffer or inverter with valid delay for all corners.
+Error: Something is wrong and optimization cannot start (APS-020)
+Information: Elapsed time for estimate_timing excluding pending time: 00:00:00.33. (DPUI-902)
+Information: CPU time for estimate_timing : 00:00:01.64. (DPUI-903)
+Information: Peak memory usage for estimate_timing : 497 MB. (DPUI-904)
+Information: Ending 'estimate_timing' (FLW-8001)
+Information: Time: 2024-06-25 17:24:44 / Session: 0.01 hr / Command: 0.00 hr / Memory: 497 MB (FLW-8100)
+Information: script '/home/subhasis/VSDBabySoC/scripts/PD_flow/top.tcl'
+                stopped at line 236 due to error. (CMD-081)
+Extended error info:
+
+    while executing
+"estimate_timing"
+    (file "/home/subhasis/VSDBabySoC/scripts/PD_flow/top.tcl" line 236)
+ -- End Extended Error Info
+icc2_shell> list_blocks
+Lib vsdbabysocsky130_fd_sc_hd /home/subhasis/VSDBabySoC/scripts/PD_flow/work/vsdbabysocsky130_fd_sc_hd tech current
+  -   0 vsdbabysoc/create_power.design Jun-25-17:24
+  +>  0 vsdbabysoc/init_dp.design Jun-25-17:24 current
+  -   0 vsdbabysoc/place_io.design Jun-25-17:24
+  -   0 vsdbabysoc/place_pins.design Jun-25-17:24
+  -   0 vsdbabysoc/placement.design Jun-25-17:24
+  -   0 vsdbabysoc/pre_shaping.design Jun-25-17:24
+  -   0 floorplan_in_progress.design Jun-25-17:24
+7
+icc2_shell> open_block vsdbabysoc/placement.design
+Opening block 'vsdbabysocsky130_fd_sc_hd:vsdbabysoc/placement.design' in edit mode
+{vsdbabysocsky130_fd_sc_hd:vsdbabysoc/placement.design}
+icc2_shell> start_gui
+icc2_shell> link_block
+Using libraries: vsdbabysocsky130_fd_sc_hd EXPLORE_macros EXPLORE_physical_only
+Visiting block vsdbabysocsky130_fd_sc_hd:vsdbabysoc/placement.design
+Design 'vsdbabysoc' was successfully linked.
+1
+icc2_shell> close_block
+Closing block 'vsdbabysocsky130_fd_sc_hd:vsdbabysoc/placement.design'
+1
+icc2_shell> open_block vsdbabysoc/create_power.design
+Opening block 'vsdbabysocsky130_fd_sc_hd:vsdbabysoc/create_power.design' in edit mode
+Warning: Clean all the undo data since the top design has changed. (PGR-599)
+{vsdbabysocsky130_fd_sc_hd:vsdbabysoc/create_power.design}
+icc2_shell> link_block
+Using libraries: vsdbabysocsky130_fd_sc_hd EXPLORE_macros EXPLORE_physical_only
+Visiting block vsdbabysocsky130_fd_sc_hd:vsdbabysoc/create_power.design
+Design 'vsdbabysoc' was successfully linked.
+1
+icc2_shell> exit
+Maximum memory usage for this session: 540.23 MB
+Maximum memory usage for this session including child processes: 540.23 MB
+CPU usage for this session:    102 seconds (  0.03 hours)
+Elapsed time for this session:    906 seconds (  0.25 hours)
+Thank you for using IC Compiler II.
+

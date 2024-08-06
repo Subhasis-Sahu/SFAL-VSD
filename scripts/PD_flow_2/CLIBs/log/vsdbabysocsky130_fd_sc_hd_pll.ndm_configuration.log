@@ -1,0 +1,125 @@
+ 
+                              Library Manager (TM)
+
+             Version T-2022.03-SP5 for linux64 - Nov 01, 2022 -SLE
+
+                    Copyright (c) 1988 - 2022 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+
+set search_path {/home/subhasis/VSDBabySoC/src/lib/ .}
+/home/subhasis/VSDBabySoC/src/lib/ .
+setenv RUN_RESULT /tmp/.tARL10446/_rrf6ndwb
+/tmp/.tARL10446/_rrf6ndwb
+set_current_mismatch_config auto_fix
+1
+set_app_options -name lib.workspace.build_script -value CLIBs/.scripts/pll.tcl
+lib.workspace.build_script CLIBs/.scripts/pll.tcl
+#suppress_messages
+source -echo -verbose CLIBs/.scripts/pll.tcl
+set NDM_LIBS {}
+set FRAME_LIBS {}
+set LEF_FILES {/home/subhasis/VSDBabySoC/src/lef/pll.lef}
+/home/subhasis/VSDBabySoC/src/lef/pll.lef
+set DB_FILES {/home/subhasis/VSDBabySoC/src/lib/pll.db}
+/home/subhasis/VSDBabySoC/src/lib/pll.db
+set TECH_FILE "/home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/milkywayORtechFiles/sky130_fd_sc_hd.tf"
+/home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/milkywayORtechFiles/sky130_fd_sc_hd.tf
+set_app_options -name lib.workspace.create_cached_lib -value true
+lib.workspace.create_cached_lib true
+#suppress_messages
+set_app_options -name lib.workspace.allow_read_aggregate_lib -value true
+lib.workspace.allow_read_aggregate_lib true
+create_workspace pll -technology $TECH_FILE -scale_factor 10000
+Warning: sky130_fd_sc_hd.tf line 26, unsupported syntax 'fatWireViaKeepoutMode' in 'Technology' section. It will be ignored. (TECH-002)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 846) (TECH-026)
+Warning: Layer 'via4/met4' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 846) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 854) (TECH-026)
+Warning: Layer 'via4/met5' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 854) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 862) (TECH-026)
+Warning: Layer 'via3/met3' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 862) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 870) (TECH-026)
+Warning: Layer 'via3/met4' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 870) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 878) (TECH-026)
+Warning: Layer 'via2/met2' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 878) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 886) (TECH-026)
+Warning: Layer 'via2/met3' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 886) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 894) (TECH-026)
+Warning: Layer 'via/met1' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 894) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 902) (TECH-026)
+Warning: Layer 'via/met2' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 902) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 910) (TECH-026)
+Warning: Layer 'mcon/li1' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 910) (TECH-026)
+Warning: Section DesignRule '' is missing the attribute 'stackable'. (sky130_fd_sc_hd.tf line 918) (TECH-026)
+Warning: Layer 'mcon/met1' is missing the attribute 'maxStackLevel'. (sky130_fd_sc_hd.tf line 918) (TECH-026)
+Warning: DesignRule is defined with non-consecutive layers 'via4' and 'met4'. (sky130_fd_sc_hd.tf line 851) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via4' and 'met5'. (sky130_fd_sc_hd.tf line 859) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via3' and 'met3'. (sky130_fd_sc_hd.tf line 867) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via3' and 'met4'. (sky130_fd_sc_hd.tf line 875) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via2' and 'met2'. (sky130_fd_sc_hd.tf line 883) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via2' and 'met3'. (sky130_fd_sc_hd.tf line 891) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via' and 'met1'. (sky130_fd_sc_hd.tf line 899) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'via' and 'met2'. (sky130_fd_sc_hd.tf line 907) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'mcon' and 'li1'. (sky130_fd_sc_hd.tf line 915) (TECH-034)
+Warning: DesignRule is defined with non-consecutive layers 'mcon' and 'met1'. (sky130_fd_sc_hd.tf line 923) (TECH-034)
+Information: Loading technology file '/home/subhasis/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/milkywayORtechFiles/sky130_fd_sc_hd.tf' (FILE-007)
+... created workspace pll
+read_lef $LEF_FILES
+Information: The default value of lib.workspace.library_developer_mode will be 'true' in future release. (LMUI-054)
+Information: Loading LEF file '/home/subhasis/VSDBabySoC/src/lef/pll.lef' (FILE-007)
+Information: Read LEF into a new library 'pll'. (LEFR-022)
+Warning: Line 5, 'SYMMETRY' is not defined for macro 'pfd_lay' , only 'N' rotation is allowed. (LEFR-037)
+Warning: Line 750, 'SYMMETRY' is not defined for macro 'cp' , only 'N' rotation is allowed. (LEFR-037)
+Warning: Line 5730, 'SYMMETRY' is not defined for macro 'pll' , only 'N' rotation is allowed. (LEFR-037)
+{pll}
+read_db $DB_FILES
+Information: Loading db file '/home/subhasis/VSDBabySoC/src/lib/pll.db' (FILE-007)
+Warning: DB/Liberty file /home/subhasis/VSDBabySoC/src/lib/pll.db has invalid nominal voltage 1.2. (LM-075)
+{pll}
+process_workspaces -check_options {-allow_missing} -force -directory CLIBs -output pll.ndm
+Checking libraries...
+Information: Only one logical library loaded - internal checks only (LM-005)
+Using pll as the base library.
+Warning: Mismatched PG pins between the logic library and LEF for block pll/pll:  - Extra DB/power  :  VPWR - Extra DB/ground :  VGND. (LM-033)
+Information: Deriving related power/ground pin for cell pll. (LM-175)
+Error: Port f_clk_in missing on pll/pll/design (NDM-031)
+Error: Port vctrl missing on pll/pll/design (NDM-031)
+Error: Port down missing on pll/pll/design (NDM-031)
+Error: Port f_vco missing on pll/pll/design (NDM-031)
+Error: Port up missing on pll/pll/design (NDM-031)
+Warning:  Missing physical library port, create placeholder physical library port f_clk_in for library cell pll. (LM-112)
+Warning:  Missing physical library port, create placeholder physical library port vctrl for library cell pll. (LM-112)
+Warning:  Missing physical library port, create placeholder physical library port down for library cell pll. (LM-112)
+Warning:  Missing physical library port, create placeholder physical library port f_vco for library cell pll. (LM-112)
+Warning:  Missing physical library port, create placeholder physical library port up for library cell pll. (LM-112)
+Information: Combined 1 physical design:1 with a design view (1 had ports reordered); (LM-034)
+Information: Skipped 2 physical designs (LM-052)
+... creating frames for pll
+Information: Block pll.frame, the feature of blocking core area is set on specific layers. New zero-spacing routing blockages and RC metal are added on layers: li1 met1 met2 met3 met4 nwell pwell. (FRAM-045)
+Information: Block pll.frame, the feature of blockage trimming by pin is set to 'touch' on specific layers. All metal shapes and routing blockages touch pins in design view are trimmed on layers: li1 met1 met2 met3 met4 met5 fieldpoly diff nwell pwell. (FRAM-046)
+... created 1 frames
+
+Workspace check succeeded!
+... wrote CLIBs/pll.ndm
+... removing library 'pll'
+... removing library 'pll'
+... lib workspace removed!
+
+Warning: EMS database "check_workspace.ems" already exists, over-writing it. (EMS-040)
+Maximum memory usage for this session: 103.17 MB
+CPU usage for this session:      3 seconds (  0.00 hours)
+Elapsed time for this session:      7 seconds (  0.00 hours)
+Thank you for using Library Manager.
+

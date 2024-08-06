@@ -1,0 +1,105 @@
+[icc2-lic Tue Jul  9 14:49:52 2024] Command 'report_timing' requires licenses
+[icc2-lic Tue Jul  9 14:49:52 2024] Attempting to check-out alternate set of keys directly with queueing
+[icc2-lic Tue Jul  9 14:49:52 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jul  9 14:49:52 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jul  9 14:49:52 2024] Sending check-out request for 'ICCompilerII-8' (1) with wait option
+[icc2-lic Tue Jul  9 14:49:52 2024] Check-out request for 'ICCompilerII-8' with wait option succeeded
+[icc2-lic Tue Jul  9 14:49:52 2024] Sending checkout check request for 'ICCompilerII-8' 
+[icc2-lic Tue Jul  9 14:49:52 2024] Checkout check request for 'ICCompilerII-8' returned 0 
+[icc2-lic Tue Jul  9 14:49:52 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jul  9 14:49:52 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jul  9 14:49:52 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jul  9 14:49:52 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jul  9 14:49:52 2024] Sending check-out request for 'ICCompilerII-NX' (1) with wait option
+[icc2-lic Tue Jul  9 14:49:52 2024] Check-out request for 'ICCompilerII-NX' with wait option succeeded
+[icc2-lic Tue Jul  9 14:49:52 2024] Sending checkout check request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jul  9 14:49:52 2024] Checkout check request for 'ICCompilerII-NX' returned 0 
+[icc2-lic Tue Jul  9 14:49:52 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jul  9 14:49:52 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jul  9 14:49:52 2024] Check-out of alternate set of keys directly with queueing was successful
+****************************************
+Report : timing
+        -path_type full
+        -delay_type max
+        -max_paths 1
+        -report_by design
+Design : vsdbabysoc
+Version: T-2022.03-SP5
+Date   : Tue Jul  9 14:49:52 2024
+****************************************
+
+  Startpoint: core/CPU_is_addi_a3_reg (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: core/CPU_Xreg_value_a4_reg[25][31] (rising edge-triggered flip-flop clocked by clk)
+  Mode: func1
+  Corner: estimated_corner
+  Scenario: func1::estimated_corner
+  Path Group: clk
+  Path Type: max
+
+  Point                                            Incr      Path       Delta Incr     Analysis
+  ----------------------------------------------------------------------------------------------------
+  clock clk (rise edge)                            0.00      0.00
+  clock network delay (ideal)                      3.00      3.00
+
+  core/CPU_is_addi_a3_reg/CLK (sky130_fd_sc_hd__dfxtp_1)
+                                                   0.00      3.00 r      0.00
+  core/CPU_is_addi_a3_reg/Q (sky130_fd_sc_hd__dfxtp_1)
+                                                   0.29      3.29 f      0.00        Size: None
+  core/U474/Y (sky130_fd_sc_hd__nor2_1)            0.32      3.61 r      0.18        Size: None
+  core/U476/Y (sky130_fd_sc_hd__nand2_1)           0.26      3.87 f      0.15        Size: None
+  core/U51/Y (sky130_fd_sc_hd__nand2_2)            0.21 e    4.08 r     -0.26        Size: sky130_fd_sc_hd__nand2_8
+  core/U50/X (sky130_fd_sc_hd__and2_0)             0.18 e    4.26 r     -0.06        Size: sky130_fd_sc_hd__and2_4
+  core/U572/X (sky130_fd_sc_hd__xor2_1)            0.20 e    4.46 f      0.12        Size: sky130_fd_sc_hd__xor2_4
+  core/U48/X (sky130_fd_sc_hd__or2_0)              0.28 e    4.75 f     -0.01        Size: sky130_fd_sc_hd__or2_4
+  core/U574/Y (sky130_fd_sc_hd__a21oi_1)           0.21 e    4.96 r     -0.05        Size: sky130_fd_sc_hd__a21oi_4
+  core/U576/Y (sky130_fd_sc_hd__o21ai_1)           0.07 e    5.03 f     -0.07        Size: sky130_fd_sc_hd__o21ai_4
+  core/U581/Y (sky130_fd_sc_hd__a21oi_1)           0.19 e    5.22 r     -0.06        Size: sky130_fd_sc_hd__a21oi_4
+  core/U583/Y (sky130_fd_sc_hd__o21ai_1)           0.06 e    5.28 f     -0.18        Size: sky130_fd_sc_hd__o21ai_4
+  core/U587/Y (sky130_fd_sc_hd__a21oi_1)           0.18 e    5.46 r     -0.10        Size: sky130_fd_sc_hd__a21oi_4
+  core/U589/Y (sky130_fd_sc_hd__o21ai_1)           0.07 e    5.53 f     -0.06        Size: sky130_fd_sc_hd__o21ai_4
+  core/U344/Y (sky130_fd_sc_hd__a21oi_1)           0.18 e    5.71 r     -0.04        Size: sky130_fd_sc_hd__a21oi_4
+  core/U213/Y (sky130_fd_sc_hd__o21ai_1)           0.08 e    5.79 f     -0.06        Size: sky130_fd_sc_hd__o21ai_4
+  core/U343/Y (sky130_fd_sc_hd__a21oi_1)           0.19 e    5.98 r     -0.07        Size: sky130_fd_sc_hd__a21oi_4
+  core/U210/Y (sky130_fd_sc_hd__o21ai_1)           0.07 e    6.05 f     -0.07        Size: sky130_fd_sc_hd__o21ai_4
+  core/U342/Y (sky130_fd_sc_hd__a21oi_1)           0.19 e    6.24 r     -0.06        Size: sky130_fd_sc_hd__a21oi_4
+  core/U209/Y (sky130_fd_sc_hd__o21ai_1)           0.07 e    6.31 f     -0.06        Size: sky130_fd_sc_hd__o21ai_4
+  core/U341/Y (sky130_fd_sc_hd__a21oi_1)           0.19 e    6.50 r     -0.06        Size: sky130_fd_sc_hd__a21oi_4
+  core/U215/Y (sky130_fd_sc_hd__o21ai_1)           0.06 e    6.56 f     -0.07        Size: sky130_fd_sc_hd__o21ai_4
+  core/U96/X (sky130_fd_sc_hd__a21o_1)             0.18 e    6.74 f     -0.00        Size: None
+  core/U942/COUT (sky130_fd_sc_hd__fa_1)           0.41      7.15 f      0.00        Size: None
+  core/U94/X (sky130_fd_sc_hd__a21o_1)             0.18 e    7.34 f     -0.01        Size: None
+  core/U905/COUT (sky130_fd_sc_hd__fa_1)           0.38      7.71 f      0.00        Size: None
+  core/U887/COUT (sky130_fd_sc_hd__fa_1)           0.40      8.11 f     -0.00        Size: None
+  core/U1370/COUT (sky130_fd_sc_hd__fa_1)          0.40      8.51 f     -0.00        Size: None
+  core/U36/COUT (sky130_fd_sc_hd__fa_2)            0.37      8.88 f     -0.00        Size: None
+  core/U87/Y (sky130_fd_sc_hd__clkinv_1)           0.07      8.95 r      0.01        Size: None
+  core/U613/Y (sky130_fd_sc_hd__o21ai_1)           0.06 e    9.01 f     -0.01        Size: sky130_fd_sc_hd__o21ai_2
+  core/U352/COUT (sky130_fd_sc_hd__fa_1)           0.27 e    9.28 f     -0.11        Size: sky130_fd_sc_hd__fah_1
+  core/U348/COUT (sky130_fd_sc_hd__fa_1)           0.40      9.68 f      0.00        Size: None
+  core/U35/COUT (sky130_fd_sc_hd__fa_1)            0.39     10.07 f     -0.00        Size: None
+  core/U33/COUT (sky130_fd_sc_hd__fa_1)            0.42     10.49 f     -0.00        Size: None
+  core/U81/X (sky130_fd_sc_hd__a21o_1)             0.18 e   10.67 f     -0.01        Size: None
+  core/U347/COUT (sky130_fd_sc_hd__fa_1)           0.38     11.05 f      0.00        Size: None
+  core/U351/COUT (sky130_fd_sc_hd__fa_1)           0.39     11.43 f     -0.00        Size: None
+  core/U617/X (sky130_fd_sc_hd__xor2_1)            0.60     12.03 r      0.26        Size: None
+  core/U618/Y (sky130_fd_sc_hd__nand2_2)           0.13 e   12.16 f     -0.17        Size: sky130_fd_sc_hd__nand2_8
+  core/U659/Y (sky130_fd_sc_hd__o22ai_1)           0.11 e   12.28 r     -0.14        Size: sky130_fd_sc_hd__o22ai_2
+  core/CPU_Xreg_value_a4_reg[25][31]/D (sky130_fd_sc_hd__dfxtp_1)
+                                                   0.00 e   12.28 r      0.00        Buff: Short net
+  data arrival time                                         12.28       -1.06        Delta arrival
+
+  clock clk (rise edge)                           10.00     10.00
+  clock network delay (ideal)                      3.00     13.00
+  core/CPU_Xreg_value_a4_reg[25][31]/CLK (sky130_fd_sc_hd__dfxtp_1)
+                                                   0.00     13.00 r      0.00
+  clock uncertainty                               -0.50     12.50
+  library setup time                              -0.07     12.43
+  data required time                                        12.43
+  ----------------------------------------------------------------------------------------------------
+  data required time                                        12.43
+  data arrival time                                        -12.28
+  ----------------------------------------------------------------------------------------------------
+  slack (MET)                                                0.15
+
+
+1

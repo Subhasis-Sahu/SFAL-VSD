@@ -1,0 +1,22 @@
+****************************************
+ Report : check_design
+ Options: { dp_pre_floorplan }
+ Design : vsdbabysoc
+ Version: T-2022.03-SP5
+ Date   : Tue Jun 25 17:04:38 2024
+****************************************
+
+Running atomic-check 'dp_pre_floorplan'
+Start checking preparation for floorplan ...
+End checking preparation for floorplan.
+
+1
+
+  *** EMS Message summary ***
+  Total 0 EMS messages : 0 errors, 0 warnings, 0 info.
+  ----------------------------------------------------------------------------------------------------
+
+  *** Non-EMS message summary *** 
+  ----------------------------------------------------------------------------------------------------
+  Total 0 non-EMS messages : 0 errors, 0 warnings, 0 info.
+  ----------------------------------------------------------------------------------------------------

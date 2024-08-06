@@ -1,0 +1,53 @@
+[icc2-lic Tue Jul  9 14:49:47 2024] Command 'report_placement' requires licenses
+[icc2-lic Tue Jul  9 14:49:47 2024] Attempting to check-out alternate set of keys directly with queueing
+[icc2-lic Tue Jul  9 14:49:47 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jul  9 14:49:47 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jul  9 14:49:47 2024] Sending check-out request for 'ICCompilerII-8' (1) with wait option
+[icc2-lic Tue Jul  9 14:49:47 2024] Check-out request for 'ICCompilerII-8' with wait option succeeded
+[icc2-lic Tue Jul  9 14:49:47 2024] Sending checkout check request for 'ICCompilerII-8' 
+[icc2-lic Tue Jul  9 14:49:47 2024] Checkout check request for 'ICCompilerII-8' returned 0 
+[icc2-lic Tue Jul  9 14:49:47 2024] Sending count request for 'ICCompilerII-8' 
+[icc2-lic Tue Jul  9 14:49:47 2024] Count request for 'ICCompilerII-8' returned 1 
+[icc2-lic Tue Jul  9 14:49:47 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jul  9 14:49:47 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jul  9 14:49:47 2024] Sending check-out request for 'ICCompilerII-NX' (1) with wait option
+[icc2-lic Tue Jul  9 14:49:47 2024] Check-out request for 'ICCompilerII-NX' with wait option succeeded
+[icc2-lic Tue Jul  9 14:49:47 2024] Sending checkout check request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jul  9 14:49:47 2024] Checkout check request for 'ICCompilerII-NX' returned 0 
+[icc2-lic Tue Jul  9 14:49:47 2024] Sending count request for 'ICCompilerII-NX' 
+[icc2-lic Tue Jul  9 14:49:47 2024] Count request for 'ICCompilerII-NX' returned 1 
+[icc2-lic Tue Jul  9 14:49:47 2024] Check-out of alternate set of keys directly with queueing was successful
+****************************************
+Report : report_placement
+Design : vsdbabysoc
+Version: T-2022.03-SP5
+Date   : Tue Jul  9 14:49:47 2024
+****************************************
+  ==================
+  Note: Including violations of fixed cells or between fixed pairs of cells. 
+        To ignore violations of / between fixed cells, enable -ignore_fixed. 
+  ==================
+
+  Wire length report (all)
+  ==================
+  wire length in design vsdbabysoc/init_dp: 79005.026 microns.
+  wire length in design vsdbabysoc/init_dp (see through blk pins): 79005.026 microns.
+
+  Physical hierarchy violations report
+  ====================================
+  Violations in design vsdbabysoc/init_dp:
+     0 cells have placement violation.
+
+  Voltage area violations report
+  ====================================
+  Voltage area placement violations in design vsdbabysoc/init_dp:
+     0 cells placed outside the voltage area which they belong to.
+
+  Hard macro to hard macro overlap report
+  =======================================
+  HM to HM overlaps in design vsdbabysoc/init_dp: 0
+  ---------------------------------------
+  Total hard macro to hard macro overlaps: 0
+
+Information: Default error view vsdbabysoc_dpplace.err is created in GUI error browser. (DPP-054)
+1

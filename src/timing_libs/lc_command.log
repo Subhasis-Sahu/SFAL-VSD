@@ -1,0 +1,19 @@
+#@ # 
+#@ # Running lc_shell Version T-2022.03-SP5 for linux64 -- Oct 13, 2022
+#@ # Date:   Fri Jun 14 14:12:26 2024
+#@ # Run by: subhasis@sfalvsd
+#@ 
+
+set libs [glob *.lib]
+#puts $libs
+set m1 ""
+set library_name ""
+foreach lib_name $libs {
+ 
+regexp {(.*)\.lib} $lib_name m1 library_name
+#puts $m2
+
+read_lib $lib_name
+write_lib $library_name -format db -output ${library_name}.db
+}
+exit

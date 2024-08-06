@@ -1,0 +1,16 @@
+./timing/sky130_fd_sc_hd__ff_100C_1v65.lib
+./timing/sky130_fd_sc_hd__ff_100C_1v95.lib
+./timing/sky130_fd_sc_hd__ff_n40C_1v56.lib
+./timing/sky130_fd_sc_hd__ff_n40C_1v65.lib
+./timing/sky130_fd_sc_hd__ff_n40C_1v76.lib
+./timing/sky130_fd_sc_hd__ff_n40C_1v95.lib
+./timing/sky130_fd_sc_hd__ss_100C_1v40.lib
+./timing/sky130_fd_sc_hd__ss_100C_1v60.lib
+./timing/sky130_fd_sc_hd__ss_n40C_1v28.lib
+./timing/sky130_fd_sc_hd__ss_n40C_1v35.lib
+./timing/sky130_fd_sc_hd__ss_n40C_1v40.lib
+./timing/sky130_fd_sc_hd__ss_n40C_1v44.lib
+./timing/sky130_fd_sc_hd__ss_n40C_1v60.lib
+./timing/sky130_fd_sc_hd__ss_n40C_1v76.lib
+./timing/sky130_fd_sc_hd__tt_025C_1v80.lib
+./timing/sky130_fd_sc_hd__tt_100C_1v80.lib

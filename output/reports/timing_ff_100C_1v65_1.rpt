@@ -1,0 +1,89 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : vsdbabysoc
+Version: T-2022.03-SP5-6
+Date   : Tue Jun 18 13:14:14 2024
+****************************************
+
+Operating Conditions: ff_100C_1v65   Library: sky130_fd_sc_hd__ff_100C_1v65
+Wire Load Model Mode: top
+
+  Startpoint: core/CPU_is_addi_a3_reg
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: core/CPU_Xreg_value_a4_reg[27][31]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  vsdbabysoc         Small                 sky130_fd_sc_hd__ff_100C_1v65
+
+  Point                                                                Incr       Path
+  ---------------------------------------------------------------------------------------
+  clock clk (rise edge)                                                0.00       0.00
+  clock network delay (ideal)                                          3.00       3.00
+  core/CPU_is_addi_a3_reg/CLK (sky130_fd_sc_hd__dfxtp_1)               0.00       3.00 r
+  core/CPU_is_addi_a3_reg/Q (sky130_fd_sc_hd__dfxtp_1)                 0.68       3.68 r
+  core/U189/Y (sky130_fd_sc_hd__nor2_1)                                0.09       3.78 f
+  core/U21/X (sky130_fd_sc_hd__and2_4)                                 0.28       4.06 f
+  core/U192/Y (sky130_fd_sc_hd__a21oi_1)                               0.15       4.21 r
+  core/U34/Y (sky130_fd_sc_hd__inv_2)                                  0.18       4.39 f
+  core/U287/X (sky130_fd_sc_hd__a22o_1)                                0.15       4.55 f
+  core/U288/X (sky130_fd_sc_hd__xor2_1)                                0.13       4.67 f
+  core/U819/COUT (sky130_fd_sc_hd__fa_1)                               0.29       4.96 f
+  core/U802/COUT (sky130_fd_sc_hd__fa_1)                               0.28       5.24 f
+  core/U790/COUT (sky130_fd_sc_hd__fa_1)                               0.28       5.52 f
+  core/U775/COUT (sky130_fd_sc_hd__fa_1)                               0.28       5.80 f
+  core/U759/COUT (sky130_fd_sc_hd__fa_1)                               0.28       6.08 f
+  core/U18/COUT (sky130_fd_sc_hd__fa_1)                                0.28       6.37 f
+  core/U17/COUT (sky130_fd_sc_hd__fa_1)                                0.28       6.65 f
+  core/U72/COUT (sky130_fd_sc_hd__fa_1)                                0.28       6.93 f
+  core/U16/COUT (sky130_fd_sc_hd__fa_1)                                0.28       7.21 f
+  core/U8/COUT (sky130_fd_sc_hd__fa_1)                                 0.28       7.49 f
+  core/U7/COUT (sky130_fd_sc_hd__fa_1)                                 0.28       7.77 f
+  core/U4/COUT (sky130_fd_sc_hd__fa_1)                                 0.26       8.03 f
+  core/U638/COUT (sky130_fd_sc_hd__fah_1)                              0.19       8.22 f
+  core/U621/COUT (sky130_fd_sc_hd__fah_1)                              0.19       8.41 f
+  core/U604/COUT (sky130_fd_sc_hd__fah_1)                              0.19       8.59 f
+  core/U587/COUT (sky130_fd_sc_hd__fah_1)                              0.20       8.80 f
+  core/U10/COUT (sky130_fd_sc_hd__fa_1)                                0.26       9.06 f
+  core/U554/COUT (sky130_fd_sc_hd__fah_1)                              0.19       9.25 f
+  core/U537/COUT (sky130_fd_sc_hd__fah_1)                              0.19       9.43 f
+  core/U520/COUT (sky130_fd_sc_hd__fah_1)                              0.19       9.62 f
+  core/U504/COUT (sky130_fd_sc_hd__fah_1)                              0.19       9.81 f
+  core/U15/COUT (sky130_fd_sc_hd__fah_1)                               0.19       9.99 f
+  core/U488/COUT (sky130_fd_sc_hd__fah_1)                              0.19      10.18 f
+  core/U14/COUT (sky130_fd_sc_hd__fah_1)                               0.19      10.37 f
+  core/U457/COUT (sky130_fd_sc_hd__fah_1)                              0.19      10.55 f
+  core/U441/COUT (sky130_fd_sc_hd__fah_1)                              0.19      10.74 f
+  core/U426/COUT (sky130_fd_sc_hd__fah_1)                              0.19      10.93 f
+  core/U410/COUT (sky130_fd_sc_hd__fah_1)                              0.20      11.13 f
+  core/U83/COUT (sky130_fd_sc_hd__fa_1)                                0.26      11.39 f
+  core/U380/COUT (sky130_fd_sc_hd__fah_1)                              0.21      11.59 f
+  core/U11/COUT (sky130_fd_sc_hd__fa_1)                                0.27      11.87 f
+  core/U289/X (sky130_fd_sc_hd__xor2_1)                                0.17      12.04 r
+  core/U13/Y (sky130_fd_sc_hd__nand2_1)                                0.24      12.28 f
+  core/U321/Y (sky130_fd_sc_hd__o22ai_1)                               0.14      12.42 r
+  core/CPU_Xreg_value_a4_reg[27][31]/D (sky130_fd_sc_hd__dfxtp_1)      0.00      12.42 r
+  data arrival time                                                              12.42
+
+  clock clk (rise edge)                                               10.00      10.00
+  clock network delay (ideal)                                          3.00      13.00
+  clock uncertainty                                                   -0.50      12.50
+  core/CPU_Xreg_value_a4_reg[27][31]/CLK (sky130_fd_sc_hd__dfxtp_1)
+                                                                       0.00      12.50 r
+  library setup time                                                  -0.07      12.43
+  data required time                                                             12.43
+  ---------------------------------------------------------------------------------------
+  data required time                                                             12.43
+  data arrival time                                                             -12.42
+  ---------------------------------------------------------------------------------------
+  slack (MET)                                                                     0.00
+
+
+1
