@@ -1,0 +1,116 @@
+Information: Updating design information... (UID-85)
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : vsdbabysoc
+Version: T-2022.03-SP5-6
+Date   : Tue Jun 18 13:02:25 2024
+****************************************
+
+Operating Conditions: ff_n40C_1v95   Library: sky130_fd_sc_hd__ff_n40C_1v95
+Wire Load Model Mode: top
+
+  Startpoint: core/CPU_is_addi_a3_reg
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: core/CPU_Xreg_value_a4_reg[25][31]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  vsdbabysoc         Small                 sky130_fd_sc_hd__ff_n40C_1v95
+
+  Point                                                                Incr       Path
+  ---------------------------------------------------------------------------------------
+  clock clk (rise edge)                                                0.00       0.00
+  clock network delay (ideal)                                          3.00       3.00
+  core/CPU_is_addi_a3_reg/CLK (sky130_fd_sc_hd__dfxtp_1)               0.00       3.00 r
+  core/CPU_is_addi_a3_reg/Q (sky130_fd_sc_hd__dfxtp_1)                 0.27       3.27 f
+  core/U379/Y (sky130_fd_sc_hd__nor2_1)                                0.48       3.75 r
+  core/U4/Y (sky130_fd_sc_hd__clkinv_1)                                0.28       4.02 f
+  core/U389/Y (sky130_fd_sc_hd__o21ai_1)                               0.15       4.17 r
+  core/U390/Y (sky130_fd_sc_hd__nand2_1)                               0.05       4.22 f
+  core/U392/Y (sky130_fd_sc_hd__nand2_1)                               0.07       4.29 r
+  core/U393/Y (sky130_fd_sc_hd__a22oi_1)                               0.06       4.35 f
+  core/U395/Y (sky130_fd_sc_hd__o21ai_1)                               0.13       4.48 r
+  core/U400/Y (sky130_fd_sc_hd__a21oi_1)                               0.07       4.54 f
+  core/U405/Y (sky130_fd_sc_hd__o21ai_1)                               0.14       4.68 r
+  core/U407/Y (sky130_fd_sc_hd__a21oi_1)                               0.07       4.76 f
+  core/U412/Y (sky130_fd_sc_hd__o21ai_1)                               0.14       4.89 r
+  core/U417/Y (sky130_fd_sc_hd__a21oi_1)                               0.07       4.96 f
+  core/U422/Y (sky130_fd_sc_hd__o21ai_1)                               0.14       5.10 r
+  core/U427/Y (sky130_fd_sc_hd__a21oi_1)                               0.07       5.17 f
+  core/U432/Y (sky130_fd_sc_hd__o21ai_1)                               0.14       5.31 r
+  core/U437/Y (sky130_fd_sc_hd__a21oi_1)                               0.07       5.37 f
+  core/U442/Y (sky130_fd_sc_hd__o21ai_1)                               0.14       5.51 r
+  core/U447/Y (sky130_fd_sc_hd__a21oi_1)                               0.07       5.58 f
+  core/U452/Y (sky130_fd_sc_hd__o21ai_1)                               0.14       5.72 r
+  core/U457/Y (sky130_fd_sc_hd__a21oi_1)                               0.07       5.78 f
+  core/U462/Y (sky130_fd_sc_hd__o21ai_1)                               0.14       5.92 r
+  core/U467/Y (sky130_fd_sc_hd__a21oi_1)                               0.07       5.99 f
+  core/U472/Y (sky130_fd_sc_hd__o21ai_1)                               0.14       6.13 r
+  core/U477/Y (sky130_fd_sc_hd__a21oi_1)                               0.07       6.20 f
+  core/U686/COUT (sky130_fd_sc_hd__fa_1)                               0.28       6.49 f
+  core/U482/X (sky130_fd_sc_hd__o21a_1)                                0.13       6.62 f
+  core/intadd_1/U6/COUT (sky130_fd_sc_hd__fa_1)                        0.23       6.85 f
+  core/intadd_1/U5/COUT (sky130_fd_sc_hd__fa_1)                        0.22       7.07 f
+  core/intadd_1/U4/COUT (sky130_fd_sc_hd__fa_1)                        0.22       7.29 f
+  core/intadd_1/U3/COUT (sky130_fd_sc_hd__fa_1)                        0.22       7.51 f
+  core/intadd_1/U2/COUT (sky130_fd_sc_hd__fa_1)                        0.23       7.74 f
+  core/U502/X (sky130_fd_sc_hd__o21a_1)                                0.13       7.88 f
+  core/intadd_2/U5/COUT (sky130_fd_sc_hd__fa_1)                        0.23       8.10 f
+  core/intadd_2/U4/COUT (sky130_fd_sc_hd__fa_1)                        0.22       8.33 f
+  core/intadd_2/U3/COUT (sky130_fd_sc_hd__fa_1)                        0.22       8.55 f
+  core/intadd_2/U2/COUT (sky130_fd_sc_hd__fa_1)                        0.22       8.76 f
+  core/U1360/X (sky130_fd_sc_hd__xor2_1)                               0.12       8.89 r
+  core/U1361/X (sky130_fd_sc_hd__xor2_1)                               0.16       9.05 r
+  core/U1386/Y (sky130_fd_sc_hd__nand2_1)                              0.17       9.21 f
+  core/U1391/Y (sky130_fd_sc_hd__o22ai_1)                              0.15       9.36 r
+  core/CPU_Xreg_value_a4_reg[25][31]/D (sky130_fd_sc_hd__dfxtp_1)      0.00       9.36 r
+  data arrival time                                                               9.36
+
+  clock clk (rise edge)                                               10.00      10.00
+  clock network delay (ideal)                                          3.00      13.00
+  clock uncertainty                                                   -0.50      12.50
+  core/CPU_Xreg_value_a4_reg[25][31]/CLK (sky130_fd_sc_hd__dfxtp_1)
+                                                                       0.00      12.50 r
+  library setup time                                                  -0.04      12.46
+  data required time                                                             12.46
+  ---------------------------------------------------------------------------------------
+  data required time                                                             12.46
+  data arrival time                                                              -9.36
+  ---------------------------------------------------------------------------------------
+  slack (MET)                                                                     3.10
+
+
+  Startpoint: dac/OUT (internal path startpoint)
+  Endpoint: OUT (output port)
+  Path Group: default
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  vsdbabysoc         Small                 sky130_fd_sc_hd__ff_n40C_1v95
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 r
+  dac/OUT (avsddac)                        0.00       0.00 r
+  OUT (out)                                0.87       0.87 r
+  data arrival time                                   0.87
+
+  max_delay                               10.00      10.00
+  output external delay                    0.00      10.00
+  data required time                                 10.00
+  -----------------------------------------------------------
+  data required time                                 10.00
+  data arrival time                                  -0.87
+  -----------------------------------------------------------
+  slack (MET)                                         9.13
+
+
+1

@@ -1,0 +1,32 @@
+ 
+****************************************
+Report : area
+Design : vsdbabysoc
+Version: T-2022.03-SP5-6
+Date   : Thu Jul 11 13:29:08 2024
+****************************************
+
+Library(s) Used:
+
+    sky130_fd_sc_hd__tt_025C_1v80 (File: /home/subhasis/VSDBabySoC/src/lib/sky130_fd_sc_hd__tt_025C_1v80.db)
+    avsddac (File: /home/subhasis/VSDBabySoC/src/lib/avsddac.db)
+    pll (File: /home/subhasis/VSDBabySoC/src/lib/pll.db)
+
+Number of ports:                           17
+Number of nets:                          2713
+Number of cells:                         2664
+Number of combinational cells:           1985
+Number of sequential cells:               676
+Number of macros/black boxes:               2
+Number of buf/inv:                        540
+Number of references:                       4
+
+Combinational area:              11464.745401
+Buf/Inv area:                     2026.943936
+Noncombinational area:           13532.978775
+Macro/Black Box area:              100.000000
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:                 25097.724176
+Total area:                 undefined
+1

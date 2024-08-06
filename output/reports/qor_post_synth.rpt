@@ -1,0 +1,84 @@
+Information: Updating design information... (UID-85)
+ 
+****************************************
+Report : qor
+Design : vsdbabysoc
+Version: T-2022.03-SP5-6
+Date   : Thu Jul 11 13:29:08 2024
+****************************************
+
+
+  Timing Path Group (none)
+  -----------------------------------
+  Levels of Logic:               1.00
+  Critical Path Length:          0.00
+  Critical Path Slack:         uninit
+  Critical Path Clk Period:       n/a
+  Total Negative Slack:          0.00
+  No. of Violating Paths:        0.00
+  Worst Hold Violation:          0.00
+  Total Hold Violation:          0.00
+  No. of Hold Violations:        0.00
+  -----------------------------------
+
+
+  Cell Count
+  -----------------------------------
+  Hierarchical Cell Count:          1
+  Hierarchical Port Count:         12
+  Leaf Cell Count:               2663
+  Buf/Inv Cell Count:             540
+  Buf Cell Count:                  14
+  Inv Cell Count:                 526
+  CT Buf/Inv Cell Count:            0
+  Combinational Cell Count:      1987
+  Sequential Cell Count:          676
+  Macro Count:                      0
+  -----------------------------------
+
+
+  Area
+  -----------------------------------
+  Combinational Area:    11464.745401
+  Noncombinational Area: 13532.978775
+  Buf/Inv Area:           2026.943936
+  Total Buffer Area:            52.55
+  Total Inverter Area:        1974.39
+  Macro/Black Box Area:    100.000000
+  Net Area:                  0.000000
+  -----------------------------------
+  Cell Area:             25097.724176
+  Design Area:           25097.724176
+
+
+  Design Rules
+  -----------------------------------
+  Total Number of Nets:          2701
+  Nets With Violations:             0
+  Max Trans Violations:             0
+  Max Cap Violations:               0
+  -----------------------------------
+
+
+  Hostname: sfalvsd
+
+  Compile CPU Statistics
+  -----------------------------------------
+  Resource Sharing:                    6.63
+  Logic Optimization:                  2.32
+  Mapping Optimization:                7.39
+  -----------------------------------------
+  Overall Compile Time:               44.53
+  Overall Compile Wall Clock Time:    46.14
+
+  --------------------------------------------------------------------
+
+  Design  WNS: 0.00  TNS: 0.00  Number of Violating Paths: 0
+
+
+  Design (Hold)  WNS: 0.00  TNS: 0.00  Number of Violating Paths: 0
+
+  --------------------------------------------------------------------
+
+
+1

@@ -1,0 +1,58 @@
+****************************************
+Report : timing
+	-path_type full
+	-delay_type min
+	-input_pins
+	-nets
+	-max_paths 1
+	-transition_time
+	-capacitance
+	-sort_by slack
+Design : vsdbabysoc
+Version: T-2022.03-SP5-4
+Date   : Mon Aug  5 15:48:45 2024
+****************************************
+
+
+  Startpoint: core/CPU_Xreg_value_a4_reg[26][3]
+               (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: core/CPU_Xreg_value_a4_reg[26][3]
+               (rising edge-triggered flip-flop clocked by clk)
+  Last common pin: core/ZCTSBUF_11237_7831/X
+  Path Group: clk
+  Path Type: min
+
+  Point                                                           Fanout    Cap      Trans       Incr       Path
+  -----------------------------------------------------------------------------------------------------------------
+  clock clk (rise edge)                                                                        0.0000     0.0000
+  clock network delay (propagated)                                                             0.5321     0.5321
+  core/CPU_Xreg_value_a4_reg[26][3]/CLK (sky130_fd_sc_hd__dfxtp_4)                  0.1817     0.0000     0.5321 r
+  core/CPU_Xreg_value_a4_reg[26][3]/Q (sky130_fd_sc_hd__dfxtp_4)                    0.0217     0.2362 &   0.7683 f
+  core/CPU_Xreg_value_a4[26][3] (net)                                1   0.0032 
+  core/ropt_mt_inst_12346/A (sky130_fd_sc_hd__clkbuf_1)                             0.0218     0.0006 &   0.7689 f
+  core/ropt_mt_inst_12346/X (sky130_fd_sc_hd__clkbuf_1)                             0.0651     0.0876 &   0.8565 f
+  core/ropt_net_1295 (net)                                           2   0.0148 
+  core/U1906/A2 (sky130_fd_sc_hd__a21oi_1)                                          0.0654     0.0031 &   0.8595 f
+  core/U1906/Y (sky130_fd_sc_hd__a21oi_1)                                           0.0460     0.1031 &   0.9627 r
+  core/n1433 (net)                                                   1   0.0026 
+  core/U1907/B1 (sky130_fd_sc_hd__o21ai_0)                                          0.0460     0.0005 &   0.9631 r
+  core/U1907/Y (sky130_fd_sc_hd__o21ai_0)                                           0.0550     0.0587 &   1.0218 f
+  core/n3137 (net)                                                   1   0.0079 
+  core/CPU_Xreg_value_a4_reg[26][3]/D (sky130_fd_sc_hd__dfxtp_4)                    0.0551     0.0011 &   1.0229 f
+  data arrival time                                                                                       1.0229
+
+  clock clk (rise edge)                                                                        0.0000     0.0000
+  clock network delay (propagated)                                                             0.7531     0.7531
+  clock reconvergence pessimism                                                               -0.2215     0.5316
+  clock uncertainty                                                                            0.5000     1.0316
+  core/CPU_Xreg_value_a4_reg[26][3]/CLK (sky130_fd_sc_hd__dfxtp_4)                                        1.0316 r
+  library hold time                                                                           -0.0092     1.0224
+  data required time                                                                                      1.0224
+  -----------------------------------------------------------------------------------------------------------------
+  data required time                                                                                      1.0224
+  data arrival time                                                                                      -1.0229
+  -----------------------------------------------------------------------------------------------------------------
+  slack (MET)                                                                                             0.0005
+
+
+1
