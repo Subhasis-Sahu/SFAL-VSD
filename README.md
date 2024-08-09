@@ -1,7 +1,7 @@
 # SFAL_VSD
 <details>
 
-<summary>Day 0 - Tools Installation</summary>
+<summary>Module 0 - Tools Installation</summary>
 
 
     Commands to install Yosys in Linux:
@@ -36,7 +36,7 @@
 
 <details>
 
-<summary>Day 1 - Introduction to Verilog RTL Design and Synthesis</summary>
+<summary>Module 1 - Introduction to Verilog RTL Design and Synthesis</summary>
 
 
       Design: Design is the actual verilog code or set of verilog codes which has the intended functionality to meet the required specifications.
@@ -166,7 +166,7 @@ Synthesized netlist screenshot:
 
 <details>
 
-<summary>Day 2 - Timing libs, hierarchical vs flat synthesis and efficient flop coding styles</summary>
+<summary>Module 2 - Timing libs, hierarchical vs flat synthesis and efficient flop coding styles</summary>
 
 Understanding Timing Libs:
 
@@ -265,7 +265,7 @@ Note:
 
 <details>
 
-<summary>Day 3 - Combinational and sequential optmizations</summary>
+<summary>Module 3 - Combinational and sequential optmizations</summary>
 
 
 Combinational Optimizations:
@@ -529,7 +529,7 @@ As we can see below in following screenshot and above synthesis results,we got t
 
 <details>
 
-<summary>Day 4 - GLS, blocking vs non-blocking and Synthesis-Simulation mismatch</summary>
+<summary>Module 4 - GLS, blocking vs non-blocking and Synthesis-Simulation mismatch</summary>
 
 Gate-level simulation is a critical process in digital design, verification, and validation, especially for complex digital systems in modern technology nodes. 
 It involves modeling digital circuits at the gate level to understand their behavior accurately. 
@@ -674,7 +674,7 @@ As we can observe in the following screenshot,
 
 <details>
 
-<summary>Day 5 - Design for Test (DFT)</summary>
+<summary>Module 5 - Design for Test (DFT)</summary>
 
 
 Introduction to Design for Test (DFT) :
@@ -893,7 +893,7 @@ Commands to start Library compiler are:
 
 <details>
 
-<summary>Day 6 - Introduction to Logic Synthesis</summary>
+<summary>Module 6 - Introduction to Logic Synthesis</summary>
 
 Tools to be used for this course :
 
@@ -1164,7 +1164,7 @@ When data is  printed on screen with {} , it means it is a DC collection,not a T
 
 <details>
 
-<summary>Day 7 - Basics of Static Timing Analysis</summary>
+<summary>Module 7 - Basics of Static Timing Analysis</summary>
 
 #### **What is STA?**
 
@@ -1598,7 +1598,7 @@ For ex- area attribute can be queried for the library cell only not its' pins an
 
 <details>
 
-<summary>Day 8 - Advanced Constraints</summary>
+<summary>Module 8 - Advanced Constraints</summary>
 
 #### Specifying Constraints Through SDC
 
@@ -2742,7 +2742,7 @@ Here,we can see our required paths are constrained and getting max path violatio
 
 <details>
 
-<summary>Day 9 - Introduction to BabySoC Modelling</summary>
+<summary>Module 9 - Introduction to BabySoC Modelling</summary>
 
 #### What is a SoC and Why SoC should be used ? :
 
@@ -2865,7 +2865,7 @@ VSDBabySoC is a small yet powerful RISCV-based SoC. The main purpose of designin
 
 <details>
 
-<summary>Day 10 - BabySoC Modelling</summary>
+<summary>Module 10 - BabySoC Modelling</summary>
 
 #### What is Modelling?
 
@@ -2938,7 +2938,7 @@ In this picture we can see the following signals:
 
 <details>
 
-<summary>Day 11 - Post-Synthesis Simulation (GLS) of BabySoC</summary>
+<summary>Module 11 - Post-Synthesis Simulation (GLS) of BabySoC</summary>
 
 #### Why do pre-synthesis Simulation? Why not just do post-synthesis Simulation? :
 
@@ -3006,7 +3006,7 @@ As we can observe in the image below, our post-synth (top) and pre-synth(bottom)
 
 <details>
 
-<summary>Day 12 - Synthesis & Timing Analysis of BabySoC</summary>
+<summary>Module 12 - Synthesis & Timing Analysis of BabySoC</summary>
 
 Now, we can continue with synthesis of our design according to constraints mentioned below :
 
@@ -3270,7 +3270,7 @@ Accounting for PVT variations is crucial for robust and reliable chip design.
 
 <details>
 
-<summary>Day 13 - Floorplanning & Power Planning of BabySoC</summary>
+<summary>Module 13 - Floorplanning & Power Planning of BabySoC</summary>
 
 
 #### Physical Design Flow :
@@ -3790,7 +3790,7 @@ Now, as we have verified the flow is properly working(flow flush done), we can m
 
 <details>
 
-<summary>Day 14 - Placement of BabySoC</summary>
+<summary>Module 14 - Placement of BabySoC</summary>
 
 Placement in VLSI design is a critical step that involves determining the physical locations of standard cells within a chip's core area. This process is essential for optimizing performance, power consumption, and overall design efficiency.
 
@@ -4116,7 +4116,7 @@ post-placement qor report (`/home/subhasis/VSDBabySoC/scripts/PD_flow/rpts_icc2/
 
 <details>
 
-<summary>Day 15 - CTS</summary>
+<summary>Module 15 - CTS</summary>
 
 Clock Tree Synthesis (CTS) is a critical process in VLSI design, aimed at ensuring that the clock signal is efficiently distributed across all sequential elements in a circuit. This process is essential for maintaining timing integrity, minimizing power consumption, and optimizing performance.
 
@@ -4369,7 +4369,7 @@ Citations:
 
 <details>
 
-<summary>Day 16 - Routing</summary>
+<summary>Module 16 - Routing</summary>
 
 Routing is a crucial stage in the VLSI design flow that creates physical connections between signal pins by following design rules. The main goals of routing are to minimize total wire length and vias, complete routing within the design area, meet timing constraints, and avoid design rule violations.
 
@@ -4562,7 +4562,7 @@ Citations:
 
 <details>
     
-<summary>Day 17 - STA using Prime Time</summary>
+<summary>Module 17 - STA using Prime Time</summary>
 
 After routing is completed, in icc2_shell, we can extract parasitics information in .SPEF format by using following command :
 
@@ -5177,7 +5177,7 @@ This huge variation in our results from Post-Synthesis STA is because of followi
 
 <details>
 
-<summary>Day 18 - ECO using Prime Time</summary>
+<summary>Module 18 - ECO using Prime Time</summary>
 
 
 Engineering Change Orders (ECOs) play a crucial role in the VLSI (Very Large Scale Integration) design process, particularly in accommodating changes and rectifying errors in semiconductor chip designs. This process is essential for enhancing design efficiency and minimizing costs associated with production.
