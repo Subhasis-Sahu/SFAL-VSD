@@ -4194,6 +4194,9 @@ Citations:
 
 Clock Tree Fanout Highlighted in tool :
 
+![image](https://github.com/user-attachments/assets/21043221-9f64-4e2d-86db-face56133c6a)
+
+
 ![image](https://github.com/user-attachments/assets/e3259e1e-5694-4772-8ef0-6c7e06a17c72)
 
 
