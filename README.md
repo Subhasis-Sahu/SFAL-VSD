@@ -4192,6 +4192,11 @@ Citations:
 
 #### Lab - CTS of VSDBabySoC :
 
+Clock Tree Fanout Highlighted in tool :
+
+![image](https://github.com/user-attachments/assets/e3259e1e-5694-4772-8ef0-6c7e06a17c72)
+
+
 * `set_clock_tree_options :
 
        Specifies settings like target skew or latency  for  clocks,  exception
