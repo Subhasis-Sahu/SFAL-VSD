@@ -570,7 +570,7 @@ Synthesis-Simulation mismatch occurs due to following reasons:
 
 2) Blocking vs non-blocking assignments:
 
-   Blocking assignment in SystemVerilog and Verilog refers to an assignment statement where the execution of the next statement is blocked until the current assignment is completed.
+   Blocking assignment in System Verilog and Verilog refers to an assignment statement where the execution of the next statement is blocked until the current assignment is completed.
    This means that the assignments are executed in series order, one after the other, within a procedural block.
    Blocking assignment statements are assigned using `=`.
    This type of assignment is commonly used for modeling combinational logic, defining functions, or implementing testbench algorithms.
@@ -584,7 +584,7 @@ Synthesis-Simulation mismatch occurs due to following reasons:
    In summary, non-blocking assignments are essential for sequential circuits, ensuring that values are updated simultaneously at the end of a time slot, making them ideal for synchronous designs in Verilog.
 
    For ex:
-   As seen in the scrennshot below,the code in left column is correct to achieve our aim of inferrinf two flip-flops but in code in right column,as q is getting directly assigned to d , hence only one flop is 
+   As seen in the screenshot below,the code in left column is correct to achieve our aim of inferrinf two flip-flops but in code in right column,as q is getting directly assigned to d , hence only one flop is 
    inferred.Hence,it it recommended to always use non-blocking statement in always block for sequential logic inference.
    
    ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/88dc058a-7886-431c-8e71-a9bfc5abc15f)
