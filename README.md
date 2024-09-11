@@ -571,11 +571,14 @@ Synthesis-Simulation mismatch occurs due to following reasons:
 2) Blocking vs non-blocking assignments:
 
    Blocking assignment in SystemVerilog and Verilog refers to an assignment statement where the execution of the next statement is blocked until the current assignment is completed.
-   This means that the assignments are executed in series order, one after the other, within a procedural block. In SystemVerilog, blocking assignment uses the "=" operator, while in Verilog, it uses the "<="       operator.
+   This means that the assignments are executed in series order, one after the other, within a procedural block.
+   Blocking assignment statements are assigned using `=`.
    This type of assignment is commonly used for modeling combinational logic, defining functions, or implementing testbench algorithms.
    It is essential to note that blocking assignment does not prevent the execution of statements running in parallel blocks
 
-   Non-blocking assignment in Verilog allows statements to be scheduled without blocking the execution of subsequent statements. It is denoted by the symbol <= and is particularly useful for describing hardware     systems, especially in synthesis.
+   Non-blocking assignment in Verilog allows statements to be scheduled without blocking the execution of subsequent statements. It is denoted by the symbol `<=` and is particularly useful for describing hardware systems, especially in
+   synthesis.
+   
    Unlike blocking assignments, non-blocking assignments defer the assignment until all right-hand sides have been evaluated, ensuring simultaneous or parallel statement execution.
    This feature is crucial for sequential logic in Verilog, as it reflects the behavior of multi-stage sequential logic more accurately than blocking assignments.
    In summary, non-blocking assignments are essential for sequential circuits, ensuring that values are updated simultaneously at the end of a time slot, making them ideal for synchronous designs in Verilog.
