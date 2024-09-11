@@ -590,9 +590,9 @@ Synthesis-Simulation mismatch occurs due to following reasons:
    ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/88dc058a-7886-431c-8e71-a9bfc5abc15f)
 
    For ex:
-   In left column code,y will get old value of q0 during evaluation,which is mimicking the behavour of a flop.
+   In left column code,y will get old value of q0 during evaluation/simulation,which is mimicking the behavour of a flop.
    To get latest value of q0,we can interchange the statements in always block,as seen in right column code.
-   Synthesis will produce the same logic implemnetation for both the codes.
+   Synthesis will produce the same logic implementation for both the codes.
    This will lead to synthesis-simulation mismatch.
    ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/9cf5d027-5e3f-4477-a644-000ae174e870)
 
