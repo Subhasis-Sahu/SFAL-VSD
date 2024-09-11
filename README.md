@@ -585,7 +585,7 @@ Synthesis-Simulation mismatch occurs due to following reasons:
 
    For ex:
    As seen in the screenshot below,the code in left column is correct to achieve our aim of inferring two flip-flops but in code in right column,as q is getting directly assigned to d , hence only one flop is 
-   inferred. Hence,it it recommended to always use non-blocking statement in always block for sequential logic inference.
+   inferred. Hence,it is recommended to always use non-blocking statement in always block for sequential logic inference.
    
    ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/88dc058a-7886-431c-8e71-a9bfc5abc15f)
 
