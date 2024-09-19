@@ -722,7 +722,7 @@ Some typical defects in VLSI chips are :
 
 **Fault** - A representation of a “defect” at the abstracted function level is called a fault.
 
-**Controllabilty** - From DFT point of view,Controllability means we intend if both '0' and '1' are able to propagate to wach and every node within the target patterns.
+**Controllabilty** - From DFT point of view,Controllability means the ease of both '0' and '1' being able to propagate to each and every node within the target patterns.
                      A point is said to be controllable if both '0' and '1' can be propagated through scan patterns.
 
 ![image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/59c799c4-4e99-4fba-8003-e685e32abb4a)
