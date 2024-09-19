@@ -928,7 +928,7 @@ This is given out as a file called netlist.
 
 * Different flavors of gate are required because the delay of combo logic between flops determines maximum speed of operation (clock frequency) of our design.
 * Smaller the combinational delay,larger can be the clock frequency,which can be achieved by using faster cells.
-* But, we also need to meet our hold tome requirement for flops,so that data should not come within the hold window of a flop.Here the need arises for slower cells.
+* But, we also need to meet our hold time requirement for flops,so that data should not come within the hold window of a flop.Here the need arises for slower cells.
 * Hence,both faster and slower cells are used to meet our target clock frequency while avoiding hold time violations in our design.
 * These cells collectively form our std. cell library and their timing and logical information is used by tools,in the form of .lib format.
 
