@@ -3202,7 +3202,7 @@ Accounting for PVT variations is crucial for robust and reliable chip design.
 
             set m1 ""
             set pvt ""
-            set FH [open report_timing.rpt w]
+            set FH [open report_timing.rpt w] ;# create timing report file
             puts $FH "PVT_Corner\tWNS\tWHS"
             
             set lib_files [glob -directory /home/subhasis/VSDBabySoC/src/timing_libs/ -type f *.db]
@@ -3221,12 +3221,12 @@ Accounting for PVT variations is crucial for robust and reliable chip design.
             read_file {sandpiper_gen.vh  sandpiper.vh  sp_default.vh  sp_verilog.vh clk_gate.v rvmyth.v rvmyth_gen.v vsdbabysoc.v} -autoread -top vsdbabysoc
             source /home/subhasis/VSDBabySoC/src/sdc/vsdbabysoc_synthesis.sdc
             link
-            compile_ultra
+            compile_ultra ;# to synthesize the design using currently set target PVT corner
             
-            set wns [get_attribute [get_timing_paths -delay_type max -max_paths 1] slack]
-            set whs [get_attribute [get_timing_paths -delay_type min -max_paths 1] slack]
+            set wns [get_attribute [get_timing_paths -delay_type max -max_paths 1] slack] ;# Determine worst negative slack (setup) for current pvt corner.
+            set whs [get_attribute [get_timing_paths -delay_type min -max_paths 1] slack] ;# Determine worst hold slack of current pvt corner.
             
-            puts $FH "$pvt\t$wns\t$whs"
+            puts $FH "$pvt\t$wns\t$whs" ;# Write out pvt and their corresponding wns and whs in the timing report
             
             reset_design
             }
